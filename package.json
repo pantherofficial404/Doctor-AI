@@ -4,8 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:portal": "cd portal && npm start && cd ..",
+    "install": "cd portal && npm install && cd .. && cd backend && npm install && cd ..",
+    "start:backend": "cd backend && npm start && cd ..",
+    "start": "npm run start:backend",
+    "build:portal": "cd portal && yarn build && cd --",
+    "build": "npm run build:portal && cd --"
   },
+  "cacheDirectories": [
+    "backend/node_modules",
+    "portal/node_modules"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pantherofficial404/Doctor-AI.git"
