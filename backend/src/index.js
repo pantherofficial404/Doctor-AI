@@ -24,7 +24,7 @@ const server = (async () => {
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
     app.use('/api/1.0', router);
-    app.listen(config.get('port'));
+    app.listen(process.env.PORT || config.get('port'));
     console.log('Server is running...');
   } catch (err) {
     console.log('Server startup failed' + err.message);
