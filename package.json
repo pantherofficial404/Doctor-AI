@@ -8,7 +8,7 @@
     "install": "cd portal && npm install && cd .. && cd backend && npm install && cd ..",
     "start:backend": "cd backend && npm start && cd ..",
     "start": "npm run start:backend",
-    "build:portal": "cd portal && yarn build && cd --",
+    "build:portal": "cd portal && npm run build && cd --",
     "build": "npm run build:portal && cd --"
   },
   "cacheDirectories": [
