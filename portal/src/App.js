@@ -1,6 +1,7 @@
 import React from 'react';
 import Root from 'Pages/index';
 import { Provider } from 'react-redux';
+import axios from 'axios';
 
 import { store } from 'Store';
 

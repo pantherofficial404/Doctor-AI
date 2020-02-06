@@ -1,5 +1,11 @@
-const SchemaOptions = require('Models/SchemaOptions');
+const SchemaOptions = require('./SchemaOptions');
+const User = require('./User');
+const Hospital = require('./Hospital');
+const Order = require('./Order');
 
 module.exports = {
-  SchemaOptions
+  SchemaOptions,
+  User,
+  Hospital,
+  Order,
 };
