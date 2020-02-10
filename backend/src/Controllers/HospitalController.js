@@ -42,7 +42,7 @@ const getNearyByHospitals = async (req, res, body) => {
       limit = 5;
     }
 
-    const nearyByHospitals = await Hospital.find({ location: { $nearSphere: { $geometry: { type: "Point", coordinates: [parseInt(latitude), parseInt(longitude)] }, $maxDistance: distance * METERS_PER_MILE } } }).limit(parseInt(limit));
+    const nearyByHospitals = await Hospital.find({ location: { $nearSphere: { $geometry: { type: "Point", coordinates: [parseInt(longitude), parseInt(latitude)] }, $maxDistance: distance * METERS_PER_MILE } } }).limit(parseInt(limit));
 
     res.json({
       success: true,
@@ -55,7 +55,6 @@ const getNearyByHospitals = async (req, res, body) => {
     });
     handleError(err);
   }
-
 }
 
 module.exports = {
