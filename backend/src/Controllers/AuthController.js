@@ -8,11 +8,11 @@ const login = async (req, res, next) => {
     code: 200,
     data: {
       username,
-      password,
+      password
     },
     success: false
   });
-}
+};
 
 const signup = async (req, res, next) => {
   const { username, password } = req.body;
@@ -21,7 +21,7 @@ const signup = async (req, res, next) => {
     code: 200,
     data: {
       username,
-      password,
+      password
     },
     success: true
   });

@@ -1,60 +1,69 @@
-import { authAction } from './actions';
-import ReducerFactory from './reducerFactory';
+import ReducerFactory from "./ReducerFactory";
+import { createAction } from "redux-actions";
+
+const PREFIX = "@DOCTOR_AI";
+
+const getActionName = name => `${PREFIX}/${name}`;
+
+export const loginAction = {
+  reset: createAction(getActionName(`LOGIN_RESET`)),
+  init: createAction(getActionName(`LOGIN_INIT`)),
+  failed: createAction(getActionName(`LOGIN_FAILED`)),
+  success: createAction(getActionName(`LOGIN_SUCCESS`))
+};
 
 const initialState = {
-  auth: {
+  login: {
     initialized: false,
     loading: false,
     error: null,
-    data: null,
+    data: null
   }
-}
-
-
+};
 const reducer = new ReducerFactory(initialState)
-  .add(authAction.init, (state, action) => {
+  .add(loginAction.init, (state, action) => {
     return {
       ...state,
-      auth: {
+      login: {
         initialized: true,
         loading: true,
         error: null,
-        data: null,
+        data: null
       }
-    }
+    };
   })
-  .add(authAction.reset, (state, action) => {
+  .add(loginAction.reset, (state, action) => {
     return {
       ...state,
-      auth: {
+      login: {
         initialized: false,
         loading: true,
         error: null,
-        data: null,
+        data: null
       }
-    }
+    };
   })
-  .add(authAction.success, (state, action) => {
+  .add(loginAction.success, (state, action) => {
     return {
       ...state,
-      auth: {
+      login: {
         initialized: true,
         loading: false,
         error: null,
-        data: action.payload,
+        data: action.payload
       }
-    }
+    };
   })
-  .add(authAction.failed, (state, action) => {
+  .add(loginAction.failed, (state, action) => {
     return {
       ...state,
-      auth: {
+      login: {
         initialized: true,
         loading: false,
         error: action.payload,
-        data: null,
+        data: null
       }
-    }
+    };
   })
   .toReducer();
 

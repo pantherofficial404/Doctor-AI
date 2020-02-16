@@ -1,12 +1,12 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ApplicationError, LogServices, AuthServices } from 'Services';
+import axios, { AxiosResponse } from "axios";
+import { ApplicationError, LogServices, AuthServices } from "Services";
 
-const logger = LogServices.getInstance('Service:Network');
+const logger = LogServices.getInstance("Service:Network");
 
 const MESSAGES = {
-  OFFLINE: 'You are offline, Please connect internet',
-  NOT_REACHABLE: 'We are not able to connect to server at the moment',
-  UNKNOWN: 'Something went wrong, Please contact to administrator'
+  OFFLINE: "You are offline, Please connect internet",
+  NOT_REACHABLE: "We are not able to connect to server at the moment",
+  UNKNOWN: "Something went wrong, Please contact to administrator"
 };
 
 class NetworkService {
@@ -15,7 +15,7 @@ class NetworkService {
       throw error;
     }
 
-    if (error.message === 'Network Error') {
+    if (error.message === "Network Error") {
       throw new ApplicationError(MESSAGES.NOT_REACHABLE);
     }
 
@@ -37,7 +37,6 @@ class NetworkService {
       logger.error(response);
       throw new ApplicationError(MESSAGES.UNKNOWN);
     }
-
     return response.data;
   }
 
@@ -65,13 +64,13 @@ class NetworkService {
    */
 
   async get(url, options) {
-    logger.debug('get', url);
+    logger.debug("get", url);
     try {
       const response = await axios.get(url, {
         headers: this.getHeader(options)
       });
 
-      logger.debug('get response', response);
+      logger.debug("get response", response);
 
       return this.handleResponse(response);
     } catch (error) {
@@ -85,13 +84,13 @@ class NetworkService {
    * @param {any} options
    */
   async post(url, data, options) {
-    logger.debug('post', url, data);
+    logger.debug("post", url, data);
     try {
       const response = await axios.post(url, data, {
         headers: this.getHeader(options)
       });
 
-      logger.debug('post response', response);
+      logger.debug("post response", response);
 
       return this.handleResponse(response);
     } catch (error) {
@@ -105,13 +104,13 @@ class NetworkService {
    * @param {any} options
    */
   async put(url, data, options) {
-    logger.debug('put', url, data);
+    logger.debug("put", url, data);
     try {
       const response = await axios.put(url, data, {
         headers: this.getHeader(options)
       });
 
-      logger.debug('put response', response);
+      logger.debug("put response", response);
 
       return this.handleResponse(response);
     } catch (error) {
@@ -124,13 +123,13 @@ class NetworkService {
    * @param {any} options
    */
   async delete(url, options) {
-    logger.debug('delete', url);
+    logger.debug("delete", url);
     try {
       const response = await axios.delete(url, {
         headers: this.getHeader(options)
       });
 
-      logger.debug('delete response', response);
+      logger.debug("delete response", response);
 
       return this.handleResponse(response);
     } catch (error) {

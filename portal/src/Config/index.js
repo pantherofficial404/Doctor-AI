@@ -1,4 +1,4 @@
-import packageJson from '../../package.json';
+import packageJson from "../../package.json";
 
 const config = {
   get PUBLIC_URL() {
@@ -8,7 +8,7 @@ const config = {
     return process.env.REACT_APP_SERVER_URL;
   },
   get DEBUG() {
-    return process.env.NODE_ENV !== 'production';
+    return process.env.NODE_ENV !== "production";
   },
   get NODE_ENV() {
     return process.env.NODE_ENV;

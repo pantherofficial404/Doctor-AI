@@ -1,8 +1,8 @@
-import Config from 'Config';
-import { NetworkServices, LogServices } from 'Services';
+import Config from "Config";
+import { NetworkServices, LogServices } from "Services";
 
-const logger = LogServices.getInstance('AuthServices');
-const AUTH_LOCALSTORAGEKEY = 'panther';
+const logger = LogServices.getInstance("AuthServices");
+const AUTH_LOCALSTORAGEKEY = "panther";
 
 class AuthService {
   constructor() {

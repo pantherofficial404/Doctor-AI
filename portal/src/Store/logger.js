@@ -1,5 +1,5 @@
-import { logger } from 'redux-logger';
-import Config from 'Config';
+import { logger } from "redux-logger";
+import Config from "Config";
 
 export const loggerMiddleware = [];
 
