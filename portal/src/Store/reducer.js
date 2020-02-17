@@ -1,4 +1,4 @@
-import ReducerFactory from "./ReducerFactory";
+import ReducerFactory from "./reducerFactory";
 import { createAction } from "redux-actions";
 
 const PREFIX = "@DOCTOR_AI";
@@ -12,6 +12,13 @@ export const loginAction = {
   success: createAction(getActionName(`LOGIN_SUCCESS`))
 };
 
+export const registerAction = {
+  reset: createAction(getActionName(`REGISTER_RESET`)),
+  init: createAction(getActionName(`REGISTER_INIT`)),
+  failed: createAction(getActionName(`REGISTER_FAILED`)),
+  success: createAction(getActionName(`REGISTER_SUCCESS`))
+};
+
 const initialState = {
   login: {
     initialized: false,
@@ -21,7 +28,7 @@ const initialState = {
   }
 };
 const reducer = new ReducerFactory(initialState)
-  .add(loginAction.init, (state, action) => {
+  .add(loginAction.init, registerAction.init, (state, action) => {
     return {
       ...state,
       login: {
@@ -32,7 +39,7 @@ const reducer = new ReducerFactory(initialState)
       }
     };
   })
-  .add(loginAction.reset, (state, action) => {
+  .add(loginAction.reset, registerAction.reset, (state, action) => {
     return {
       ...state,
       login: {
@@ -43,7 +50,7 @@ const reducer = new ReducerFactory(initialState)
       }
     };
   })
-  .add(loginAction.success, (state, action) => {
+  .add(loginAction.success, registerAction.success, (state, action) => {
     return {
       ...state,
       login: {
@@ -54,7 +61,7 @@ const reducer = new ReducerFactory(initialState)
       }
     };
   })
-  .add(loginAction.failed, (state, action) => {
+  .add(loginAction.failed, registerAction.failed, (state, action) => {
     return {
       ...state,
       login: {

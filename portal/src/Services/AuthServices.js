@@ -31,6 +31,22 @@ class AuthService {
     return response;
   }
 
+  async signup(username, password) {
+    const response = await NetworkServices.post(
+      `localhost:5000/api/1.0/signup`,
+      {
+        username,
+        password
+      }
+    );
+    if (response.success) {
+      localStorage.setItem(AUTH_LOCALSTORAGEKEY, JSON.stringify(response.data));
+      this._auth = response.data;
+    }
+    logger.debug(response);
+    return response;
+  }
+
   isAuthenticated() {
     if (!this._auth) {
       return false;

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "./style";
 import { Header } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
@@ -12,12 +12,31 @@ import {
 } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
+
+//For Data Retriving from the redux
+import { useSelector } from "react-redux";
+import { SingUp } from "Store/action";
+
 const Layout = props => {
-  console.log(props);
   const classes = useStyles();
+
+  const [state, setState] = useState({
+    username: "",
+    password: "",
+    isOpen: false,
+    message: "",
+    variant: "error",
+    isChecking: false
+  });
+
+  const handleSubmit = async () => {
+    setState({ isChecking: true });
+    const resonse = await SingUp();
+  };
+
   return (
     <>
-      <Header title="Login" />
+      <Header title="Sign Up" />
       <div>
         <Container className={classes.Container} maxWidth="md">
           <div className={classes.SingUp}>
@@ -26,7 +45,7 @@ const Layout = props => {
                 <form className={classes.SignUpForm}>
                   <div className={classes.SignUpFormInput}>
                     <Typography variant="h3" className={classes.FormTitle}>
-                      Sign Up
+                      Sing Up
                     </Typography>
                     <TextField
                       className={classes.TextField}
@@ -35,6 +54,8 @@ const Layout = props => {
                       size="medium"
                       placeholder="Name"
                       type="text"
+                      value={state.username}
+                      onChange={e => setState({ username: e.target.value })}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -48,8 +69,10 @@ const Layout = props => {
                       id="input-with-icon-AcccountCircle"
                       fullWidth
                       size="medium"
-                      placeholder="Username"
+                      placeholder="password"
                       type="email"
+                      value={state.password}
+                      onChange={e => setState({ password: e.target.value })}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -58,7 +81,7 @@ const Layout = props => {
                         )
                       }}
                     />
-                    <TextField
+                    {/* <TextField
                       className={classes.TextField}
                       id="input-with-icon-Lock"
                       placeholder="Password"
@@ -75,13 +98,14 @@ const Layout = props => {
                           </InputAdornment>
                         )
                       }}
-                    />
+                    /> */}
                     <div className={classes.Button}>
                       <Button
                         variant="contained"
+                        onClick={handleSubmit}
                         color="primary"
                         className={classes.SignUpButton}>
-                        Sing In
+                        Sing Up
                       </Button>
                     </div>
                     <div className={classes.links}>
