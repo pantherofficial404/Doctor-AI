@@ -1,39 +1,36 @@
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const DateFns = require('date-fns');
+const config = require("config");
+const jwt = require("jsonwebtoken");
+const DateFns = require("date-fns");
 
 const authMiddleware = (req, res, next) => {
-
   try {
-
-    const authorization = req.headers['authorization'];
+    const authorization = req.headers["authorization"];
 
     let token;
     let authInfo;
     if (authorization) {
-      token = authorization.replace(/^bearer /gi, '');
-    };
-
+      token = authorization.replace(/^bearer /gi, "");
+    }
 
     if (!token) {
       return res.json({
         success: false,
         data: {
-          message: 'Unauthorized request';
+          message: "Unauthorized request"
         }
       });
     }
 
-    const token = jwt.verify(token, config.get('jwt').secret);
+    jwt.verify(token, config.get("jwt").secret);
 
-    const authInfo = jwt.decode(token);
+    authInfo = jwt.decode(token);
 
     if (Date.now() > authInfo.exp) {
       ctx.status = 401;
       ctx.body = {
         code: 401,
-        message: 'Unauthorized request',
-        path: ctx.path,
+        message: "Unauthorized request",
+        path: ctx.path
       };
     }
 
@@ -41,14 +38,14 @@ const authMiddleware = (req, res, next) => {
 
     next();
   } catch (err) {
+    res.status(401);
     return res.json({
       success: false,
       data: {
-        message: err.message;
+        message: err.message
       }
-    })
+    });
   }
-
-}
+};
 
 module.exports = authMiddleware;

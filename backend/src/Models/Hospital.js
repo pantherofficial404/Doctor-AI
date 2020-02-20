@@ -35,7 +35,15 @@ const HospitalSchema = new mongoose.Schema({
   category: {
     type: [mongoose.Schema.Types.String],
     require: true
-  }
+  },
+  doctors: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Doctor'
+  },
+  mobileNo: {
+    type: [mongoose.Schema.Types.Number],
+    required: false,
+  },
 }, schemaOptions);
 
 HospitalSchema.index({ location: '2dsphere', hospitalName: 1 }, { background: true });

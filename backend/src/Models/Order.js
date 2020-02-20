@@ -8,7 +8,12 @@ const orderSchema = new Schema(
     hospitalId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Hospital',
-      require: true,
+      require: false,
+    },
+    doctorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Doctor',
+      require: false,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

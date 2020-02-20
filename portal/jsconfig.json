@@ -5,8 +5,5 @@
     "module": "commonjs",
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

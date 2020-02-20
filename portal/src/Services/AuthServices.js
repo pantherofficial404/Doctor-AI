@@ -1,8 +1,9 @@
-import Config from 'Config';
-import { NetworkServices, LogServices } from 'Services';
+import Config from "Config";
+import { NetworkServices, LogServices } from "Services";
+import config from 'Config';
 
-const logger = LogServices.getInstance('AuthServices');
-const AUTH_LOCALSTORAGEKEY = 'panther';
+const logger = LogServices.getInstance("AuthServices");
+const AUTH_LOCALSTORAGEKEY = "panther";
 
 class AuthService {
   constructor() {
@@ -21,12 +22,26 @@ class AuthService {
       username,
       password
     });
-
     if (response.success) {
       localStorage.setItem(AUTH_LOCALSTORAGEKEY, JSON.stringify(response.data));
       this._auth = response.data;
     }
+    logger.debug(response);
+    return response;
+  }
 
+  async signup(username, password) {
+    const response = await NetworkServices.post(
+      `${config.SERVER_URL}/signup`,
+      {
+        username,
+        password
+      }
+    );
+    if (response.success) {
+      localStorage.setItem(AUTH_LOCALSTORAGEKEY, JSON.stringify(response.data));
+      this._auth = response.data;
+    }
     logger.debug(response);
     return response;
   }
@@ -55,6 +70,16 @@ class AuthService {
   async logout() {
     localStorage.removeItem(AUTH_LOCALSTORAGEKEY);
     this._auth = undefined;
+  }
+
+  isAdmin() {
+    if (!this.isAuthenticated()) {
+      return false;
+    }
+    if (!this._auth.isAdmin) {
+      return false;
+    }
+    return true;
   }
 }
 

@@ -1,4 +1,4 @@
-import config from 'Config';
+import config from "Config";
 
 class LogServices {
   /**
@@ -54,4 +54,4 @@ class LogServices {
   }
 }
 
-export default new LogServices('app');
+export default new LogServices("app");
