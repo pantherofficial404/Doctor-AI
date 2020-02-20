@@ -44,6 +44,10 @@ const HospitalSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.Number],
     required: false,
   },
+  emailId:{
+    type: mongoose.Schema.Types.String,
+    require: false
+  },
 }, schemaOptions);
 
 HospitalSchema.index({ location: '2dsphere', hospitalName: 1 }, { background: true });
