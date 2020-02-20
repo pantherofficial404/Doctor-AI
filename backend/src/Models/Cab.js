@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schemaOptions = require('./SchemaOptions');
 
-const DoctorSchema = new mongoose.Schema({
+const CabSchema = new mongoose.Schema({
   driverName: {
     type: mongoose.Schema.Types.String,
     require: false,
@@ -25,4 +25,4 @@ const DoctorSchema = new mongoose.Schema({
   },
 }, schemaOptions);
 
-module.exports = mongoose.model('Cab', DoctorSchema);
+module.exports = mongoose.model('Cab', CabSchema);
