@@ -19,9 +19,9 @@ const orderSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     },
-    patientName: {
-      type: mongoose.Schema.Types.String,
-      default: 'Patient',
+    patientId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Patient',
     },
     cabId: {
       type: mongoose.Schema.Types.ObjectId,
