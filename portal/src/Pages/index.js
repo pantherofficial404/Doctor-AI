@@ -13,7 +13,7 @@ import HospitalListing from "Pages/HospitalListing";
 import HospitalsDetails from "Pages/HospitalDetails";
 import Cab from "Pages/Cab";
 import DoctorDetails from "./DoctorDetails";
-
+import NotFoundView from "./NotFoundView";
 import { AuthServices } from "Services";
 
 // const PrivateRoute = ({ component, ...rest }) => {
@@ -41,6 +41,7 @@ class Root extends React.Component {
           <Route exact path="/hospital" component={HospitalListing} />
           <Route exact path="/hospitals" component={HospitalsDetails} />
           <Route exact path="/cab" component={Cab} />
+          <Route exact path="/404" component={NotFoundView} />
           <Route exact path="/Doctor" component={DoctorDetails} />
         </Switch>
       </Router>
