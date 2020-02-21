@@ -10,17 +10,18 @@ import {
   Button,
   Link
 } from "@material-ui/core";
+
 import PersonIcon from "@material-ui/icons/Person";
-import { useSelector } from "react-redux";
-import { fetchLogin } from "Store/action";
-import { selectLoginData } from "Store/selectors";
+// import { useSelector } from "react-redux";
+// import { fetchLogin } from "Store/action";
+// import { selectLoginData } from "Store/selectors";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
 
 const Layout = props => {
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [isLogin, setLogin] = useState(false);
   const history = useHistory();
 
@@ -30,16 +31,16 @@ const Layout = props => {
       // Todo : Validate username and password should always has value
       await AuthServices.login(username, password);
       setLogin(false);
-      history.push('/hospital');
+      history.push("/hospital");
     } catch (err) {
       // Todo : Display Error message to User
-      console.log('err', err);
+      console.log("err", err);
     } finally {
-      setUsername('');
-      setPassword('');
+      setUsername("");
+      setPassword("");
       setLogin(false);
     }
-  }
+  };
 
   return (
     <div className={classes.loginpage}>
@@ -61,7 +62,7 @@ const Layout = props => {
                       size="medium"
                       placeholder="Username Or Email"
                       type="Email"
-                      onChange={(e) => setUsername(e.target.value)}
+                      onChange={e => setUsername(e.target.value)}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -76,7 +77,7 @@ const Layout = props => {
                       placeholder="Password"
                       fullWidth
                       type="password"
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={e => setPassword(e.target.value)}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -95,9 +96,8 @@ const Layout = props => {
                         color="primary"
                         onClick={handleLogin}
                         className={classes.SigninButton}
-                        disabled={isLogin}
-                      >
-                        {isLogin ? 'Login...' : 'Login'}
+                        disabled={isLogin}>
+                        {isLogin ? "Login..." : "Login"}
                       </Button>
                     </div>
                     <div className={classes.links}>

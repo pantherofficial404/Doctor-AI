@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Typography } from "@material-ui/core";
 import useStyles from "./style";
 import Header from "Components/Header";
-import Map from './component/Map';
+import Map from "./component/Map";
+
+//Side Drawer
 
 const Home = props => {
   const classes = useStyles();
@@ -13,7 +15,6 @@ const Home = props => {
   });
 
   useEffect(() => {
-
     // Getting Current Location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(location => {
@@ -24,7 +25,6 @@ const Home = props => {
         });
       });
     }
-
   }, []);
 
   return (

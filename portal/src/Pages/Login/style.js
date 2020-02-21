@@ -5,7 +5,6 @@ const useStyles = makeStyles(theme => ({
     height: "100vh"
   },
   Container: {
-    background: "#fff",
     margin: "0 auto",
     boxShadow: "-5px 15px 16.83px 17px rgba(0, 0, 0, 0.05)",
     borderRadius: theme.spacing() * 2,
@@ -59,6 +58,11 @@ const useStyles = makeStyles(theme => ({
     letterSpacing: "1px",
     marginBottom: "0.3rem",
     background: "#4292DC"
+  },
+  Button: {
+    [theme.breakpoints.only("xs")]: {
+      textAlign: "center"
+    }
   },
 
   links: {
