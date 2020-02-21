@@ -10,6 +10,11 @@ export const fetchHospitalListing = async () => {
   try {
     store.dispatch(hospitalListingAction.init());
     const response = await NetworkServices.get(`${Config.SERVER_URL}/hospital`);
+    
+    (response.data||[]).forEach(element=>{
+      element.mobileNo = element.mobileNo[0] || null;
+    });
+
     store.dispatch(hospitalListingAction.success(response.data));
   } catch (err) {
     handleError(err);

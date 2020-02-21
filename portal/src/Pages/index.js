@@ -39,10 +39,10 @@ class Root extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/hospital" component={HospitalListing} />
-          <Route exact path="/hospitals" component={HospitalsDetails} />
+          <Route exact path="/add/hospital" component={HospitalsDetails} />
           <Route exact path="/cab" component={Cab} />
-          <Route exact path="/404" component={NotFoundView} />
-          <Route exact path="/Doctor" component={DoctorDetails} />
+          <Route exact path="/doctor" component={DoctorDetails} />
+          <Route component={NotFoundView}/>
         </Switch>
       </Router>
     );
