@@ -18,8 +18,18 @@ import BookIcon from "@material-ui/icons/Book";
 const Layout = () => {
   const classes = useStyles();
 
+  //Fot Custmize Input-Type File
   const handleiconclick = () => {
-    document.getElementById("click").click();
+    document.getElementById("hiddenInput").click();
+  };
+  const handlechange = () => {
+    const check = document.getElementById("hiddenInput");
+    const customText = document.getElementById("customText");
+    if (check.value) {
+      customText.innerHTML = check.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/);
+    } else {
+      customText.innerHTML = "No File Chosen,Yet";
+    }
   };
 
   return (
@@ -78,28 +88,29 @@ const Layout = () => {
                   <TextField
                     className={classes.cabtextfield}
                     multiline
-                    placeholder="Click on icon to add Thambnai"
                     rowsMax="4"
-                    onClick={handleiconclick}
+                    id="Thumbnai-button"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <AddAPhotoIcon className={classes.thumnaiimages} />
+                          <AddAPhotoIcon
+                            className={classes.thumnaiimages}
+                            style={{ marginRight: "1rem" }}
+                            onClick={handleiconclick}
+                          />
+                          <span id="customText" style={{ color: "#CBCBCB" }}>
+                            <span>👈</span> Click Icon To Select File
+                          </span>
                         </InputAdornment>
                       )
                     }}
                   />
-                  {/* <TextField
-                    id="image"
+                  <input
                     type="file"
-                    name="Select Hotel Image"
-                    className={classes.textField}
-                    variant="outlined"
-                    fullWidth
-                    // onChange={this.handleImage}
-                  /> */}
-
-                  <input type="file" id="click" style={{ display: "none" }} />
+                    id="hiddenInput"
+                    hidden
+                    onChange={handlechange}
+                  />
                   <Grid>
                     <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
@@ -149,16 +160,3 @@ const Layout = () => {
   );
 };
 export default Layout;
-
-// <div className={classes.cabdivcontent}>
-//   <div className={classes.logosection}>
-//     <div className={classes.taxiicon}>
-//       <img
-//         src="./images/taxi.png"
-//         alt="taxi-icon"
-//         className={classes.icontaxi}
-//       />
-//     </div>
-//   </div>
-//   <div className={classes.formSection}></div>
-// </div>

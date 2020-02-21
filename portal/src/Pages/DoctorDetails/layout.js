@@ -27,10 +27,19 @@ const Layout = () => {
   };
   const classes = useStyles();
 
+  //Fot Custmize Input-Type File
   const handleiconclick = () => {
-    document.getElementById("click").click();
+    document.getElementById("hiddenInput").click();
   };
-
+  const handlechange = () => {
+    const check = document.getElementById("hiddenInput");
+    const customText = document.getElementById("customText");
+    if (check.value) {
+      customText.innerHTML = check.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/);
+    } else {
+      customText.innerHTML = "No File Chosen,Yet";
+    }
+  };
   return (
     <div className={classes.docDetails}>
       <Header title="Doctor info" />
@@ -82,19 +91,29 @@ const Layout = () => {
                   <TextField
                     className={classes.doctextfield}
                     multiline
-                    placeholder="Click on icon to add Thambnai"
                     rowsMax="4"
-                    onClick={handleiconclick}
+                    id="Thumbnai-button"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <AddAPhotoIcon className={classes.thumnaiimages} />
+                          <AddAPhotoIcon
+                            className={classes.thumnaiimages}
+                            style={{ marginRight: "1rem" }}
+                            onClick={handleiconclick}
+                          />
+                          <span id="customText" style={{ color: "#CBCBCB" }}>
+                            <span>👈</span> Click Icon To Select File
+                          </span>
                         </InputAdornment>
                       )
                     }}
                   />
-
-                  <input type="file" id="click" style={{ display: "none" }} />
+                  <input
+                    type="file"
+                    id="hiddenInput"
+                    hidden
+                    onChange={handlechange}
+                  />
                   <Grid>
                     <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
@@ -150,10 +169,3 @@ const Layout = () => {
   );
 };
 export default Layout;
-
-// <Typography variant="h6" align="center" className={classes.title}>
-//   DOCTOR DETAILS
-// </Typography>
-// {
-//   /**/
-// }

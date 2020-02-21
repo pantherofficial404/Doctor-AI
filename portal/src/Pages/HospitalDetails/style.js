@@ -1,15 +1,66 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    boxShadow:
-      "0 4px 8px 0 rgba(0, 0, 0, 0.0), 0 6px 20px 0 rgba(0, 0, 0, 0.2)",
+  Container: {
+    background: "#fff",
+    margin: "0 auto",
+    boxShadow: "-5px 15px 16.83px 17px rgba(0, 0, 0, 0.05)",
     borderRadius: theme.spacing() * 2,
-    padding: "2.5rem",
     marginTop: theme.spacing() * 7,
+    marginBottom: theme.spacing() * 7,
     [theme.breakpoints.only("xs")]: {
       boxShadow: "none"
     }
+  },
+
+  fileUpload: {
+    width: "100%",
+    marginBottom: theme.spacing() * 5,
+    [theme.breakpoints.only("xs")]: {
+      width: "1oo%"
+    }
+  },
+
+  TextField: {
+    marginBottom: theme.spacing() * 3
+  },
+  HospitalForm: {
+    width: "100%"
+  },
+
+  HospitalIconContent: {
+    textAlign: "center",
+    margin: "0px auto"
+  },
+  thumnaiimages: {
+    cursor: "pointer",
+    color: "#7563FF"
+  },
+  iconhospital: {
+    marginTop: theme.spacing() * 2,
+    marginRight: theme.spacing() * 3,
+    height: "90px",
+    borderRadius: "50%",
+    width: "90px",
+    [theme.breakpoints.only("xs")]: {
+      marginRight: 0,
+      height: "120px",
+      width: "120px"
+    }
+  },
+  title: {
+    fontSize: "1.3rem",
+    marginBottom: theme.spacing() * 2,
+    position: "relative",
+    marginTop: "-1rem"
+  },
+  icon: {
+    color: "#7563FF"
+  },
+  HospitalButton: {
+    marginBottom: "2rem",
+    background: "#7563FF",
+    color: "#fff"
   }
 }));
 
