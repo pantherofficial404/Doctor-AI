@@ -9,9 +9,7 @@ const Layout = () => {
     <div className={classes.hospitalDetails}>
       <Header title="Hospitals" />
       <div className={classes.hospitalsDetailsContent}>
-        <Container className={classes.container} maxWidth="md">
-          <form></form>
-        </Container>
+        <Container className={classes.container} maxWidth="md"></Container>
       </div>
     </div>
   );
