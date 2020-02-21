@@ -14,12 +14,6 @@ const useStyles = makeStyles(theme => ({
   button: {
     margin: "0.36rem"
   },
-  listContainer: {
-    '&:hover': {
-      backgroundColor: theme.palette.grey[200],
-      cursor: 'pointer',
-    }
-  }
 }));
 
 export default useStyles;
