@@ -5,9 +5,12 @@ import useStyles from './style';
 
 const Listing = (props) => {
     const classes = useStyles();
-    const data = props.data;
-    const fields = props.fields;
-    const keys = props.keys;
+
+    const { data,keys,limit } = props;
+
+    if(limit && (data.data||[]).length >= limit){
+        data.data = (data.data||[]).slice(0,limit);
+    }
 
     if(data.loading){
         return (

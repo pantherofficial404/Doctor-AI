@@ -25,7 +25,7 @@ const Map = (props) => {
 
   return (
     <div
-      style={{ flex: 1, height: '100vh' }}
+      style={{ flex: 1, height: 300,width:500,margin:'10px auto' }}
       ref={mapRef}
     />
   )
