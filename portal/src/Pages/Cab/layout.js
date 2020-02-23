@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "./style";
 import Header from "Components/Header";
 import {
@@ -18,6 +18,8 @@ import BookIcon from "@material-ui/icons/Book";
 const Layout = () => {
   const classes = useStyles();
 
+  const [state, setState] = useState("");
+
   //Fot Custmize Input-Type File
   const handleiconclick = () => {
     document.getElementById("hiddenInput").click();
@@ -32,6 +34,9 @@ const Layout = () => {
     }
   };
 
+  //Event
+  const handleClick = () => {};
+
   return (
     <div className={classes.cabbooking}>
       <Header title="CAB" />
@@ -45,7 +50,6 @@ const Layout = () => {
                     <div className={classes.taxiicon}>
                       <img
                         src="./images/TexiLocation.JPG"
-                        // src="./images/ambulance.png"
                         alt="taxi-icon"
                         className={classes.icontaxi}
                       />
@@ -64,6 +68,7 @@ const Layout = () => {
                   <TextField
                     className={classes.cabtextfield}
                     placeholder="Driver name"
+                    onChange={e => setState(e.target.value)}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -77,6 +82,7 @@ const Layout = () => {
                     multiline
                     rowsMax="4"
                     placeholder="Discriptions"
+                    onChange={e => setState(e.target.value)}
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
@@ -115,6 +121,7 @@ const Layout = () => {
                     <Grid container spacing={3}>
                       <Grid item xs={12} sm={6}>
                         <TextField
+                          onChange={e => setState(e.target.value)}
                           className={classes.cabtextfield}
                           placeholder="Rating"
                           type="number"
@@ -131,6 +138,7 @@ const Layout = () => {
                         <TextField
                           className={classes.cabtextfield}
                           placeholder="Cab booked"
+                          onChange={e => setState(e.target.value)}
                           type="number"
                           InputProps={{
                             startAdornment: (
@@ -146,6 +154,7 @@ const Layout = () => {
                   <Button
                     variant="contained"
                     color="primary"
+                    onClick={handleClick}
                     className={classes.CabbookButton}
                     fullWidth>
                     Submit

@@ -17,10 +17,10 @@ const config = {
     return packageJson.version;
   },
   get GOOGLE_KEY() {
-    return 'AIzaSyC_W2QaRiFEj4HU-F_uyAlN2oUXKcBoPZw';
+    return "AIzaSyC_W2QaRiFEj4HU-F_uyAlN2oUXKcBoPZw";
   },
   get MAP_URL() {
-    return `https://maps.google.com/maps/api/geocode/json?key=AIzaSyC_W2QaRiFEj4HU-F_uyAlN2oUXKcBoPZw`
+    return `https://maps.google.com/maps/api/geocode/json?key=AIzaSyC_W2QaRiFEj4HU-F_uyAlN2oUXKcBoPZw`;
   }
 };
 

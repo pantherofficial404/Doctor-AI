@@ -1,14 +1,7 @@
-import React, { useEffect } from "react"; import {
-  Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Typography
-} from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Button } from "@material-ui/core";
 
-import { Header,Listing } from "Components";
+import { Header, Listing } from "Components";
 import useStyles from "./style";
 import { fetchHospitalListing } from "Store/action";
 import { selectHospital } from "Store/selectors";
@@ -41,9 +34,13 @@ const Layout = props => {
           ADD HOSPITAL
         </Button>
       </div>
-      <Listing 
-        data={hospitalListing} 
-        keys={{hospitalName:'Hospital Name',mobileNo:'Mobile Number',address:'Address'}}
+      <Listing
+        data={hospitalListing}
+        keys={{
+          hospitalName: "Hospital Name",
+          mobileNo: "Mobile Number",
+          address: "Address"
+        }}
       />
     </div>
   );

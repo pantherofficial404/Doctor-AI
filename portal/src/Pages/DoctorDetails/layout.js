@@ -14,7 +14,6 @@ import PersonIcon from "@material-ui/icons/Person";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import StarIcon from "@material-ui/icons/Star";
-import BookIcon from "@material-ui/icons/Book";
 import DescriptionIcon from "@material-ui/icons/Description";
 
 const Layout = () => {
