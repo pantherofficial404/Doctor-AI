@@ -1,11 +1,21 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
 import Home from "Pages/Home";
 import Login from "Pages/Login";
 import Register from "Pages/Register";
 import HospitalListing from "Pages/HospitalListing";
-import { AuthServices } from 'Services';
+import HospitalAdd from "Pages/HospitalAdd";
+import Cab from "Pages/Cab";
+import DoctorAdd from "./DoctorAdd";
+import NotFoundView from "./NotFoundView";
+import HospitalDetail from 'Pages/HospitalsDetail';
+import { AuthServices } from "Services";
 
 // const PrivateRoute = ({ component, ...rest }) => {
 //   // const render = (props: any) => {
@@ -30,6 +40,15 @@ class Root extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/hospital" component={HospitalListing} />
+          <Route exact path="/add/hospital" component={HospitalAdd} />
+          <Route exact path="/cab" component={Cab} />
+          <Route
+            exact
+            path="/hospital/:hospitalId"
+            component={HospitalDetail}
+          />
+          <Route exact path="/add/doctor/:hospitalId" component={DoctorAdd} />
+          <Route component={NotFoundView} />
         </Switch>
       </Router>
     );

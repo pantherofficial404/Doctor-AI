@@ -15,6 +15,7 @@ const getDataAction = (name) => {
 }
 
 export const hospitalListingAction = getDataAction('HOSPITAL_LISTING');
+export const hospitalDetailAction = getDataAction('HOSPITAL_DETAIL');
 
 const addDataAction = (action, key) => {
   return (reducerFactory) => {
@@ -71,10 +72,17 @@ const initialState = {
     loading: false,
     error: null,
     data: null,
-  }
+  },
+  hospitalDetail:{
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null,
+  },
 };
 const reducer = new ReducerFactory(initialState)
   .addCustom(addDataAction(hospitalListingAction, 'hospitals'))
+  .addCustom(addDataAction(hospitalDetailAction, 'hospitalDetail'))
   .toReducer();
 
 export default reducer;

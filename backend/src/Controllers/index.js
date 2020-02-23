@@ -3,6 +3,7 @@ const HospitalController = require('Controllers/HospitalController');
 const PatientController = require('Controllers/PatientController');
 const OrderController  = require('Controllers/OrderController');
 const CabController = require('Controllers/CabController');
+const DoctorController = require('Controllers/DoctorController');
 
 module.exports = {
   AuthController,
@@ -10,4 +11,5 @@ module.exports = {
   PatientController,
   OrderController,
   CabController,
+  DoctorController,
 };

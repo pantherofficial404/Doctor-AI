@@ -26,7 +26,11 @@ const CabSchema = new mongoose.Schema({
   carName:{
     type: mongoose.Schema.Types.String,
     require: false,
-  }
+  },
+  cabNumber:{
+    type: mongoose.Schema.Types.String,
+    require: false,
+  },
 }, schemaOptions);
 
 module.exports = mongoose.model('Cab', CabSchema);

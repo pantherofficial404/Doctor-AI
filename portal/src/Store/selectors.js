@@ -5,3 +5,6 @@ const selectState = state => {
 export const selectHospital = (state) => {
   return selectState(state).hospitals;
 }
+export const selectHospitalDetail = (state)=>{
+  return selectState(state).hospitalDetail;
+}

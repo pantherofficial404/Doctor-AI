@@ -3,17 +3,21 @@ const { handleError } = require("Helper");
 
 const addCab = async (req,res,next) => {
     try {
-    const { driverName, thumbnailImage, description, rating, carName } = req.body;
+    const { driverName, thumbnailImage, description, carName,cabNumber } = req.body;
 
     const cab = new Cab({
         driverName,
-        thumbnailImage,
+        thumbnailImage:thumbnailImage||'https://www.pinclipart.com/picdir/middle/147-1473538_prime-play-ola-cabs-clipart.png',
         description,
-        rating,
         carName,
-    });
+        cabNumber,
 
     await cab.save();
+    res.status(200);
+    return res.json({
+        success:true,
+        data:'Cab Added',
+    });
 
     } catch(err){
         handleError(err);
