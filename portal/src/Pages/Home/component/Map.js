@@ -41,7 +41,7 @@ const Map = props => {
       for (var i = 0; i < features.length; i++) {
         var marker = new google.maps.Marker({
           position: features[i].position,
-          map: map
+          map: map,
         });
       }
     })();

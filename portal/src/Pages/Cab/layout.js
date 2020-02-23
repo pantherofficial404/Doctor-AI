@@ -14,32 +14,42 @@ import CreateIcon from "@material-ui/icons/Create";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import StarIcon from "@material-ui/icons/Star";
 import BookIcon from "@material-ui/icons/Book";
+import Cab from '@material-ui/icons/LocalTaxi';
+import { InputComponent } from "Components";
+import { handleError } from "Store/helper";
+import { addCab } from "Store/action";
+import { useHistory } from "react-router-dom";
 
 const Layout = () => {
   const classes = useStyles();
+  const history = useHistory();
+  const [driverName,setDriverName] = useState();
+  const [description,setDescription] = useState();
+  const [cabName,setCabName] = useState();
+  const [cabNumber,setCabNumber] = useState();
+  const [isSubmitting,setSubmitting] = useState(false);
+  const [isValidForm,setValidForm] = useState(false);
 
-  const [state, setState] = useState("");
-
-  //Fot Custmize Input-Type File
-  const handleiconclick = () => {
-    document.getElementById("hiddenInput").click();
-  };
-  const handlechange = () => {
-    const check = document.getElementById("hiddenInput");
-    const customText = document.getElementById("customText");
-    if (check.value) {
-      customText.innerHTML = check.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/);
-    } else {
-      customText.innerHTML = "No File Chosen,Yet";
+  const handleAddCab = async()=>{
+    try{
+      setSubmitting(true);
+      // Validation Part
+      if(!driverName||!description||!cabName||!cabNumber){
+        return setSubmitting(false);
+      }
+      await addCab({driverName,description,cabName,cabNumber});
+      history.push('/');
+    } catch(err){
+      handleError(err);
+    }finally{
+      // Reset State
+      setSubmitting(false);
     }
-  };
-
-  //Event
-  const handleClick = () => {};
+  }
 
   return (
     <div className={classes.cabbooking}>
-      <Header title="CAB" />
+      <Header title="Add Cab" />
       <div className={classes.cabcontent}>
         <Container className={classes.container} maxWidth="md">
           <Grid>
@@ -62,102 +72,59 @@ const Layout = () => {
                   variant="h6"
                   align="center"
                   className={classes.title}>
-                  CAB BOOKING
+                  Add New Cab
                 </Typography>
                 <form>
-                  <TextField
-                    className={classes.cabtextfield}
+                  <InputComponent 
                     placeholder="Driver name"
-                    onChange={e => setState(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AccountCircle className={classes.icon} />
-                        </InputAdornment>
-                      )
-                    }}
+                    Icon={AccountCircle}
+                    value={driverName}
+                    onChange={e => setDriverName(e.target.value)}
                   />
-                  <TextField
-                    className={classes.cabtextfield}
+
+                  <InputComponent 
+                    placeholder="Description"
+                    Icon={CreateIcon}
                     multiline
                     rowsMax="4"
-                    placeholder="Discriptions"
-                    onChange={e => setState(e.target.value)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <CreateIcon className={classes.icon} />
-                        </InputAdornment>
-                      )
-                    }}
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
                   />
-                  <TextField
-                    className={classes.cabtextfield}
-                    multiline
-                    rowsMax="4"
-                    id="Thumbnai-button"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <AddAPhotoIcon
-                            className={classes.thumnaiimages}
-                            style={{ marginRight: "1rem" }}
-                            onClick={handleiconclick}
-                          />
-                          <span id="customText" style={{ color: "#CBCBCB" }}>
-                            <span>👈</span> Click Icon To Select File
-                          </span>
-                        </InputAdornment>
-                      )
-                    }}
+                  <InputComponent 
+                    placeholder="Cab name"
+                    Icon={Cab}
+                    value={cabName}
+                    onChange={e => setCabName(e.target.value)}
+                  />
+                  <InputComponent 
+                    placeholder="Cab Number"
+                    Icon={Cab}
+                    value={cabNumber}
+                    onChange={e => setCabNumber(e.target.value)}
                   />
                   <input
-                    type="file"
-                    id="hiddenInput"
-                    hidden
-                    onChange={handlechange}
-                  />
-                  <Grid>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          onChange={e => setState(e.target.value)}
-                          className={classes.cabtextfield}
-                          placeholder="Rating"
-                          type="number"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <StarIcon className={classes.icon} />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={12} sm={6}>
-                        <TextField
-                          className={classes.cabtextfield}
-                          placeholder="Cab booked"
-                          onChange={e => setState(e.target.value)}
-                          type="number"
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <BookIcon className={classes.icon} />
-                              </InputAdornment>
-                            )
-                          }}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                      accept="image/*"
+                      hidden
+                      id="raised-button-file"
+                      multiple
+                      type="file"
+                    />
+                    <label htmlFor="raised-button-file">
+                      <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingBottom: 8,marginTop:8, borderBottom: '1px solid rgba(0,0,0,0.5)' }}>
+                        <AddAPhotoIcon color="primary" />
+                        <Typography variant="body2" color="textSecondary" style={{ padding: '0 10px' }}>
+                          Upload cab image
+                        </Typography>
+                      </div>
+                    </label>
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleClick}
-                    className={classes.CabbookButton}
+                    onClick={handleAddCab}
+                    style={{marginTop:20}}
+                    disabled={isSubmitting}
                     fullWidth>
-                    Submit
+                    {isSubmitting?'Adding Cab....':'Submit'}
                   </Button>
                 </form>
               </Grid>

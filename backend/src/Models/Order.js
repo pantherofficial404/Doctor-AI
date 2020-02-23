@@ -27,14 +27,26 @@ const orderSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Cab'
     },
-    isCompleted: {
-      type: mongoose.Schema.Types.Boolean,
-      default: false,
+    orderStatus: {
+      type: mongoose.Schema.Types.Number,
+      default: 0,
+    },
+    pickupLocation:{
+      type: {
+        type: mongoose.Schema.Types.String,
+      },
+      coordinates: [mongoose.Schema.Types.Number]
+    },
+    destinationLocation:{
+      type: {
+        type: mongoose.Schema.Types.String,
+      },
+      coordinates: [mongoose.Schema.Types.Number]
     },
   },
   SchemaOptions
 );
 
-orderSchema.index({ sparse: true }, { background: true });
+orderSchema.index({  pickupLocation: '2dsphere', destinationLocation:'2dsphere', sparse: true }, { background: true });
 
 module.exports = mongoose.model('Orders', orderSchema);

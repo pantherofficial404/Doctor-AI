@@ -19,7 +19,9 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
-  IconButton
+  IconButton,
+  Paper,
+  InputBase
 } from "@material-ui/core";
 
 import MenuIcon from "@material-ui/icons/Menu";
@@ -27,6 +29,10 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import SearchIcon from '@material-ui/icons/Search';
+import DirectionsIcon from '@material-ui/icons/Directions';
+
+import { InputComponent } from "Components";
 
 //Side Drawer
 const drawerWidth = 240;
@@ -223,7 +229,7 @@ const Home = props => {
         </div>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          {["Home", "Hospital", "Send email", "Drafts"].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -234,22 +240,17 @@ const Home = props => {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.inputSearchFiled}>
-          <input
-            type="text"
-            placeholder="Enter your desease name "
-            value={deseaseName}
-            onChange={e => setDeseaseName(e.target.value)}
-            className={classes.inputSearch}
+        <div style={{marginTop:60,display:'flex'}}>
+          <InputBase
+            placeholder="Search your desease"
+            fullWidth
+            style={{borderBottom:'1px solid rgba(0,0,0,0.4)'}}
           />
-          <button
-            type="submit"
-            onSubmit={handleSearch}
-            className={classes.searchButton}>
-            Search
-          </button>
-        </div>
-        <div style={{ marginTop: "6rem" }}>
+          <IconButton type="submit" className={classes.iconButton} aria-label="search">
+            <SearchIcon color="primary"/>
+          </IconButton>
+          </div>
+        <div>
           {Boolean(mapPermission === "granted" && state.isLoaded) && (
             <Map
               options={{

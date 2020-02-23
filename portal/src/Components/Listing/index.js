@@ -6,13 +6,13 @@ import useStyles from './style';
 const Listing = (props) => {
     const classes = useStyles();
 
-    const { data,keys,limit } = props;
+    const { data, keys, limit } = props;
 
-    if(limit && (data.data||[]).length >= limit){
-        data.data = (data.data||[]).slice(0,limit);
+    if (limit && (data.data || []).length >= limit) {
+        data.data = (data.data || []).slice(0, limit);
     }
 
-    if(data.loading){
+    if (data.loading) {
         return (
             <div>
                 Loading Data...
@@ -20,7 +20,7 @@ const Listing = (props) => {
         )
     }
 
-    if(!data.loading && data.error){
+    if (!data.loading && data.error) {
         return (
             <div>
                 Something Went Wrong....
@@ -29,24 +29,24 @@ const Listing = (props) => {
     }
     return (
         <Table>
-          <TableHead>
-            <TableRow>
-                {Object.values(keys||{}).map((element,key)=>(
-                    <TableCell key={key}>
-                        {getFormattedString(element)}
-                    </TableCell>
+            <TableHead>
+                <TableRow>
+                    {Object.values(keys || {}).map((element, key) => (
+                        <TableCell key={key}>
+                            {getFormattedString(element)}
+                        </TableCell>
+                    ))}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {(data.data || []).map((element, index) => (
+                    <TableRow className={classes.listContainer} onClick={()=>props.onClick?props.onClick(element):()=>{}}>
+                        {Object.keys(keys || {}).map((d, key) => (
+                            <TableCell key={key}>{getFormattedString(element[d])}</TableCell>
+                        ))}
+                    </TableRow>
                 ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-              <TableRow className={classes.listContainer}>
-                  {(data.data||[]).map((element,index)=>(
-                      Object.keys(keys||{}).map((d,key)=>(
-                      <TableCell key={key}>{getFormattedString(element[d])}</TableCell>
-                      ))
-                  ))}
-              </TableRow>
-          </TableBody>
+            </TableBody>
         </Table>
     )
 }

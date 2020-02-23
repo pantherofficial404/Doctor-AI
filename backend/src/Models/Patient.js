@@ -21,7 +21,19 @@ const PatientSchema = new mongoose.Schema({
   hospitalId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hospital',
-  }
+  },
+  userId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'User',
+  },
+  cabId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Cab',
+  },
+  verificaionCode:{
+    type:mongoose.Schema.Types.Number,
+    required:false
+  },
 }, schemaOptions);
 
 module.exports = mongoose.model('Patient', PatientSchema);

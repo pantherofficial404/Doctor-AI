@@ -37,8 +37,6 @@ const useStyles = makeStyles(theme => ({
     color: "#7563FF"
   },
   iconhospital: {
-    marginTop: theme.spacing() * 2,
-    marginRight: theme.spacing() * 3,
     height: "90px",
     borderRadius: "50%",
     width: "90px",
@@ -54,14 +52,10 @@ const useStyles = makeStyles(theme => ({
     position: "relative",
     marginTop: "-1rem"
   },
-  icon: {
-    color: "#7563FF"
+  hospitalButton: {
+    marginTop: theme.spacing() * 3,
+    marginBottom: theme.spacing() * 3,
   },
-  HospitalButton: {
-    marginBottom: "2rem",
-    background: "#7563FF",
-    color: "#fff"
-  }
 }));
 
 export default useStyles;

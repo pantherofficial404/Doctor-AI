@@ -14,6 +14,10 @@ const DoctorSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.String,
     require: false,
   },
+  degree: {
+    type: mongoose.Schema.Types.String,
+    require: false,
+  },
   rating: {
     type: mongoose.Schema.Types.Number,
     require: false,
