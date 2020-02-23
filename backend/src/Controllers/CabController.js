@@ -11,10 +11,8 @@ const addCab = async (req,res,next) => {
         description,
         carName,
         cabNumber,
-    });
 
     await cab.save();
-
     res.status(200);
     return res.json({
         success:true,

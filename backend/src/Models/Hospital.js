@@ -41,7 +41,7 @@ const HospitalSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.Number],
     required: false,
   },
-  emailId: {
+  emailId:{
     type: mongoose.Schema.Types.String,
     require: false
   },
