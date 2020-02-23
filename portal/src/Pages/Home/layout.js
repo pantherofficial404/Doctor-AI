@@ -254,7 +254,7 @@ const Home = props => {
             <Map
               options={{
                 center: { lat: state.latitude, lng: state.logitude },
-                zoom: 13
+                zoom: 5
               }}
             />
           )}
