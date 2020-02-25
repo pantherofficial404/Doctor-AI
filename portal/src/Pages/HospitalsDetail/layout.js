@@ -13,7 +13,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField
+  TextField,
+  CircularProgress,
+  IconButton
 } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -25,6 +27,8 @@ import { useRouteMatch, useHistory } from "react-router-dom";
 import { fetchHospitalDetail } from "Store/action";
 import { selectHospitalDetail } from "Store/selectors";
 import { useSelector } from "react-redux";
+import { InputComponent } from "Components";
+import { handleError } from "Store/helper";
 
 
 const Layout = () => {
@@ -32,6 +36,11 @@ const Layout = () => {
   const match = useRouteMatch();
   const history = useHistory();
   const hospitalDetail = useSelector(selectHospitalDetail);
+  const [patientName,setPatientName] = useState();
+  const [age,setAge] = useState();
+  const [contactNumber,setContactNumber] = useState();
+  const [description,setDescritpition] = useState();
+  const [ isFormValid,setFormValid ]= useState(true);
 
   //for Dialog
   const [open, setOpen] = useState(false)
@@ -44,6 +53,17 @@ const Layout = () => {
     setOpen(false)
   }
 
+  const handlePatientBooking = ()=>{
+    try{
+      if(!hospitalName || !contactNumber || !age || !description){
+        return setFormValid(false);
+      }
+
+      // Api Calling Will be here
+    } catch(err){
+      handleError(err);
+    }
+  }
 
 
 
@@ -70,8 +90,6 @@ const Layout = () => {
   }
 
   const hospital = hospitalDetail.data;
-
-  console.log(hospital);
   return (
     <div className={classes.Hospitaldetails}>
       <Header title="Hospital Detail" />
@@ -103,7 +121,7 @@ const Layout = () => {
                         <Typography style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }} variant="body2">
                           <Web color="primary" fontSize="small" /> {hospital.websiteUrl}
                         </Typography>
-                        <Button variant="contained" color="primary" style={{ marginTop: "1rem" }} onClick={handleClickOpen} >Select Hospital</Button>
+                        <Button variant="contained" color="primary" style={{ marginTop: "1rem" }} onClick={handleClickOpen} >Book Now</Button>
                       </div>
                     </div>
 
@@ -164,65 +182,29 @@ const Layout = () => {
         </div>
 
         {/* For Dialog Box */}
-        <div style={{ overflow: "hidden" }}>
-          <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  >
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Dialog open={true} onClose={handleClose} aria-labelledby="form-dialog-title"  >
+            <div style={{ display: "flex", justifyContent: "space-between",alignItems:'center' }}>
               <DialogTitle id="form-dialog-title" >Patient Details</DialogTitle>
-              <div style={{ marginTop: "1rem", marginRight: "1rem" }}>
-                <CloseIcon onClick={() => setOpen(false)} style={{ cursor: "pointer", background: "#7563FF", color: "#fff" }} />
-              </div>
+              <IconButton>
+                <CloseIcon onClick={() => setOpen(false)}/>
+              </IconButton>
             </div>
             <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Patient Name"
-                type="name"
-                fullWidth
-              />
-
+              <InputComponent placeholder="Patient Name" onChange={(e)=>setPatientName(e.target.value)} value={patientName}/>
               <Grid spacing={2}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={6}>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Age"
-                      type="number"
-                      fullWidth
-                    />
+                    <InputComponent placeholder="Age" onChange={(e)=>setAge(e.target.value)} value={age}/>
                   </Grid>
                   <Grid item xs={12} lg={6}>
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Contact Number"
-                      type="number"
-                      fullWidth
-                    />
+                    <InputComponent placeholder="Contact Number" onChange={(e)=>setContactNumber(e.target.value)} value={contactNumber}/>
                   </Grid>
                 </Grid>
               </Grid>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                multiline
-                label="Desctiption"
-                type="text"
-                fullWidth
-              />
+              <InputComponent placeholder="Description" onChange={(e)=>setDescritpition(e.target.value)} value={description}/>
             </DialogContent>
-            <DialogActions>
-              <div style={{ margin: "1rem auto" }}>
-                <Button variant="contained" color="primary" onClick={() => history.push('/Patient')}>Add</Button>
-              </div>
-            </DialogActions>
+            <Button variant="contained" style={{margin:10}} color="primary" onClick={handlePatientBooking}>Book</Button>
           </Dialog>
-        </div>
       </Container>
     </div>
   );

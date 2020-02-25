@@ -62,3 +62,12 @@ export const addCab = async (data) => {
     handleError(err);
   }
 }
+
+export const addPatient = (data)=>{
+  try{
+
+    await NetworkServices.post(`${Config.SERVER_URL}/`);
+  } catch(err){
+    handleError(err);
+  }
+}

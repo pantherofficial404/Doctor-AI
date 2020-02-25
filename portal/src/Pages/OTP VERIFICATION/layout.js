@@ -38,14 +38,14 @@ const Layout = () => {
       <div className={classes.cabcontent}>
         <Container className={classes.container} maxWidth="sm">
           <Typography variant="h6" align="center" className={classes.title}>
-            Verify and book-cab
+            Verify and Book Cab
           </Typography>
           <Typography variant="h3" align="center" className={classes.Otptitle}>
             Enter the OTP send to your mobile 9773416906
           </Typography>
           <form>
             <InputComponent
-              placeholder="Enter 4 digit OTP"
+              placeholder="Enter 6 digit OTP"
               Icon={VpnKeyIcon}
               value={cabOtp}
             />
