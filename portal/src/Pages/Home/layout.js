@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Header from "Components/Header";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Map from "./component/Map";
 
@@ -31,6 +30,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import {Header} from 'Components';
 
 import { InputComponent } from "Components";
 
@@ -184,7 +184,8 @@ const Home = props => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
+      <Header drawer/>
+      {/* <AppBar
         position="fixed"
         style={{ background: "#7563FF" }}
         className={clsx(classes.appBar, {
@@ -202,7 +203,7 @@ const Home = props => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Bed Tracking System
+            Doctor AI
           </Typography>
         </Toolbar>
       </AppBar>
@@ -238,7 +239,7 @@ const Home = props => {
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </Drawer> */}
       <main className={classes.content}>
         <div style={{marginTop:60,display:'flex'}}>
           <InputBase
@@ -251,14 +252,10 @@ const Home = props => {
           </IconButton>
           </div>
         <div>
-          {Boolean(mapPermission === "granted" && state.isLoaded) && (
+          {/* {Boolean(state.isLoaded) && ( */}
             <Map
-              options={{
-                center: { lat: state.latitude, lng: state.logitude },
-                zoom: 5
-              }}
             />
-          )}
+          {/* )} */}
           {Boolean(mapPermission !== "granted" && state.isLoaded) && (
             <div>
               <p>Please enable Geolocation permission</p>

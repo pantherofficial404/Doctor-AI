@@ -15,7 +15,6 @@ import Cab from "Pages/Cab";
 import DoctorAdd from "./DoctorAdd";
 import NotFoundView from "./NotFoundView";
 import HospitalDetail from 'Pages/HospitalsDetail';
-import { AuthServices } from "Services";
 
 // const PrivateRoute = ({ component, ...rest }) => {
 //   // const render = (props: any) => {

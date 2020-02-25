@@ -39,7 +39,7 @@ const Layout = props => {
         keys={{
           hospitalName: "Hospital Name",
           mobileNo: "Mobile Number",
-          address: "Address"
+          address: "Address",
         }}
         onClick={navigateHospitalDetail}
       />
