@@ -15,7 +15,12 @@ import Cab from "Pages/Cab";
 import DoctorAdd from "./DoctorAdd";
 import NotFoundView from "./NotFoundView";
 import HospitalDetail from 'Pages/HospitalsDetail';
+import PatientDetail from 'Pages/PatientDetails';
+import Notification from 'Pages/Notification'
+import Order from 'Pages/Order'
+
 import { AuthServices } from "Services";
+
 
 // const PrivateRoute = ({ component, ...rest }) => {
 //   // const render = (props: any) => {
@@ -48,7 +53,11 @@ class Root extends React.Component {
             component={HospitalDetail}
           />
           <Route exact path="/add/doctor/:hospitalId" component={DoctorAdd} />
+          <Route exact path="/patient" component={PatientDetail} />
+          <Route exact path="/notification" component={Notification} />
+          <Route exact path="/order" component={Order} />
           <Route component={NotFoundView} />
+
         </Switch>
       </Router>
     );
