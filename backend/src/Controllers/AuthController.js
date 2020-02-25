@@ -38,7 +38,8 @@ const login = async (req, res, next) => {
   const expiredOn = Date.now() + 1000 * 60 * 60;
   const authInfo = {
     expiredOn,
-    username
+    username,
+    _id:user._id,
   };
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
   res.status(200);
@@ -49,6 +50,7 @@ const login = async (req, res, next) => {
       token,
       username,
       isAdmin: user.isAdmin,
+      _id:user._id,
     },
     success: true
   });
@@ -91,7 +93,8 @@ const signup = async (req, res, next) => {
   const expiredOn = Date.now() + 1000 * 60 * 60;
   const authInfo = {
     expiredOn,
-    username
+    username,
+    _id:user._id,
   };
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
   await new User({
@@ -104,7 +107,8 @@ const signup = async (req, res, next) => {
     data: {
       expiredOn,
       token,
-      username
+      username,
+      _id:user._id,
     },
     success: true
   });

@@ -8,7 +8,12 @@ import {
   TextField,
   Button,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  CircularProgress
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -20,13 +25,14 @@ import DescriptionIcon from "@material-ui/icons/Description";
 import HospitalIcon from '@material-ui/icons/LocalHospital';
 import { InputComponent } from "Components";
 import { useSelector } from "react-redux";
-import { selectHospitalDetail } from "Store/selectors";
+import { selectHospitalDetail, selectCategories } from "Store/selectors";
 import { useHistory } from "react-router-dom";
 import { handleError } from "Store/helper";
-import { addDoctor } from "Store/action";
+import { addDoctor, fetchCategory } from "Store/action";
 
 const Layout = () => {
   const selectedHospital = useSelector(selectHospitalDetail);
+  const categoryListing = useSelector(selectCategories);
   const history = useHistory();
 
   const [doctorName,setDoctorName] = useState();
@@ -37,10 +43,15 @@ const Layout = () => {
   const [isSubmitting,setSubmitting ]= useState(false);
 
   useEffect(()=>{
-    if(!selectedHospital.data){
-      return history.goBack();
-    }
+    // if(!selectedHospital.data){
+    //   return history.goBack();
+    // }
   },[selectedHospital]);
+
+  useEffect(()=>{
+    fetchCategory();
+  },[]);
+  
 
   const handleAddDoctor = async ()=>{
     try{
@@ -115,12 +126,21 @@ const Layout = () => {
                     value={degree}
                     onChange={(e)=>setDegree(e.target.value)}
                   />
-                  <InputComponent 
-                    placeholder="Category"
-                    Icon={CategoryIcon}
+                  <FormControl style={{flex:1,display:'flex'}}>
+                      <InputLabel>Select Category</InputLabel>
+                  <Select
+                    id="demo-simple-select"
+                    onChange={()=>{}}
+                    fullWidth
                     value={category}
                     onChange={(e)=>setCategory(e.target.value)}
-                  />
+                  >
+                     <MenuItem value={1}>Select Category</MenuItem>
+                    {(categoryListing.data||[]).map(element=>(
+                      <MenuItem value={element._id}>{element.title}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                   <input
                     accept="image/*"
                     hidden
@@ -141,8 +161,10 @@ const Layout = () => {
                     color="primary"
                     style={{marginTop:15}}
                     onClick={handleAddDoctor}
-                    fullWidth>
-                    Submit
+                    fullWidth
+                    disabled={categoryListing.loading}
+                    >
+                    {categoryListing.loading && <CircularProgress color="inherit" size={20} style={{marginRight:10}}/>} Submit
                   </Button>
                 </form>
               </Grid>

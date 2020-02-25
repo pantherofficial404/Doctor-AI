@@ -3,7 +3,7 @@ import { store } from "./index";
 import { handleError } from "./helper";
 import { NetworkServices } from "Services";
 import { AuthServices } from "Services";
-import { hospitalListingAction ,hospitalDetailAction} from './reducer';
+import { hospitalListingAction ,hospitalDetailAction, currentPatientAction, addCategoryAction, categoryListingAction, currentOrderAction} from './reducer';
 import Config from 'Config';
 
 export const fetchHospitalListing = async () => {
@@ -62,3 +62,53 @@ export const addCab = async (data) => {
     handleError(err);
   }
 }
+
+export const addPatient = async (data)=>{
+  try{
+    store.dispatch(currentPatientAction.init());
+    store.dispatch(currentOrderAction.init());
+    const response = await NetworkServices.post(`${Config.SERVER_URL}/patient`,{...data});
+
+    const payload = {
+      patientId:response.data._id,
+      hospitalId:data.hospitalId,
+      userId:data.userId,
+      pickupLatitude:((response.data||{}).destinationLocation||{}).coordinates[1] || '',
+      pickupLongitude:((response.data||{}).destinationLocation||{}).coordinates[0] || '',
+      destinationLatitude:((response.data||{}).destinationLocation||{}).coordinates[1] || '',
+      destinationLongitude:((response.data||{}).destinationLocation||{}).coordinates[0] || '',
+      categoryId:data.categoryId
+  }
+    const createOrderResponse = await NetworkServices
+    .post(`${Config.SERVER_URL}/create-order`,{...payload});
+
+    store.dispatch(currentOrderAction.success(createOrderResponse.data));
+    store.dispatch(currentPatientAction.success(response.data));
+  } catch(err){
+    handleError(err);
+    store.dispatch(currentPatientAction.failed({ internalMessage: err.message, displayMessage: 'Error in addPatient' }));
+    store.dispatch(currentOrderAction.failed({ internalMessage: err.message, displayMessage: 'Error in addPatient' }));
+  }
+}
+
+export const addCategory = async (data)=>{
+  try{
+    store.dispatch(addCategoryAction.init());
+    const response = await NetworkServices.post(`${Config.SERVER_URL}/category`,{...data});
+    store.dispatch(addCategoryAction.success(response.data));
+  } catch(err){
+    handleError(err);
+    store.dispatch(addCategoryAction.failed({ internalMessage: err.message, displayMessage: 'Error in addCategory' }));
+  }
+}
+
+export const fetchCategory = async()=>{
+  try{
+    store.dispatch(categoryListingAction.init());
+    const response = await NetworkServices.get(`${Config.SERVER_URL}/category`);
+    store.dispatch(categoryListingAction.success(response.data));
+  } catch(err){
+    handleError(err);
+    store.dispatch(categoryListingAction.failed({ internalMessage: err.message, displayMessage: 'Error in fetchCategory' }));
+  }
+} 

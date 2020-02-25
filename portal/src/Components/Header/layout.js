@@ -15,7 +15,7 @@ const Layout = (props)=> {
       setDrawerOpen(!drawerOpen);
     }
     return (
-      <AppBar>
+      <AppBar position="static">
         <Toolbar>
           {Boolean(drawer) && (
              <Drawer open={drawerOpen}>

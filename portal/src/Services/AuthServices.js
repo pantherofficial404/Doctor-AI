@@ -6,6 +6,7 @@ const logger = LogServices.getInstance("AuthServices");
 const AUTH_LOCALSTORAGEKEY = "panther";
 
 class AuthService {
+  _auth;
   constructor() {
     const authString = localStorage.getItem(AUTH_LOCALSTORAGEKEY);
     if (authString) {
@@ -81,6 +82,7 @@ class AuthService {
     }
     return true;
   }
+
 }
 
 export default new AuthService();

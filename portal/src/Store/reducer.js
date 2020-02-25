@@ -16,6 +16,10 @@ const getDataAction = (name) => {
 
 export const hospitalListingAction = getDataAction('HOSPITAL_LISTING');
 export const hospitalDetailAction = getDataAction('HOSPITAL_DETAIL');
+export const currentPatientAction = getDataAction('CURRENT_PATIENT');
+export const addCategoryAction = getDataAction('ADD_CATEGORY');
+export const categoryListingAction = getDataAction('CATEGORY_LISTING');
+export const currentOrderAction = getDataAction('CURRENT_ORDER');
 
 const addDataAction = (action, key) => {
   return (reducerFactory) => {
@@ -79,10 +83,38 @@ const initialState = {
     error: null,
     data: null,
   },
+  currentPatient:{
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null,
+  },
+  currentCategory:{
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null,
+  },
+  categoryListing:{
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null, 
+  },
+  currentOrder:{
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null, 
+  }
 };
 const reducer = new ReducerFactory(initialState)
   .addCustom(addDataAction(hospitalListingAction, 'hospitals'))
   .addCustom(addDataAction(hospitalDetailAction, 'hospitalDetail'))
+  .addCustom(addDataAction(currentPatientAction, 'currentPatient'))
+  .addCustom(addDataAction(addCategoryAction,'currentCategory'))
+  .addCustom(addDataAction(categoryListingAction,'categoryListing'))
+  .addCustom(addDataAction(currentOrderAction,'currentOrder'))
   .toReducer();
 
 export default reducer;

@@ -8,3 +8,15 @@ export const selectHospital = (state) => {
 export const selectHospitalDetail = (state)=>{
   return selectState(state).hospitalDetail;
 }
+export const selectCurrentPatient = (state)=>{
+  return selectState(state).currentPatient;
+}
+export const selectCurrentCategory = (state)=>{
+  return selectState(state).currentCategory;
+}
+export const selectCategories = (state)=>{
+  return selectState(state).categoryListing;
+}
+export const currentOrder = (state)=>{
+  return selectState(state).currentOrder;
+}

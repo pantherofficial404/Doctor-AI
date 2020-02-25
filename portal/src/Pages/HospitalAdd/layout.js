@@ -28,6 +28,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import { InputComponent } from 'Components';
 import { handleError } from "Store/helper";
 import { addHospitalAction } from 'Store/action';
+import { useHistory } from "react-router-dom";
 
 const Layout = () => {
   const [coordinates, setCoordinates] = useState();
@@ -39,6 +40,7 @@ const Layout = () => {
   const [emailId, setEmailId] = useState();
   const [isValidForm, setValidForm] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -71,6 +73,7 @@ const Layout = () => {
     } finally {
       // Finally do this
       setSubmitting(false);
+      history.push('/hospital');
     }
   }
 
