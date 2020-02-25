@@ -18,6 +18,7 @@ import HospitalDetail from 'Pages/HospitalsDetail';
 import PatientDetail from 'Pages/PatientDetails';
 import Notification from 'Pages/Notification'
 import Order from 'Pages/Order'
+import OtpVerification from 'Pages/OTP VERIFICATION'
 
 import { AuthServices } from "Services";
 
@@ -56,6 +57,7 @@ class Root extends React.Component {
           <Route exact path="/patient" component={PatientDetail} />
           <Route exact path="/notification" component={Notification} />
           <Route exact path="/order" component={Order} />
+          <Route exact path="/otp" component={OtpVerification} />
           <Route component={NotFoundView} />
 
         </Switch>
