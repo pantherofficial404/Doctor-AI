@@ -64,7 +64,7 @@ const Layout = () => {
     setOpen(false)
   }
 
-  const handlePatientBooking = ()=>{
+  const handlePatientBooking = async ()=>{
     try{
       if(!patientName || !contactNumber || !age || !description){
         return setFormValid(false);
