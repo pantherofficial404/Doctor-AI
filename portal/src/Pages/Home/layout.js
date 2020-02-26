@@ -106,8 +106,8 @@ const Home = props => {
           </div>
         {/* <div> */}
           {/* {Boolean(state.isLoaded) && ( */}
-            {/* <Map
-            /> */}
+            <Map
+            />
           {/* )} */}
           {/* {Boolean(mapPermission !== "granted" && state.isLoaded) && (
             <div>

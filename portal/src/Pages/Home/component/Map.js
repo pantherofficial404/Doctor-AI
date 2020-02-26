@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef,useState } from "react";
 import Config from "Config";
 import axios from "axios";
 import { handleError } from "Store/helper";
@@ -7,56 +7,51 @@ import GoogleMapReact from 'google-map-react';
 
 const google = window.google;
 
-var features = [
-];
-
 const Map = props => {
   const mapRef = useRef(null);
+  const [mapPermission,setMapPermission] = useState(null);
+  const [ deseaseName,setDeseaseName ] = useState(null);
 
-  useEffect(() => {
-    // (async () => {
-    //   try{
-    //   const map = new google.maps.Map(mapRef.current, props.options);
-    //   const { lat, lng } = props.options.center;
-    //   const latLng = `${lat},${lng}`;
-    //   let url = `${Config.MAP_URL}&latlng=${encodeURIComponent(latLng)}`;
-    //   const response = await axios.get(url);
-    //   const infoWindow = new google.maps.InfoWindow();
-    //   infoWindow.setPosition(props.options.center);
-    //   infoWindow.setContent(
-    //     (response.data.results[0] || {}).formatted_address || "Unknown"
-    //   );
-    //   infoWindow.open(map);
-    //   for (var i = 0; i < features.length; i++) {
-    //     var marker = new google.maps.Marker({
-    //       position: features[i].position,
-    //       map: map,
-    //     });
-    //   }
-    // } catch(err){
-    //   handleError(err);
-    // }
-    // })();
-  }, []);
+  useEffect(()=>{
+    if(navigator.geolocation){
+      (async()=>{
+        const permission = await navigator.permissions.query({name:'geolocation'});
+        setMapPermission(permission.state);
+        permission.onchange = ()=>{
+          setMapPermission(permission.state);
+        }
+      })();
+    }
+  },[])
 
+  const handleSearch = ( )=> {
+
+    // TODO : Validate search should not empty
+
+    // TODO : Search Nearby Hospital
+
+
+  }
   return (
-    // <div
-    //   style={{ flex: 1, height: 500, width: "100%", margin: "10px auto" }}
-    //   ref={mapRef}
-    // />
-    <div style={{ height: '100vh', width: '100%' }}>
-
-    <GoogleMapReact
-    bootstrapURLKeys={{ key: 'AIzaSyC_W2QaRiFEj4HU-F_uyAlN2oUXKcBoPZw'}}
-  >
-    <div
-      lat={59.955413}
-      lng={30.337844}
-      text="My Marker"
-    />
-  </GoogleMapReact>
-  </div>
-
+    <div>
+      </div>
+        /* {state.isLoaded && (
+       
+          <button type="submit" onSubmit={handleSearch}>Search</button>
+        {Boolean(mapPermission==='granted' && state.isLoaded) && (
+          <Map
+            options={{
+              center: { lat: state.latitude, lng: state.logitude },
+              zoom: 13
+            }}
+          />
+        )}
+        {Boolean(mapPermission!=='granted' && state.isLoaded) && (
+          <div>
+            <p>Please enable Geolocation permission</p>
+          </div>
+        )}
+      </div> */
   );
 };
 export default Map;

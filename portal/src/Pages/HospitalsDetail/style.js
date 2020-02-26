@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
   },
   doctors: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
+    flexWrap:'wrap',
     [theme.breakpoints.only("xs")]: {
       display: "flex",
       flexDirection: "column"

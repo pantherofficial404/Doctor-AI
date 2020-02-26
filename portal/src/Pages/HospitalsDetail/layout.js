@@ -71,13 +71,14 @@ const Layout = () => {
       }
       // Api Calling Will be here
       await addPatient({patientName,contactNumber,age,diseaseDescription:description,userId:(AuthServices._auth||{})._id,hospitalId:match.params.hospitalId,categoryId:category});
+      history.push('/order');
     } catch(err){
       handleError(err);
     }finally{
       setPatientName(null);
       setAge(null)
       setContactNumber(null);
-      setDescription(null);
+      setDescritpition(null);
     }
   }
 
@@ -158,7 +159,7 @@ const Layout = () => {
                         </Typography>
                       <div className={classes.categorysection}>
                         {Boolean(hospital.category) && hospital.category.map((category => (
-                          <Typography variant="body1" style={{ display: 'flex', alignItems: 'center' }}>
+                          <Typography variant="body1" style={{ display: 'flex', alignItems: 'center',flexWrap:'wrap' }}>
                             <Check color="primary" fontSize="small" style={{ marginRight: 5 }} />
                             {category.title}
                           </Typography>
@@ -169,7 +170,7 @@ const Layout = () => {
                       </div>
                     </div>
                     <div className={classes.hospitaldoctor}>
-                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap'}}>
                       <Typography
                         variant="h5">
                         Doctors
@@ -199,7 +200,7 @@ const Layout = () => {
 
         {/* For Dialog Box */}
           <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title"  >
-            <div style={{ display: "flex", justifyContent: "space-between",alignItems:'center' }}>
+            <div style={{ display: "flex", justifyContent: "space-between",alignItems:'center',flexWrap:'wrap' }}>
               <DialogTitle id="form-dialog-title" >Patient Details</DialogTitle>
               <IconButton onClick={() => setOpen(false)}>
                 <CloseIcon />
@@ -235,7 +236,9 @@ const Layout = () => {
               </Grid>
               <InputComponent placeholder="Description" onChange={(e)=>setDescritpition(e.target.value)} value={description}/>
             </DialogContent>
-            <Button variant="contained" style={{margin:10}} color="primary" onClick={handlePatientBooking}>Book</Button>
+            <Button variant="contained" style={{margin:10}} color="primary" onClick={handlePatientBooking} >
+              Book
+            </Button>
           </Dialog>
       </Container>
     </div>

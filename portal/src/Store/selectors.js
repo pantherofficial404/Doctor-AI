@@ -20,3 +20,6 @@ export const selectCategories = (state)=>{
 export const currentOrder = (state)=>{
   return selectState(state).currentOrder;
 }
+export const selectOrderByType = (state)=>{
+  return selectState(state).userOrder;
+}

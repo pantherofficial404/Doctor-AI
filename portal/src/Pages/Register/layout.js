@@ -32,7 +32,7 @@ const Layout = props => {
       // Todo : Validate username and password should always have value
       await AuthServices.signup(username, password);
       setRegistering(false);
-      history.push('/hospital');
+      history.push('/login');
     } catch (err) {
       // Todo : Display Message to user
       console.log('err', err);
