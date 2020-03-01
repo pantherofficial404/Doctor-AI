@@ -215,8 +215,7 @@ const Layout = () => {
                           variant="contained"
                           color="secondary"
                           size="small"
-                          o
-                          nClick={() =>
+                          onClick={() =>
                             history.push(
                               `/add/doctor/${match.params.hospitalId}`
                             )
@@ -286,6 +285,7 @@ const Layout = () => {
                     placeholder="Age"
                     onChange={e => setAge(e.target.value)}
                     value={age}
+                    type="number"
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
@@ -293,6 +293,7 @@ const Layout = () => {
                     placeholder="Contact Number"
                     onChange={e => setContactNumber(e.target.value)}
                     value={contactNumber}
+                    type="number"
                   />
                 </Grid>
                 <Grid item xs={12} lg={12}>
@@ -323,7 +324,7 @@ const Layout = () => {
             style={{ margin: 10 }}
             color="primary"
             onClick={handlePatientBooking}>
-            Book
+            Send
           </Button>
         </Dialog>
       </Container>
