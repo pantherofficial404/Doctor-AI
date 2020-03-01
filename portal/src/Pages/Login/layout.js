@@ -172,13 +172,19 @@ const Layout = props => {
                         onClick={handleLogin}
                         className={classes.SigninButton}
                         disabled={!formState.isValid}>
-                        {formState.isValid ? "Login..." : "Login"}
+                        {formState.isValid ? "Login" : "Login"}
                       </Button>
                     </div>
                     <div className={classes.links}>
-                      <Link className={classes.link}>Forget Password !!</Link>
-                      <Link className={classes.link}>
-                        New Here ?? Register Here
+                      <Link
+                        className={classes.link}
+                        style={{ marginBottom: 3 }}>
+                        Forget Password !!
+                      </Link>
+                      <Link
+                        className={classes.link}
+                        onClick={() => history.push("/register")}>
+                        > New Here ?? Register Here
                       </Link>
                     </div>
                   </div>

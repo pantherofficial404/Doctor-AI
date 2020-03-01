@@ -181,7 +181,9 @@ const Layout = props => {
                       </Button>
                     </div>
                     <div className={classes.links}>
-                      <Link className={classes.link}>
+                      <Link
+                        className={classes.link}
+                        onClick={() => history.push("/login")}>
                         Already Have An Account..
                       </Link>
                     </div>

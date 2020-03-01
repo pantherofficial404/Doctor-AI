@@ -211,17 +211,20 @@ const Layout = () => {
                           alignItems: "center"
                         }}>
                         <Typography variant="h5">Doctors</Typography>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          onClick={() =>
-                            history.push(
-                              `/add/doctor/${match.params.hospitalId}`
-                            )
-                          }>
-                          Add Doctor
-                        </Button>
+                        {AuthServices.isAuthenticated() &&
+                          AuthServices.isAdmin() && (
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              size="small"
+                              onClick={() =>
+                                history.push(
+                                  `/add/doctor/${match.params.hospitalId}`
+                                )
+                              }>
+                              Add Doctor
+                            </Button>
+                          )}
                       </div>
                       <div className={classes.doctors}>
                         {Boolean(hospital.doctors.length) &&

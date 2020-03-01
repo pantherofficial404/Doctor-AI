@@ -40,19 +40,38 @@ ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 //   // )
 // }
 
+const check = () => <h1>You are not Have a Right To Check this</h1>;
+
 class Root extends React.Component {
+  componentDidMount() {
+    console.log(AuthServices.isAdmin());
+  }
   render() {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={HospitalListing} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/" component={HospitalListing} />
           <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
 
           <Route exact path="/hospital" component={HospitalListing} />
-          <Route exact path="/add/hospital" component={HospitalAdd} />
 
-          <Route exact path="/cab" component={Cab} />
+          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
+            <Route exact path="/add/hospital" component={HospitalAdd} />
+          )}
+          {/* adding cab */}
+
+          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
+            <Route exact path="/cab" component={Cab} />
+          )}
+
+          {/* category */}
+
+          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
+            <Route exact path="/category" component={CategoryAddPage} />
+          )}
+
           <Route
             exact
             path="/hospital/:hospitalId"
@@ -63,7 +82,6 @@ class Root extends React.Component {
           <Route exact path="/notification" component={Notification} />
           <Route exact path="/order" component={Order} />
           <Route exact path="/otp" component={OtpVerification} />
-          <Route exact path="/category" component={CategoryAddPage} />
           <Route exact path="/category/list" component={CategoryListing} />
           <Route component={NotFoundView} />
         </Switch>
