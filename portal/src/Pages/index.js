@@ -5,6 +5,7 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
+import Config from "Config";
 
 import Home from "Pages/Home";
 import Login from "Pages/Login";
@@ -21,8 +22,9 @@ import Order from "Pages/Order";
 import OtpVerification from "Pages/OTP VERIFICATION";
 import CategoryAddPage from "Pages/Category";
 import CategoryListing from "Pages/CategoryListing";
-
+import ExpressFirebase from "express-firebase";
 import { AuthServices } from "Services";
+ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
 // const PrivateRoute = ({ component, ...rest }) => {
 //   // const render = (props: any) => {
@@ -43,7 +45,7 @@ class Root extends React.Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={HospitalListing} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
 

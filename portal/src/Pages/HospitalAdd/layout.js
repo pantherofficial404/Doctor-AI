@@ -29,6 +29,7 @@ import { InputComponent } from 'Components';
 import { handleError } from "Store/helper";
 import { addHospitalAction } from 'Store/action';
 import { useHistory } from "react-router-dom";
+import ExpressFirebase from 'express-firebase';
 
 const Layout = () => {
   const [coordinates, setCoordinates] = useState();
@@ -41,6 +42,7 @@ const Layout = () => {
   const [isValidForm, setValidForm] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const history = useHistory();
+  const [file,setFile] = useState(null);
 
   const classes = useStyles();
 
@@ -55,6 +57,13 @@ const Layout = () => {
     }
   }
 
+  const handleFileUpload =(e)=>{
+    const files = e.target.files;
+    if(files && files.length){
+      setFile({image:files[0],name:files[0].name});
+    }
+  }
+
   const addHospital = async () => {
     try {
       setSubmitting(true);
@@ -64,8 +73,15 @@ const Layout = () => {
         return setValidForm(false);
       }
 
+      // Api Calling Will Be Here
+      const imageUrl = await ExpressFirebase.uploadFile(file.name,file.image);
+      if(!imageUrl){
+        return setSubmitting(false);
+      }
+
       // Api Calling Will be here
-      await addHospitalAction({ address, hospitalName, description, websiteUrl, mobileNo, emailId, latitude: coordinates.lat, longitude: coordinates.lng })
+      await addHospitalAction({ address, hospitalName, description, websiteUrl, mobileNo, emailId, latitude: coordinates.lat, longitude: coordinates.lng ,hospitalImage:imageUrl});
+      history.push('/hospital');
 
     } catch (err) {
       // Handling Error
@@ -73,7 +89,6 @@ const Layout = () => {
     } finally {
       // Finally do this
       setSubmitting(false);
-      history.push('/hospital');
     }
   }
 
@@ -141,12 +156,13 @@ const Layout = () => {
                       id="raised-button-file"
                       multiple
                       type="file"
+                      onChange={handleFileUpload}
                     />
                     <label htmlFor="raised-button-file">
                       <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingBottom: 8, borderBottom: '1px solid rgba(0,0,0,0.5)' }}>
                         <AddAPhotoIcon color="primary" />
                         <Typography variant="body2" color="textSecondary" style={{ padding: '0 10px' }}>
-                          Choose Hospital Image
+                          {(file||{}).name ||'Choose Hospital Image'}
                         </Typography>
                       </div>
                     </label>

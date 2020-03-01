@@ -265,7 +265,8 @@ const Layout = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center"
+              alignItems: "center",
+              flexWrap: "wrap"
             }}>
             <DialogTitle id="form-dialog-title">Patient Details</DialogTitle>
             <IconButton onClick={() => setOpen(false)}>

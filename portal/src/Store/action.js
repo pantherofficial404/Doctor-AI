@@ -9,7 +9,8 @@ import {
   currentPatientAction,
   addCategoryAction,
   categoryListingAction,
-  currentOrderAction
+  currentOrderAction,
+  userOrderAction
 } from "./reducer";
 import Config from "Config";
 
@@ -155,6 +156,36 @@ export const fetchCategory = async () => {
     handleError(err);
     store.dispatch(
       categoryListingAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in fetchCategory"
+      })
+    );
+  }
+};
+
+export const fetchOrderByType = async userId => {
+  try {
+    store.dispatch(userOrderAction.init());
+
+    const response = await NetworkServices.get(
+      `${Config.SERVER_URL}/get-order-by-type?id=${userId}&type=USER`
+    );
+
+    response.data.forEach((element, index) => {
+      response.data[index].hospitalName = element.hospitalId.hospitalName;
+      response.data[index].hospitalAddress = element.hospitalId.address;
+      response.data[index].patientName = element.patientId.patientName;
+      response.data[index].orderStatus =
+        element.orderStatus === 0 ? "Active" : "Finished";
+      response.data[index].verificaionCode = element.patientId.verificaionCode;
+    });
+
+    // console.log('data',response.data);
+    store.dispatch(userOrderAction.success(response.data));
+  } catch (err) {
+    handleError(err);
+    store.dispatch(
+      userOrderAction.failed({
         internalMessage: err.message,
         displayMessage: "Error in fetchCategory"
       })

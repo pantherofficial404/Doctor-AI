@@ -85,7 +85,6 @@ const completeOrder = async (req, res, next) => {
 const getOrderByType = async (req, res, next) => {
   try {
     const { id, type } = req.query;
-
     let data = [];
 
     switch (type) {
@@ -93,7 +92,7 @@ const getOrderByType = async (req, res, next) => {
         data = await Order.find({ cabId: id }).sort({ updatedAt: -1 });
         break;
       case "USER":
-        data = await Order.find({ userId: id }).sort({ updatedAt: -1 });
+        data = await Order.find({ userId: id }).populate('patientId hospitalId').sort({ updatedAt: -1 });
         break;
       case "HOSPITAL":
         data = await Order.find({ hospitalId: id }).sort({ updatedAt: -1 });

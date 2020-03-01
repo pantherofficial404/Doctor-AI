@@ -29,6 +29,7 @@ import { selectHospitalDetail, selectCategories } from "Store/selectors";
 import { useHistory } from "react-router-dom";
 import { handleError } from "Store/helper";
 import { addDoctor, fetchCategory } from "Store/action";
+import ExpressFirebase from 'express-firebase';
 
 const Layout = () => {
   const selectedHospital = useSelector(selectHospitalDetail);
@@ -41,17 +42,24 @@ const Layout = () => {
   const [category,setCategory] = useState();
   const [isValidForm,setValidForm] = useState(false);
   const [isSubmitting,setSubmitting ]= useState(false);
+  const [file,setFile] = useState(null);
 
   useEffect(()=>{
-    // if(!selectedHospital.data){
-    //   return history.goBack();
-    // }
+    if(!selectedHospital.data){
+      return history.goBack();
+    }
   },[selectedHospital]);
 
   useEffect(()=>{
     fetchCategory();
   },[]);
   
+  const handleFileUpload =(e)=>{
+    const files = e.target.files;
+    if(files && files.length){
+      setFile({image:files[0],name:files[0].name});
+    }
+  }
 
   const handleAddDoctor = async ()=>{
     try{
@@ -61,8 +69,13 @@ const Layout = () => {
       return setSubmitting(false);
     }
 
+    const imageUrl = await ExpressFirebase.uploadFile(file.name,file.image);
+    if(!imageUrl){
+      return setSubmitting(false);
+    }
+
     // Api Calling Will Be Here
-    await addDoctor({doctorName,description,degree,category,latitude:selectedHospital.data.location.coordinates[1],longitude:selectedHospital.data.location.coordinates[0],hospitalId:selectedHospital.data._id});
+    await addDoctor({doctorName,description,degree,category,latitude:selectedHospital.data.location.coordinates[1],longitude:selectedHospital.data.location.coordinates[0],hospitalId:selectedHospital.data._id,thumbnailImage:imageUrl});
 
     // Navigate to Back Screen After Adding
     history.goBack();
@@ -147,12 +160,13 @@ const Layout = () => {
                     id="raised-button-file"
                     multiple
                     type="file"
+                    onChange={handleFileUpload}
                   />
                   <label htmlFor="raised-button-file">
                     <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingBottom: 8, marginTop:8,borderBottom: '1px solid rgba(0,0,0,0.5)' }}>
                       <AddAPhotoIcon color="primary" />
                       <Typography variant="body1" color="textSecondary" style={{ padding: '0 10px' }}>
-                        Upload doctor image
+                      {(file||{}).name ||'Upload doctor image'}
                       </Typography>
                     </div>
                   </label>
@@ -164,7 +178,7 @@ const Layout = () => {
                     fullWidth
                     disabled={categoryListing.loading}
                     >
-                    {categoryListing.loading && <CircularProgress color="inherit" size={20} style={{marginRight:10}}/>} Submit
+                    {categoryListing.loading && <CircularProgress color="inherit" size={20} style={{marginRight:10}}/>} {isSubmitting?'Submitting..':'Submit'}
                   </Button>
                 </form>
               </Grid>
