@@ -14,16 +14,15 @@ import HospitalAdd from "Pages/HospitalAdd";
 import Cab from "Pages/Cab";
 import DoctorAdd from "./DoctorAdd";
 import NotFoundView from "./NotFoundView";
-import HospitalDetail from 'Pages/HospitalsDetail';
-import PatientDetail from 'Pages/PatientDetails';
-import Notification from 'Pages/Notification'
-import Order from 'Pages/Order'
-import OtpVerification from 'Pages/OTP VERIFICATION';
-import CategoryAddPage from 'Pages/Category';
-import CategoryListing from 'Pages/CategoryListing';
+import HospitalDetail from "Pages/HospitalsDetail";
+import PatientDetail from "Pages/PatientDetails";
+import Notification from "Pages/Notification";
+import Order from "Pages/Order";
+import OtpVerification from "Pages/OTP VERIFICATION";
+import CategoryAddPage from "Pages/Category";
+import CategoryListing from "Pages/CategoryListing";
 
 import { AuthServices } from "Services";
-
 
 // const PrivateRoute = ({ component, ...rest }) => {
 //   // const render = (props: any) => {
@@ -47,8 +46,10 @@ class Root extends React.Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
+
           <Route exact path="/hospital" component={HospitalListing} />
           <Route exact path="/add/hospital" component={HospitalAdd} />
+
           <Route exact path="/cab" component={Cab} />
           <Route
             exact
@@ -60,10 +61,9 @@ class Root extends React.Component {
           <Route exact path="/notification" component={Notification} />
           <Route exact path="/order" component={Order} />
           <Route exact path="/otp" component={OtpVerification} />
-          <Route exact path="/category" component={CategoryAddPage}/>
-          <Route exact path="/category/list" component={CategoryListing}/>
+          <Route exact path="/category" component={CategoryAddPage} />
+          <Route exact path="/category/list" component={CategoryListing} />
           <Route component={NotFoundView} />
-
         </Switch>
       </Router>
     );

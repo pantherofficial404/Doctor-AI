@@ -3,8 +3,15 @@ import { store } from "./index";
 import { handleError } from "./helper";
 import { NetworkServices } from "Services";
 import { AuthServices } from "Services";
-import { hospitalListingAction ,hospitalDetailAction, currentPatientAction, addCategoryAction, categoryListingAction, currentOrderAction} from './reducer';
-import Config from 'Config';
+import {
+  hospitalListingAction,
+  hospitalDetailAction,
+  currentPatientAction,
+  addCategoryAction,
+  categoryListingAction,
+  currentOrderAction
+} from "./reducer";
+import Config from "Config";
 
 export const fetchHospitalListing = async () => {
   try {
@@ -18,97 +25,139 @@ export const fetchHospitalListing = async () => {
     store.dispatch(hospitalListingAction.success(response.data));
   } catch (err) {
     handleError(err);
-    store.dispatch(hospitalListingAction.failed({ internalMessage: err.message, displayMessage: 'Error in fetchHospitalListing' }));
+    store.dispatch(
+      hospitalListingAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in fetchHospitalListing"
+      })
+    );
   }
-}
+};
 
-export const addHospitalAction = async (data) => {
+export const addHospitalAction = async data => {
   try {
-    // Adding hospital 
+    // Adding hospital
     await NetworkServices.post(`${Config.SERVER_URL}/hospital`, { ...data });
   } catch (err) {
     // Handling error
     handleError(err);
   }
-}
+};
 
-export const fetchHospitalDetail = async(hospitalId)=>{
-  try{
+export const fetchHospitalDetail = async hospitalId => {
+  try {
     store.dispatch(hospitalDetailAction.init());
 
     // Api Calling
 
-    const response = await NetworkServices.get(`${Config.SERVER_URL}/hospital/${hospitalId}`);
+    const response = await NetworkServices.get(
+      `${Config.SERVER_URL}/hospital/${hospitalId}`
+    );
     // Save Data To Redux
-    store.dispatch(hospitalDetailAction.success(response.data||{}));
-  } catch(err){
+    store.dispatch(hospitalDetailAction.success(response.data || {}));
+  } catch (err) {
     handleError(err);
-    hospitalDetailAction.failed({ internalMessage: err.message, displayMessage: 'Error in fetchHospitalListing' })
+    hospitalDetailAction.failed({
+      internalMessage: err.message,
+      displayMessage: "Error in fetchHospitalListing"
+    });
   }
-}
+};
 
-export const addDoctor = async (data) => {
-  try{
-    await NetworkServices.post(`${Config.SERVER_URL}/doctor`,{...data});
-  } catch(err){
-    handleError(err);
-  }
-}
-
-export const addCab = async (data) => {
-  try{
-    await NetworkServices.post(`${Config.SERVER_URL}/cab`,{...data});
-  } catch(err){
+export const addDoctor = async data => {
+  try {
+    await NetworkServices.post(`${Config.SERVER_URL}/doctor`, { ...data });
+  } catch (err) {
     handleError(err);
   }
-}
+};
 
-export const addPatient = async (data)=>{
-  try{
+export const addCab = async data => {
+  try {
+    await NetworkServices.post(`${Config.SERVER_URL}/cab`, { ...data });
+  } catch (err) {
+    handleError(err);
+  }
+};
+
+export const addPatient = async data => {
+  try {
     store.dispatch(currentPatientAction.init());
     store.dispatch(currentOrderAction.init());
-    const response = await NetworkServices.post(`${Config.SERVER_URL}/patient`,{...data});
+    const response = await NetworkServices.post(
+      `${Config.SERVER_URL}/patient`,
+      { ...data }
+    );
 
     const payload = {
-      patientId:response.data._id,
-      hospitalId:data.hospitalId,
-      userId:data.userId,
-      pickupLatitude:((response.data||{}).destinationLocation||{}).coordinates[1] || '',
-      pickupLongitude:((response.data||{}).destinationLocation||{}).coordinates[0] || '',
-      destinationLatitude:((response.data||{}).destinationLocation||{}).coordinates[1] || '',
-      destinationLongitude:((response.data||{}).destinationLocation||{}).coordinates[0] || '',
-      categoryId:data.categoryId
-  }
-    const createOrderResponse = await NetworkServices
-    .post(`${Config.SERVER_URL}/create-order`,{...payload});
+      patientId: response.data._id,
+      hospitalId: data.hospitalId,
+      userId: data.userId,
+      pickupLatitude:
+        ((response.data || {}).destinationLocation || {}).coordinates[1] || "",
+      pickupLongitude:
+        ((response.data || {}).destinationLocation || {}).coordinates[0] || "",
+      destinationLatitude:
+        ((response.data || {}).destinationLocation || {}).coordinates[1] || "",
+      destinationLongitude:
+        ((response.data || {}).destinationLocation || {}).coordinates[0] || "",
+      categoryId: data.categoryId
+    };
+    const createOrderResponse = await NetworkServices.post(
+      `${Config.SERVER_URL}/create-order`,
+      { ...payload }
+    );
 
     store.dispatch(currentOrderAction.success(createOrderResponse.data));
     store.dispatch(currentPatientAction.success(response.data));
-  } catch(err){
+  } catch (err) {
     handleError(err);
-    store.dispatch(currentPatientAction.failed({ internalMessage: err.message, displayMessage: 'Error in addPatient' }));
-    store.dispatch(currentOrderAction.failed({ internalMessage: err.message, displayMessage: 'Error in addPatient' }));
+    store.dispatch(
+      currentPatientAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in addPatient"
+      })
+    );
+    store.dispatch(
+      currentOrderAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in addPatient"
+      })
+    );
   }
-}
+};
 
-export const addCategory = async (data)=>{
-  try{
+export const addCategory = async data => {
+  try {
     store.dispatch(addCategoryAction.init());
-    const response = await NetworkServices.post(`${Config.SERVER_URL}/category`,{...data});
+    const response = await NetworkServices.post(
+      `${Config.SERVER_URL}/category`,
+      { ...data }
+    );
     store.dispatch(addCategoryAction.success(response.data));
-  } catch(err){
+  } catch (err) {
     handleError(err);
-    store.dispatch(addCategoryAction.failed({ internalMessage: err.message, displayMessage: 'Error in addCategory' }));
+    store.dispatch(
+      addCategoryAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in addCategory"
+      })
+    );
   }
-}
+};
 
-export const fetchCategory = async()=>{
-  try{
+export const fetchCategory = async () => {
+  try {
     store.dispatch(categoryListingAction.init());
     const response = await NetworkServices.get(`${Config.SERVER_URL}/category`);
     store.dispatch(categoryListingAction.success(response.data));
-  } catch(err){
+  } catch (err) {
     handleError(err);
-    store.dispatch(categoryListingAction.failed({ internalMessage: err.message, displayMessage: 'Error in fetchCategory' }));
+    store.dispatch(
+      categoryListingAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error in fetchCategory"
+      })
+    );
   }
-} 
+};

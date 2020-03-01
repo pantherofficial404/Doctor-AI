@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import useStyles from "./style";
 import { Header } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
+import validate from "validate.js";
+
 import {
   InputAdornment,
   TextField,
@@ -10,7 +12,8 @@ import {
   Link,
   Typography
 } from "@material-ui/core";
-import EmailIcon from "@material-ui/icons/Email";
+// import EmailIcon from "@material-ui/icons/Email";
+import Snackbar from "Components/Snakbar";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 //For Data Retriving from the redux
@@ -19,33 +22,90 @@ import { SingUp } from "Store/action";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
 
+const schema = {
+  username: {
+    presence: { allowEmpty: false, message: "is required" },
+    email: true,
+    length: {
+      maximum: 64
+    }
+  },
+  password: {
+    presence: { allowEmpty: false, message: "is required" },
+    length: {
+      maximum: 128
+    }
+  }
+};
+
 const Layout = props => {
   const classes = useStyles();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isRegistering, setRegistering] = useState(false);
   const history = useHistory();
 
+  const [formState, setFormState] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
+  });
+  const [state, setState] = useState({
+    isOpen: false,
+    variant: "error",
+    message: ""
+  });
+
+  useEffect(() => {
+    const errors = validate(formState.values, schema);
+    setFormState(formState => ({
+      ...formState,
+      isValid: errors ? false : true,
+      errors: errors || {}
+    }));
+  }, [formState.values]);
+
+  const handleChange = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+
   const handleSubmit = async () => {
+    const { username, password } = formState.values;
     try {
-      setRegistering(true);
-      // Todo : Validate username and password should always have value
       await AuthServices.signup(username, password);
-      setRegistering(false);
-      history.push('/hospital');
+      history.push("/hospital");
     } catch (err) {
-      // Todo : Display Message to user
-      console.log('err', err);
+      setState({
+        isOpen: true,
+        message: "User is Already taken"
+      });
+      console.log("err", err);
     } finally {
-      setRegistering(false);
-      setUsername('');
-      setPassword('');
     }
   };
+
+  const hasError = field =>
+    formState.touched[field] && formState.errors[field] ? true : false;
 
   return (
     <div>
       <Header title="Register" />
+      <Snackbar
+        errorMessage={state.message}
+        isOpen={state.isOpen}
+        variant={state.variant}
+        handleClose={() => setState({ isOpen: false })}
+      />
       <div>
         <Container className={classes.Container} maxWidth="md">
           <div className={classes.SingUp}>
@@ -57,14 +117,23 @@ const Layout = props => {
                       Register
                     </Typography>
                     <TextField
+                      autoFocus
+                      error={hasError("username")}
+                      helperText={
+                        hasError("username")
+                          ? formState.errors.username[0]
+                          : null
+                      }
                       className={classes.TextField}
                       id="input-with-icon-AcccountCircle"
                       fullWidth
+                      name="username"
+                      onChange={handleChange}
                       size="medium"
-                      placeholder="Name"
-                      type="text"
-                      value={username}
-                      onChange={e => setUsername(e.target.value)}
+                      placeholder="Username Or Email"
+                      type="email"
+                      required
+                      value={formState.values.username || ""}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -74,18 +143,29 @@ const Layout = props => {
                       }}
                     />
                     <TextField
+                      error={hasError("password")}
                       className={classes.TextField}
-                      id="input-with-icon-AcccountCircle"
+                      id="input-with-icon-Lock"
+                      placeholder="Password"
+                      name="password"
                       fullWidth
-                      size="medium"
-                      placeholder="password"
-                      type="email"
-                      value={password}
-                      onChange={e => setPassword(e.target.value)}
+                      helperText={
+                        hasError("password")
+                          ? formState.errors.password[0]
+                          : null
+                      }
+                      type="password"
+                      onChange={handleChange}
+                      type="password"
+                      value={formState.values.password || ""}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <EmailIcon style={{ color: "#222222" }} />
+                            <LockIcon
+                              style={{
+                                color: "#222222"
+                              }}
+                            />
                           </InputAdornment>
                         )
                       }}
@@ -96,8 +176,7 @@ const Layout = props => {
                         onClick={handleSubmit}
                         color="primary"
                         className={classes.SignUpButton}
-                        disabled={isRegistering}
-                      >
+                        disabled={!formState.isValid}>
                         Register
                       </Button>
                     </div>

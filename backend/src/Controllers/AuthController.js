@@ -23,7 +23,10 @@ const login = async (req, res, next) => {
     return;
   }
 
-  const user = await User.findOne({ username, password }, { username: 1, isAdmin: 1 });
+  const user = await User.findOne(
+    { username, password },
+    { username: 1, isAdmin: 1 }
+  );
   if (!user) {
     res.status(401);
     res.json({
@@ -39,7 +42,7 @@ const login = async (req, res, next) => {
   const authInfo = {
     expiredOn,
     username,
-    _id:user._id,
+    _id: user._id
   };
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
   res.status(200);
@@ -50,7 +53,7 @@ const login = async (req, res, next) => {
       token,
       username,
       isAdmin: user.isAdmin,
-      _id:user._id,
+      _id: user._id
     },
     success: true
   });
@@ -93,9 +96,9 @@ const signup = async (req, res, next) => {
   const expiredOn = Date.now() + 1000 * 60 * 60;
   const authInfo = {
     expiredOn,
-    username,
-    _id:user._id,
+    username
   };
+
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
   await new User({
     username,
@@ -107,8 +110,7 @@ const signup = async (req, res, next) => {
     data: {
       expiredOn,
       token,
-      username,
-      _id:user._id,
+      username
     },
     success: true
   });

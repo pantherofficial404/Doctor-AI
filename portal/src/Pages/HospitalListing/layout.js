@@ -18,9 +18,9 @@ const Layout = props => {
     fetchHospitalListing();
   }, []);
 
-  const navigateHospitalDetail = (element)=>{
+  const navigateHospitalDetail = element => {
     history.push(`/hospital/${element._id}`);
-  }
+  };
   return (
     <div>
       <Header title="Hospital" />
@@ -29,8 +29,7 @@ const Layout = props => {
           variant="contained"
           color="primary"
           className={classes.button}
-          onClick={() => history.push('/add/hospital')}
-        >
+          onClick={() => history.push("/add/hospital")}>
           ADD HOSPITAL
         </Button>
       </div>
@@ -39,7 +38,7 @@ const Layout = props => {
         keys={{
           hospitalName: "Hospital Name",
           mobileNo: "Mobile Number",
-          address: "Address",
+          address: "Address"
         }}
         onClick={navigateHospitalDetail}
       />

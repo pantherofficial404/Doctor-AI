@@ -1,6 +1,6 @@
-const { Order, Cab,Doctor } = require("Models");
+const { Order, Cab, Doctor } = require("Models");
 const { handleError } = require("Helper");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const createOrder = async (req, res, next) => {
   try {
@@ -29,7 +29,10 @@ const createOrder = async (req, res, next) => {
       destinationLongitude
     );
 
-    const doctor = await Doctor.findOne({hospitalId:mongoose.Types.ObjectId(hospitalId),category:mongoose.Types.ObjectId(categoryId)});
+    const doctor = await Doctor.findOne({
+      hospitalId: mongoose.Types.ObjectId(hospitalId),
+      category: mongoose.Types.ObjectId(categoryId)
+    });
     // Creating Order
     const order = new Order({
       patientId,
@@ -37,7 +40,7 @@ const createOrder = async (req, res, next) => {
       userId,
       pickupLocation,
       destinationLocation,
-      doctorId:doctor._id,
+      doctorId: doctor._id,
       orderStatus: 0 // 0 Means Order Created and Yet no cab has booked this
     });
 
@@ -47,7 +50,7 @@ const createOrder = async (req, res, next) => {
     res.status(200);
     return res.json({
       success: true,
-      data: order,
+      data: order
     });
   } catch (err) {
     handleError(err);

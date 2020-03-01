@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useStyles from "./style";
 import { Header } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
+import validate from "validate.js";
 import {
   Typography,
   TextField,
@@ -10,41 +11,96 @@ import {
   Button,
   Link
 } from "@material-ui/core";
+import Snackbar from "Components/Snakbar";
 
 import PersonIcon from "@material-ui/icons/Person";
-// import { useSelector } from "react-redux";
-// import { fetchLogin } from "Store/action";
-// import { selectLoginData } from "Store/selectors";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
 
+const schema = {
+  username: {
+    presence: { allowEmpty: false, message: "is required" },
+    email: true,
+    length: {
+      maximum: 64
+    }
+  },
+  password: {
+    presence: { allowEmpty: false, message: "is required" },
+    length: {
+      maximum: 128
+    }
+  }
+};
+
 const Layout = props => {
   const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLogin, setLogin] = useState(false);
   const history = useHistory();
+  const [formState, setFormState] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
+  });
+  const [state, setState] = useState({
+    isOpen: false,
+    variant: "error",
+    message: ""
+  });
+
+  useEffect(() => {
+    const errors = validate(formState.values, schema);
+    setFormState(formState => ({
+      ...formState,
+      isValid: errors ? false : true,
+      errors: errors || {}
+    }));
+  }, [formState.values]);
+
+  const handleChange = event => {
+    event.persist();
+
+    setFormState(formState => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.value
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
 
   const handleLogin = async () => {
+    const { username, password } = formState.values;
     try {
-      setLogin(true);
-      // Todo : Validate username and password should always has value
       await AuthServices.login(username, password);
-      setLogin(false);
       history.push("/hospital");
     } catch (err) {
-      // Todo : Display Error message to User
+      setState({
+        isOpen: true,
+        message: "User is not found"
+      });
+      formState.values = "";
       console.log("err", err);
     } finally {
-      setUsername("");
-      setPassword("");
-      setLogin(false);
     }
   };
+
+  const hasError = field =>
+    formState.touched[field] && formState.errors[field] ? true : false;
 
   return (
     <div className={classes.loginpage}>
       <Header title="Login" />
+      <Snackbar
+        errorMessage={state.message}
+        isOpen={state.isOpen}
+        variant={state.variant}
+        handleClose={() => setState({ isOpen: false })}
+      />
       <div>
         <Container className={classes.Container} maxWidth="md">
           <div className={classes.SingIn}>
@@ -56,13 +112,23 @@ const Layout = props => {
                       Login
                     </Typography>
                     <TextField
+                      autoFocus
+                      error={hasError("username")}
+                      helperText={
+                        hasError("username")
+                          ? formState.errors.username[0]
+                          : null
+                      }
                       className={classes.TextField}
                       id="input-with-icon-AcccountCircle"
                       fullWidth
+                      name="username"
+                      onChange={handleChange}
                       size="medium"
                       placeholder="Username Or Email"
-                      type="Email"
-                      onChange={e => setUsername(e.target.value)}
+                      type="email"
+                      required
+                      value={formState.values.username || ""}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -72,12 +138,21 @@ const Layout = props => {
                       }}
                     />
                     <TextField
+                      error={hasError("password")}
                       className={classes.TextField}
                       id="input-with-icon-Lock"
                       placeholder="Password"
+                      name="password"
                       fullWidth
+                      helperText={
+                        hasError("password")
+                          ? formState.errors.password[0]
+                          : null
+                      }
                       type="password"
-                      onChange={e => setPassword(e.target.value)}
+                      onChange={handleChange}
+                      type="password"
+                      value={formState.values.password || ""}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -96,8 +171,8 @@ const Layout = props => {
                         color="primary"
                         onClick={handleLogin}
                         className={classes.SigninButton}
-                        disabled={isLogin}>
-                        {isLogin ? "Login..." : "Login"}
+                        disabled={!formState.isValid}>
+                        {formState.isValid ? "Login..." : "Login"}
                       </Button>
                     </div>
                     <div className={classes.links}>
