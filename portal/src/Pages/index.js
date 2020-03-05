@@ -10,6 +10,7 @@ import Config from "Config";
 import Home from "Pages/Home";
 import Login from "Pages/Login";
 import Register from "Pages/Register";
+import Forgotpassword from "Pages/ForgotPassword.js";
 import HospitalListing from "Pages/HospitalListing";
 import HospitalAdd from "Pages/HospitalAdd";
 import Cab from "Pages/Cab";
@@ -24,6 +25,7 @@ import CategoryAddPage from "Pages/Category";
 import CategoryListing from "Pages/CategoryListing";
 import ExpressFirebase from "express-firebase";
 import { AuthServices } from "Services";
+import Resetpassword from "Pages/ResetPassword";
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
 // const PrivateRoute = ({ component, ...rest }) => {
@@ -43,9 +45,6 @@ ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 const check = () => <h1>You are not Have a Right To Check this</h1>;
 
 class Root extends React.Component {
-  componentDidMount() {
-    console.log(AuthServices.isAdmin());
-  }
   render() {
     return (
       <Router>
@@ -56,6 +55,8 @@ class Root extends React.Component {
           <Route exact path="/login" component={Login} />
 
           <Route exact path="/hospital" component={HospitalListing} />
+          <Route exact path="/forgotpassword" component={Forgotpassword} />
+          <Route exact path="/reset/:tokenid" component={Resetpassword} />
 
           {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
             <Route exact path="/add/hospital" component={HospitalAdd} />

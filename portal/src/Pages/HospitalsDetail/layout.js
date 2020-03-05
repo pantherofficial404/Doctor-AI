@@ -22,18 +22,24 @@ import {
   MenuItem
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-
+import axios from "axios";
 import Call from "@material-ui/icons/Call";
 import Address from "@material-ui/icons/LocationCity";
 import Web from "@material-ui/icons/VpnLock";
 import Check from "@material-ui/icons/CheckCircle";
 import { useRouteMatch, useHistory } from "react-router-dom";
-import { fetchHospitalDetail, addPatient, fetchCategory } from "Store/action";
-import { selectHospitalDetail, selectCategories } from "Store/selectors";
+import {
+  fetchHospitalDetail,
+  addPatient,
+  fetchCategory,
+  sendMail
+} from "Store/action";
+import { selectHospitalDetail, selectCategories, mail } from "Store/selectors";
 import { useSelector } from "react-redux";
 import { InputComponent } from "Components";
 import { handleError } from "Store/helper";
 import { AuthServices } from "Services";
+import config from "Config";
 
 const Layout = () => {
   const classes = useStyles();
@@ -41,12 +47,17 @@ const Layout = () => {
   const history = useHistory();
   const hospitalDetail = useSelector(selectHospitalDetail);
   const categoryListing = useSelector(selectCategories);
+  const MailDetails = useSelector(mail);
   const [patientName, setPatientName] = useState();
   const [age, setAge] = useState();
   const [contactNumber, setContactNumber] = useState();
   const [description, setDescritpition] = useState();
   const [isFormValid, setFormValid] = useState(true);
   const [category, setCategory] = useState(1);
+  const [message, setMessage] = useState({
+    msg: "",
+    send: false
+  });
 
   //for Dialog
   const [open, setOpen] = useState(false);
@@ -55,16 +66,27 @@ const Layout = () => {
     fetchCategory();
   }, []);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = async () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   const handlePatientBooking = async () => {
     try {
+      let patientmail = "kishanpatel3545@gmail.com";
+      let hospitalmail = "kishan4245@gmail.com";
+      await sendMail({ patientmail, hospitalmail });
+
+      // if (MailDetails.data === "mail Send Successfully") {
+      //   alert("Mane");
+      // } else {
+      //   alert("asd");
+      // }
+      alert(MailDetails.data);
+      console.log("THIS IS MAIL DATA", MailDetails.data);
+
       if (!patientName || !contactNumber || !age || !description) {
         return setFormValid(false);
       }
@@ -92,6 +114,7 @@ const Layout = () => {
     if (match.params.hospitalId) {
       fetchHospitalDetail(match.params.hospitalId);
     }
+    sendMail();
   }, [match]);
 
   if (hospitalDetail.loading) {
@@ -101,8 +124,8 @@ const Layout = () => {
   if (!hospitalDetail.loading && !hospitalDetail.data) {
     return <div>Something went wrong..</div>;
   }
-
   const hospital = hospitalDetail.data;
+
   return (
     <div className={classes.Hospitaldetails}>
       <Header title="Hospital Detail" />
@@ -156,7 +179,7 @@ const Layout = () => {
                           }}
                           variant="body2">
                           <Web color="primary" fontSize="small" />{" "}
-                          {hospital.websiteUrl}
+                          {hospital.emailId}
                         </Typography>
                         <Button
                           variant="contained"
@@ -259,77 +282,81 @@ const Layout = () => {
         </div>
 
         {/* For Dialog Box */}
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="form-dialog-title">
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap"
-            }}>
-            <DialogTitle id="form-dialog-title">Patient Details</DialogTitle>
-            <IconButton onClick={() => setOpen(false)}>
-              <CloseIcon />
-            </IconButton>
-          </div>
-          <DialogContent>
-            <InputComponent
-              placeholder="Patient Name"
-              onChange={e => setPatientName(e.target.value)}
-              value={patientName}
-            />
-            <Grid spacing={2}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} lg={6}>
-                  <InputComponent
-                    placeholder="Age"
-                    onChange={e => setAge(e.target.value)}
-                    value={age}
-                    type="number"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <InputComponent
-                    placeholder="Contact Number"
-                    onChange={e => setContactNumber(e.target.value)}
-                    value={contactNumber}
-                    type="number"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={12}>
-                  <FormControl style={{ flex: 1, display: "flex" }}>
-                    <InputLabel>Select Category</InputLabel>
-                    <Select
-                      id="demo-simple-select"
-                      fullWidth
-                      value={category}
-                      onChange={e => setCategory(e.target.value)}>
-                      <MenuItem value={1}>Select</MenuItem>
-                      {(categoryListing.data || []).map(element => (
-                        <MenuItem value={element._id}>{element.title}</MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+        <div>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="form-dialog-title">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap"
+              }}>
+              <DialogTitle id="form-dialog-title">Patient Details</DialogTitle>
+              <IconButton onClick={() => setOpen(false)}>
+                <CloseIcon />
+              </IconButton>
+            </div>
+            <DialogContent>
+              <InputComponent
+                placeholder="Patient Name"
+                onChange={e => setPatientName(e.target.value)}
+                value={patientName}
+              />
+              <Grid spacing={2}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} lg={6}>
+                    <InputComponent
+                      placeholder="Age"
+                      onChange={e => setAge(e.target.value)}
+                      value={age}
+                      type="number"
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={6}>
+                    <InputComponent
+                      placeholder="Contact Number"
+                      onChange={e => setContactNumber(e.target.value)}
+                      value={contactNumber}
+                      type="number"
+                    />
+                  </Grid>
+                  <Grid item xs={12} lg={12}>
+                    <FormControl style={{ flex: 1, display: "flex" }}>
+                      <InputLabel>Select Category</InputLabel>
+                      <Select
+                        id="demo-simple-select"
+                        fullWidth
+                        value={category}
+                        onChange={e => setCategory(e.target.value)}>
+                        <MenuItem value={1}>Select</MenuItem>
+                        {(categoryListing.data || []).map(element => (
+                          <MenuItem value={element._id}>
+                            {element.title}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            <InputComponent
-              placeholder="Description"
-              onChange={e => setDescritpition(e.target.value)}
-              value={description}
-            />
-          </DialogContent>
-          <Button
-            variant="contained"
-            style={{ margin: 10 }}
-            color="primary"
-            onClick={handlePatientBooking}>
-            Send
-          </Button>
-        </Dialog>
+              <InputComponent
+                placeholder="Description"
+                onChange={e => setDescritpition(e.target.value)}
+                value={description}
+              />
+            </DialogContent>
+            <Button
+              variant="contained"
+              style={{ margin: 10 }}
+              color="primary"
+              onClick={handlePatientBooking}>
+              Send
+            </Button>
+          </Dialog>
+        </div>
       </Container>
     </div>
   );

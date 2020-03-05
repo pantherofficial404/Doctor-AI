@@ -23,3 +23,9 @@ export const currentOrder = state => {
 export const selectOrderByType = state => {
   return selectState(state).userOrder;
 };
+export const mail = state => {
+  return selectState(state).mail;
+};
+export const forgotpassword = state => {
+  return selectState(state).forgotpassword;
+};

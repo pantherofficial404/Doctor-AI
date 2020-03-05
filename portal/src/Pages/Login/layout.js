@@ -178,7 +178,8 @@ const Layout = props => {
                     <div className={classes.links}>
                       <Link
                         className={classes.link}
-                        style={{ marginBottom: 3 }}>
+                        style={{ marginBottom: 3 }}
+                        onClick={() => history.push("/forgotpassword")}>
                         Forget Password !!
                       </Link>
                       <Link

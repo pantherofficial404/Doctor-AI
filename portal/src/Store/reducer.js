@@ -21,6 +21,8 @@ export const addCategoryAction = getDataAction("ADD_CATEGORY");
 export const categoryListingAction = getDataAction("CATEGORY_LISTING");
 export const currentOrderAction = getDataAction("CURRENT_ORDER");
 export const userOrderAction = getDataAction("USER_ORDER");
+export const sendMailAction = getDataAction("MAIL");
+export const forgotPasswordAction = getDataAction("FORGOT_PASSWORD");
 
 const addDataAction = (action, key) => {
   return reducerFactory => {
@@ -113,6 +115,18 @@ const initialState = {
     loading: false,
     error: null,
     data: null
+  },
+  mail: {
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null
+  },
+  forgotpassword: {
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null
   }
 };
 const reducer = new ReducerFactory(initialState)
@@ -123,6 +137,8 @@ const reducer = new ReducerFactory(initialState)
   .addCustom(addDataAction(categoryListingAction, "categoryListing"))
   .addCustom(addDataAction(currentOrderAction, "currentOrder"))
   .addCustom(addDataAction(userOrderAction, "userOrder"))
+  .addCustom(addDataAction(sendMailAction, "mail"))
+  .addCustom(addDataAction(forgotPasswordAction, "forgotpassword"))
   .toReducer();
 
 export default reducer;

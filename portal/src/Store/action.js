@@ -2,7 +2,7 @@
 import { store } from "./index";
 import { handleError } from "./helper";
 import { NetworkServices } from "Services";
-import { AuthServices } from "Services";
+
 import {
   hospitalListingAction,
   hospitalDetailAction,
@@ -10,7 +10,9 @@ import {
   addCategoryAction,
   categoryListingAction,
   currentOrderAction,
-  userOrderAction
+  userOrderAction,
+  sendMailAction,
+  forgotPasswordAction
 } from "./reducer";
 import Config from "Config";
 
@@ -188,6 +190,45 @@ export const fetchOrderByType = async userId => {
       userOrderAction.failed({
         internalMessage: err.message,
         displayMessage: "Error in fetchCategory"
+      })
+    );
+  }
+};
+//Send mail Action
+export const sendMail = async data => {
+  try {
+    store.dispatch(sendMailAction.init());
+    const response = await NetworkServices.post(`${Config.SERVER_URL}/mail`, {
+      ...data
+    });
+    store.dispatch(sendMailAction.success(response.message));
+  } catch (err) {
+    handleError(err);
+    store.dispatch(
+      sendMailAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error to Send A message"
+      })
+    );
+  }
+};
+
+export const forgotPassword = async data => {
+  try {
+    store.dispatch(forgotPasswordAction.init());
+    const response = await NetworkServices.post(
+      `${Config.SERVER_URL}/forgotPassword`,
+      {
+        ...data
+      }
+    );
+    store.dispatch(forgotPasswordAction.success(response));
+  } catch (err) {
+    handleError(err);
+    store.dispatch(
+      forgotPasswordAction.failed({
+        internalMessage: err.message,
+        displayMessage: "Error to Send A message"
       })
     );
   }
