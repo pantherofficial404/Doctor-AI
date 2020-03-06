@@ -18,7 +18,6 @@ class Layout extends React.Component {
         open={isOpen}
         autoHideDuration={3000}
         onClose={handleClose}
-        // onRequestClose={this.handleClose}
         message={errorMessage}
         ContentProps={{
           classes: {

@@ -10,7 +10,7 @@ import Config from "Config";
 import Home from "Pages/Home";
 import Login from "Pages/Login";
 import Register from "Pages/Register";
-import Forgotpassword from "Pages/ForgotPassword.js";
+import Forgotpassword from "Pages/ForgotPassword/index.js";
 import HospitalListing from "Pages/HospitalListing";
 import HospitalAdd from "Pages/HospitalAdd";
 import Cab from "Pages/Cab";
@@ -56,7 +56,14 @@ class Root extends React.Component {
 
           <Route exact path="/hospital" component={HospitalListing} />
           <Route exact path="/forgotpassword" component={Forgotpassword} />
-          <Route exact path="/reset/:tokenid" component={Resetpassword} />
+
+          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
+            <Route
+              exact
+              path="/reset/:resetPasswordToken"
+              component={Resetpassword}
+            />
+          )}
 
           {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
             <Route exact path="/add/hospital" component={HospitalAdd} />

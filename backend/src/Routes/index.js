@@ -20,8 +20,8 @@ router.post("/signup", AuthController.signup);
 
 //forgot password
 router.post("/forgotPassword", ForgotPasswordController.forgotPassword);
-router.post("/reset/:id", ForgotPasswordController.resetPassword);
-// router.get("/gettoken", ForgotPasswordController.getToken);
+router.get("/gettoken/:token", ForgotPasswordController.gettoken);
+router.post("/reset/:token", ForgotPasswordController.resetPassword);
 router.use(authMiddleware);
 
 // Hospital Controllers

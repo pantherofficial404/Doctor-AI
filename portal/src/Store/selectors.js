@@ -26,6 +26,7 @@ export const selectOrderByType = state => {
 export const mail = state => {
   return selectState(state).mail;
 };
-export const forgotpassword = state => {
-  return selectState(state).forgotpassword;
+
+export const userLoad = state => {
+  return selectState(state).loadUser;
 };

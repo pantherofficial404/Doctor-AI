@@ -87,10 +87,14 @@ const Layout = props => {
     } catch (err) {
       setState({
         isOpen: true,
-        message: "User is Already taken"
+        message: err.response.data.data.message
       });
-      console.log("err", err);
     } finally {
+      setFormState({
+        values: {},
+        touched: {},
+        errors: {}
+      });
     }
   };
 

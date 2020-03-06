@@ -79,13 +79,13 @@ const Layout = props => {
       await AuthServices.login(username, password);
       history.push("/hospital");
     } catch (err) {
+      // err.response.data.message
       setState({
         isOpen: true,
-        message: "User is not found"
+        message: "User is Not Found"
       });
       formState.values = "";
-      console.log("err", err);
-    } finally {
+      formState.values = "";
     }
   };
 

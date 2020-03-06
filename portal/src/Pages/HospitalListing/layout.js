@@ -24,15 +24,10 @@ const Layout = props => {
   const hospitalListing = useSelector(selectHospital);
   const history = useHistory();
   const [state, setState] = useState({
-    input: "",
-    Message: [
-      "Hi",
-      "My name is Kishan",
-      "nice to meet you",
-      "hope you doing well",
-      "Glad to meet You",
-      "Be Happy in Life"
-    ]
+    Message: ["Hi", "My name is Kishan", "nice to meet you"]
+  });
+  const [input, setInput] = useState({
+    inputMessage: ""
   });
   useEffect(() => {
     fetchHospitalListing();
@@ -43,12 +38,13 @@ const Layout = props => {
   const navigateHospitalDetail = element => {
     history.push(`/hospital/${element._id}`);
   };
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleChange = e => {
+    e.persist();
     setState(prevState => {
       return {
         ...prevState,
@@ -56,17 +52,22 @@ const Layout = props => {
       };
     });
   };
-  console.log(state.input);
 
   const handleClose = () => {
     setOpen(false);
   };
-  const handleclick = e => {};
+  const handleclick = () => {
+    let msg = state.Message.slice();
+    msg.push(state.input);
+    setState({
+      Message: msg,
+      input: ""
+    });
+  };
 
   return (
     <div>
       <Header title="Hospital" />
-
       <Dialog
         open={open}
         onClose={handleClose}
@@ -96,10 +97,6 @@ const Layout = props => {
                 <div className={classes.msgText}>
                   Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                   Consectetur veniam a laudantium expedita quis reiciendis sit
-                  optio amet ex quas, fugit autem perferendis voluptatum alias
-                  eveniet fugiat vero sunt nobis consequatur! Fugiat repudiandae
-                  at rerum voluptatibus vero. Facilis dolor consequuntur, quo
-                  corrupti nemo ea fuga iure officia eaque quas adipisci.
                 </div>
               </div>
             </div>
@@ -140,10 +137,10 @@ const Layout = props => {
             <InsertEmoticonIcon style={{ color: "#333" }} />
           </Avatar>
           <Input
-            id="standard-adornment-password"
             fullWidth
             placeholder="Type a massage"
-            // value={state.input}
+            value={state.input}
+            onChange={handleChange}
           />
           <Avatar
             onClick={() => alert("say somthing")}

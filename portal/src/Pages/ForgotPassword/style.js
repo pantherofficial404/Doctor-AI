@@ -64,6 +64,10 @@ const useStyles = makeStyles(theme => ({
       height: "200px",
       width: "200px"
     }
+  },
+  forgotpasswordIcon: {
+    height: "80px",
+    width: "80px"
   }
 }));
 

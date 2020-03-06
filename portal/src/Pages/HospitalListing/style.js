@@ -1,14 +1,14 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { deepPurple } from "@material-ui/core/colors";
 
 import Doctor from "./Assets/Doctor.svg";
+import Man from "./Assets/man.png";
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    justifyContent: "space-between",
-    marginTop: theme.spacing() * 2
-  },
+  // container: {
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  //   marginTop: theme.spacing() * 2
+  // },
   closeButton: {
     position: "absolute",
     right: theme.spacing(1),
@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     textAlign: "right",
     margin: "1rem 1rem"
   },
-
   button: {
     margin: "0.36rem"
   },
@@ -33,6 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
   msgChat: {
     flex: 1,
+    overflowX: "hidden",
     overflowY: "auto",
     padding: "10px"
   },
@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: "Open Sans"
   },
   messageInput: {
-    // padding: "10px",
+    padding: "10px",
     border: "none",
     borderRadius: "3px",
     fontSize: "1em",
@@ -114,43 +114,8 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: "center",
     backgroundSize: "cover",
     borderRadius: "50%",
-    backgroundImage: `url(${`https://image.flaticon.com/icons/svg/145/145867.svg`})`
+    backgroundImage: `url(${Man})`
   }
-  // absolute: {
-  //   position: "absolute",
-  //   bottom: theme.spacing(2),
-  //   right: theme.spacing(3)
-  // },
-  // root: {
-  //   minWidth: 275
-  // },
-  // bullet: {
-  //   display: "inline-block",
-  //   margin: "0 2px",
-  //   transform: "scale(0.8)"
-  // },
-  // title: {
-  //   fontSize: 14
-  // },
-  // pos: {
-  //   marginBottom: 12
-  // },
-
-  // DialogTitle: {
-  //   marginRight: "20rem"
-  // },
-  // Doctorside: {
-  //   color: deepPurple[500]
-  // },
-  // chatmessages: {
-  //   background: "#daf9c0",
-  //   padding: "0.5rem 0.4rem",
-  //   lineHeight: "25px",
-  //   fontFamily: "Poppins",
-  //   borderRadius: "5rem",
-  //   width: "50%",
-  //   flexWrap: "wrap"
-  // }
 }));
 
 export default useStyles;

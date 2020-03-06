@@ -19,10 +19,11 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Divider
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import axios from "axios";
+
 import Call from "@material-ui/icons/Call";
 import Address from "@material-ui/icons/LocationCity";
 import Web from "@material-ui/icons/VpnLock";
@@ -39,7 +40,7 @@ import { useSelector } from "react-redux";
 import { InputComponent } from "Components";
 import { handleError } from "Store/helper";
 import { AuthServices } from "Services";
-import config from "Config";
+import Snackbar from "Components/Snakbar";
 
 const Layout = () => {
   const classes = useStyles();
@@ -53,10 +54,15 @@ const Layout = () => {
   const [contactNumber, setContactNumber] = useState();
   const [description, setDescritpition] = useState();
   const [isFormValid, setFormValid] = useState(true);
+
   const [category, setCategory] = useState(1);
   const [message, setMessage] = useState({
-    msg: "",
-    send: false
+    email: null
+  });
+  const [state, setState] = useState({
+    isOpen: false,
+    variant: "error",
+    message: ""
   });
 
   //for Dialog
@@ -75,18 +81,11 @@ const Layout = () => {
 
   const handlePatientBooking = async () => {
     try {
-      let patientmail = "kishanpatel3545@gmail.com";
-      let hospitalmail = "kishan4245@gmail.com";
-      await sendMail({ patientmail, hospitalmail });
-
-      // if (MailDetails.data === "mail Send Successfully") {
-      //   alert("Mane");
-      // } else {
-      //   alert("asd");
-      // }
-      alert(MailDetails.data);
-      console.log("THIS IS MAIL DATA", MailDetails.data);
-
+      const patientEmailId = JSON.parse(window.localStorage.getItem("panther"));
+      let patientEmail = patientEmailId;
+      let hospitalEmail = hospital.emailId;
+      await sendMail({ patientEmail, hospitalEmail });
+      // setMessage({ email: MailDetails.data });
       if (!patientName || !contactNumber || !age || !description) {
         return setFormValid(false);
       }
@@ -101,12 +100,11 @@ const Layout = () => {
         categoryId: category
       });
     } catch (err) {
-      handleError(err);
+      handleError(err.response);
     } finally {
       setPatientName(null);
       setAge(null);
       setContactNumber(null);
-      // setDescription(null);
     }
   };
 
@@ -114,7 +112,6 @@ const Layout = () => {
     if (match.params.hospitalId) {
       fetchHospitalDetail(match.params.hospitalId);
     }
-    sendMail();
   }, [match]);
 
   if (hospitalDetail.loading) {
@@ -126,9 +123,20 @@ const Layout = () => {
   }
   const hospital = hospitalDetail.data;
 
+  const isMailSend = MailDetails.data;
+
+  // {MailDetails.error}
+
   return (
     <div className={classes.Hospitaldetails}>
       <Header title="Hospital Detail" />
+      <Snackbar
+        errorMessage={state.message}
+        isOpen={state.isOpen}
+        variant={state.variant}
+        handleClose={() => setState({ isOpen: false })}
+      />
+
       <Container maxWidth="lg" className={classes.container}>
         <div className={classes.hospitalInfo}>
           <Grid>
@@ -295,10 +303,12 @@ const Layout = () => {
                 flexWrap: "wrap"
               }}>
               <DialogTitle id="form-dialog-title">Patient Details</DialogTitle>
+
               <IconButton onClick={() => setOpen(false)}>
                 <CloseIcon />
               </IconButton>
             </div>
+            <Divider />
             <DialogContent>
               <InputComponent
                 placeholder="Patient Name"
@@ -353,7 +363,7 @@ const Layout = () => {
               style={{ margin: 10 }}
               color="primary"
               onClick={handlePatientBooking}>
-              Send
+              {MailDetails.data === null ? "Send" : "Send Succesfully"}
             </Button>
           </Dialog>
         </div>

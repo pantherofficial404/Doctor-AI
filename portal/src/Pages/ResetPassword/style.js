@@ -4,6 +4,13 @@ const useStyles = makeStyles(theme => ({
   cabbooking: {
     height: "100vh"
   },
+  center: {
+    display: "flex",
+    height: "100vh",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column"
+  },
   cabcontent: {
     display: "flex",
     height: "85vh",

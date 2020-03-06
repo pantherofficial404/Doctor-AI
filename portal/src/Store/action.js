@@ -1,7 +1,7 @@
 // import { createAction } from "redux-actions";
 import { store } from "./index";
 import { handleError } from "./helper";
-import { NetworkServices } from "Services";
+import { NetworkServices, AuthServices } from "Services";
 
 import {
   hospitalListingAction,
@@ -27,10 +27,10 @@ export const fetchHospitalListing = async () => {
 
     store.dispatch(hospitalListingAction.success(response.data));
   } catch (err) {
-    handleError(err);
+    // handleError(err.response);
     store.dispatch(
       hospitalListingAction.failed({
-        internalMessage: err.message,
+        internalMessage: "Email do not match",
         displayMessage: "Error in fetchHospitalListing"
       })
     );
@@ -50,9 +50,7 @@ export const addHospitalAction = async data => {
 export const fetchHospitalDetail = async hospitalId => {
   try {
     store.dispatch(hospitalDetailAction.init());
-
     // Api Calling
-
     const response = await NetworkServices.get(
       `${Config.SERVER_URL}/hospital/${hospitalId}`
     );
@@ -182,7 +180,6 @@ export const fetchOrderByType = async userId => {
       response.data[index].verificaionCode = element.patientId.verificaionCode;
     });
 
-    // console.log('data',response.data);
     store.dispatch(userOrderAction.success(response.data));
   } catch (err) {
     handleError(err);
@@ -201,35 +198,35 @@ export const sendMail = async data => {
     const response = await NetworkServices.post(`${Config.SERVER_URL}/mail`, {
       ...data
     });
-    store.dispatch(sendMailAction.success(response.message));
+    store.dispatch(sendMailAction.success(response.data));
   } catch (err) {
     handleError(err);
     store.dispatch(
       sendMailAction.failed({
         internalMessage: err.message,
-        displayMessage: "Error to Send A message"
+        displayMessage: err.response.data.message
       })
     );
   }
 };
 
-export const forgotPassword = async data => {
-  try {
-    store.dispatch(forgotPasswordAction.init());
-    const response = await NetworkServices.post(
-      `${Config.SERVER_URL}/forgotPassword`,
-      {
-        ...data
-      }
-    );
-    store.dispatch(forgotPasswordAction.success(response));
-  } catch (err) {
-    handleError(err);
-    store.dispatch(
-      forgotPasswordAction.failed({
-        internalMessage: err.message,
-        displayMessage: "Error to Send A message"
-      })
-    );
-  }
-};
+// export const forgotPassword = async data => {
+//   try {
+//     store.dispatch(forgotPasswordAction.init());
+//     const response = await NetworkServices.post(
+//       `${Config.SERVER_URL}/forgotPassword`,
+//       {
+//         ...data
+//       }
+//     );
+//     store.dispatch(forgotPasswordAction.success(response.data));
+//   } catch (err) {
+//     handleError(err);
+//     store.dispatch(
+//       forgotPasswordAction.failed({
+//         internalMessage: err.message,
+//         displayMessage: "Error To send A reset Link"
+//       })
+//     );
+//   }
+// };
