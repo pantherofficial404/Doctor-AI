@@ -57,7 +57,7 @@ class Root extends React.Component {
           <Route exact path="/hospital" component={HospitalListing} />
           <Route exact path="/forgotpassword" component={Forgotpassword} />
 
-          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
+          {AuthServices.isAuthenticated() && (
             <Route
               exact
               path="/reset/:resetPasswordToken"
