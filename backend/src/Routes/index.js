@@ -22,13 +22,16 @@ router.post("/signup", AuthController.signup);
 router.post("/forgotPassword", ForgotPasswordController.forgotPassword);
 router.get("/gettoken/:token", ForgotPasswordController.gettoken);
 router.post("/reset/:token", ForgotPasswordController.resetPassword);
-router.use(authMiddleware);
 
+router.use(authMiddleware);
 // Hospital Controllers
+
+router.delete("/hospital/:hospitalId", HospitalController.deleteHospitalById);
 router.get("/hospital", HospitalController.getHospitalListing);
 router.get("/hospital/nearyby", HospitalController.getNearyByHospitals);
 router.get("/hospital/:hospitalId", HospitalController.getHospitalById);
 router.post("/hospital", HospitalController.addHospital);
+router.put("/updatehospital/:hospitalId", HospitalController.updateHospital);
 
 // Patient Controller
 router.get("/patient", PatientController.getUserPatient);

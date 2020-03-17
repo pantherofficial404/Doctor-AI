@@ -9,12 +9,9 @@ import {
   Button,
   Grid,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField,
-  CircularProgress,
   IconButton,
   FormControl,
   InputLabel,
@@ -23,7 +20,6 @@ import {
   Divider
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-
 import Call from "@material-ui/icons/Call";
 import Address from "@material-ui/icons/LocationCity";
 import Web from "@material-ui/icons/VpnLock";
@@ -40,7 +36,7 @@ import { useSelector } from "react-redux";
 import { InputComponent } from "Components";
 import { handleError } from "Store/helper";
 import { AuthServices } from "Services";
-import Snackbar from "Components/Snakbar";
+import { Snackbar } from "Components";
 
 const Layout = () => {
   const classes = useStyles();
@@ -56,9 +52,7 @@ const Layout = () => {
   const [isFormValid, setFormValid] = useState(true);
 
   const [category, setCategory] = useState(1);
-  const [message, setMessage] = useState({
-    email: null
-  });
+
   const [state, setState] = useState({
     isOpen: false,
     variant: "error",
@@ -85,7 +79,7 @@ const Layout = () => {
       let patientEmail = patientEmailId;
       let hospitalEmail = hospital.emailId;
       await sendMail({ patientEmail, hospitalEmail });
-      // setMessage({ email: MailDetails.data });
+
       if (!patientName || !contactNumber || !age || !description) {
         return setFormValid(false);
       }
@@ -122,10 +116,6 @@ const Layout = () => {
     return <div>Something went wrong..</div>;
   }
   const hospital = hospitalDetail.data;
-
-  const isMailSend = MailDetails.data;
-
-  // {MailDetails.error}
 
   return (
     <div className={classes.Hospitaldetails}>

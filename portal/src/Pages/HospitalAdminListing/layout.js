@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Avatar, Fab, Tooltip } from "@material-ui/core";
-import ChatIcon from "@material-ui/icons/Chat";
-import { Header, Listing } from "Components";
+import React, { useEffect } from "react";
+import { Button } from "@material-ui/core";
+import { Header } from "Components";
+import Listing from "../../Components/AdminListing";
 import useStyles from "./style";
 import { fetchHospitalListing } from "Store/action";
 import { selectHospital } from "Store/selectors";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
-import { Chat } from "Components";
 
 const Layout = props => {
   const classes = useStyles();
@@ -18,7 +16,6 @@ const Layout = props => {
   useEffect(() => {
     fetchHospitalListing();
   }, []);
-
   const navigateHospitalDetail = element => {
     history.push(`/hospital/${element._id}`);
   };
@@ -26,7 +23,6 @@ const Layout = props => {
   return (
     <div>
       <Header title="Hospital" />
-      <Chat />
       <div className={classes.addbutton}>
         <Button
           variant="contained"

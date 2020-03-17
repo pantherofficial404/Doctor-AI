@@ -1,35 +1,25 @@
 import React, { useState } from "react";
 import useStyles from "./style";
-import Header from "Components/Header";
-import {
-  Typography,
-  TextField,
-  InputAdornment,
-  Container,
-  Button,
-  Grid,
-  Input
-} from "@material-ui/core";
-import { MapService } from 'Services';
-
+import { Header } from "Components";
+import { Typography, Container, Button, Grid } from "@material-ui/core";
+import { MapService } from "Services";
+import Snackbar from "Components/Snakbar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 //icon
 import EmailIcon from "@material-ui/icons/Email";
 import PersonIcon from "@material-ui/icons/Person";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
-import CategoryIcon from "@material-ui/icons/Category";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import HttpIcon from "@material-ui/icons/Http";
 import HomeIcon from "@material-ui/icons/Home";
 import CreateIcon from "@material-ui/icons/Create";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import StarIcon from "@material-ui/icons/Star";
-import GroupIcon from "@material-ui/icons/Group";
 
-import { InputComponent } from 'Components';
+import { InputComponent } from "Components";
 import { handleError } from "Store/helper";
-import { addHospitalAction } from 'Store/action';
+import { addHospitalAction } from "Store/action";
 import { useHistory } from "react-router-dom";
-import ExpressFirebase from 'express-firebase';
+import ExpressFirebase from "express-firebase";
 
 const Layout = () => {
   const [coordinates, setCoordinates] = useState();
@@ -42,10 +32,14 @@ const Layout = () => {
   const [isValidForm, setValidForm] = useState(false);
   const [isSubmitting, setSubmitting] = useState(false);
   const history = useHistory();
-  const [file,setFile] = useState(null);
+  const [file, setFile] = useState(null);
+  const [state, setState] = useState({
+    isOpen: false,
+    variant: "error",
+    message: ""
+  });
 
   const classes = useStyles();
-
 
   const handleCoordinates = async () => {
     if (!address) {
@@ -55,34 +49,83 @@ const Layout = () => {
     if ((response.data || {}).results[0]) {
       setCoordinates(response.data.results[0].geometry.location);
     }
-  }
+  };
 
-  const handleFileUpload =(e)=>{
+  const handleFileUpload = e => {
     const files = e.target.files;
-    if(files && files.length){
-      setFile({image:files[0],name:files[0].name});
+    if (files && files.length) {
+      setFile({ image: files[0], name: files[0].name });
     }
-  }
+  };
 
   const addHospital = async () => {
     try {
       setSubmitting(true);
       // Validating Form
-      if (!coordinates || !address || !hospitalName || !description || !websiteUrl || !mobileNo || !emailId) {
+      if (
+        !coordinates ||
+        !address ||
+        !hospitalName ||
+        !description ||
+        !websiteUrl ||
+        !mobileNo ||
+        !emailId
+      ) {
+        setState({
+          message: "All Field is Required",
+          isOpen: true,
+          variant: "error"
+        });
+        setSubmitting(false);
+        return setValidForm(false);
+      }
+      if (mobileNo.length !== 10) {
+        setState({
+          message: "Please Check Your Mobile No!",
+          isOpen: true,
+          variant: "error"
+        });
+        setSubmitting(false);
+        return setValidForm(false);
+      }
+      if (!file) {
+        setState({
+          message: "You are not select Image",
+          isOpen: true,
+          variant: "error"
+        });
+        setSubmitting(false);
+        return setValidForm(false);
+      }
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)) {
+        setState({
+          message: "You have entered an invalid email address!",
+          isOpen: true,
+          variant: "error"
+        });
         setSubmitting(false);
         return setValidForm(false);
       }
 
       // Api Calling Will Be Here
-      const imageUrl = await ExpressFirebase.uploadFile(file.name,file.image);
-      if(!imageUrl){
+      const imageUrl = await ExpressFirebase.uploadFile(file.name, file.image);
+      if (!imageUrl) {
         return setSubmitting(false);
       }
 
       // Api Calling Will be here
-      await addHospitalAction({ address, hospitalName, description, websiteUrl, mobileNo, emailId, latitude: coordinates.lat, longitude: coordinates.lng ,hospitalImage:imageUrl});
-      history.push('/hospital');
-
+      await addHospitalAction({
+        address,
+        hospitalName,
+        description,
+        websiteUrl,
+        mobileNo,
+        emailId,
+        latitude: coordinates.lat,
+        longitude: coordinates.lng,
+        hospitalImage: imageUrl
+      });
+      history.push("/");
     } catch (err) {
       // Handling Error
       handleError(err);
@@ -90,11 +133,17 @@ const Layout = () => {
       // Finally do this
       setSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className={classes.hospitalDetails}>
       <Header title="Add New Hospital" />
+      <Snackbar
+        errorMessage={state.message}
+        isOpen={state.isOpen}
+        handleClose={() => setState({ isOpen: false })}
+        variant={state.variant}
+      />
       <div className={classes.hospitalsDetailsContent}>
         <Container className={classes.Container} maxWidth="md">
           <Grid>
@@ -111,9 +160,7 @@ const Layout = () => {
                 </div>
               </Grid>
               <Grid item xs={12}>
-                <Typography
-                  variant="h6"
-                  align="center">
+                <Typography variant="h6" align="center">
                   Hospital Details
                 </Typography>
               </Grid>
@@ -125,7 +172,7 @@ const Layout = () => {
                     <InputComponent
                       placeholder="Hospital Name"
                       Icon={PersonIcon}
-                      onChange={(e) => setHospitalName(e.target.value)}
+                      onChange={e => setHospitalName(e.target.value)}
                       value={hospitalName}
                     />
                   </Grid>
@@ -133,7 +180,7 @@ const Layout = () => {
                     <InputComponent
                       placeholder="Address"
                       rowsMax="4"
-                      onChange={(e) => setAddress(e.target.value)}
+                      onChange={e => setAddress(e.target.value)}
                       multiline
                       Icon={HomeIcon}
                       onBlur={handleCoordinates}
@@ -145,7 +192,7 @@ const Layout = () => {
                       rowsMax="4"
                       multiline
                       Icon={CreateIcon}
-                      onChange={(e) => setDescription(e.target.value)}
+                      onChange={e => setDescription(e.target.value)}
                       value={description}
                     />
                   </Grid>
@@ -159,10 +206,20 @@ const Layout = () => {
                       onChange={handleFileUpload}
                     />
                     <label htmlFor="raised-button-file">
-                      <div style={{ display: 'flex', alignItems: 'center', flex: 1, paddingBottom: 8, borderBottom: '1px solid rgba(0,0,0,0.5)' }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          flex: 1,
+                          paddingBottom: 8,
+                          borderBottom: "1px solid rgba(0,0,0,0.5)"
+                        }}>
                         <AddAPhotoIcon color="primary" />
-                        <Typography variant="body2" color="textSecondary" style={{ padding: '0 10px' }}>
-                          {(file||{}).name ||'Choose Hospital Image'}
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          style={{ padding: "0 10px" }}>
+                          {(file || {}).name || "Choose Hospital Image"}
                         </Typography>
                       </div>
                     </label>
@@ -171,14 +228,18 @@ const Layout = () => {
                     <InputComponent
                       placeholder="WebsiteUrl"
                       Icon={HttpIcon}
-                      onChange={(e) => setWebsiteUrl(e.target.value)}
+                      onChange={e => setWebsiteUrl(e.target.value)}
                       value={websiteUrl}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <InputComponent
                       placeholder="Location"
-                      value={coordinates ? `Latitude : ${coordinates.lat} Longitude : ${coordinates.lng}` : ''}
+                      value={
+                        coordinates
+                          ? `Latitude : ${coordinates.lat} Longitude : ${coordinates.lng}`
+                          : ""
+                      }
                       disabled
                       Icon={LocationOnIcon}
                     />
@@ -187,7 +248,7 @@ const Layout = () => {
                     <InputComponent
                       placeholder="Mobile Number"
                       Icon={PhoneAndroidIcon}
-                      onChange={(e) => setMobileNo(e.target.value)}
+                      onChange={e => setMobileNo(e.target.value)}
                       value={mobileNo}
                     />
                   </Grid>
@@ -195,7 +256,7 @@ const Layout = () => {
                     <InputComponent
                       placeholder="Email id "
                       Icon={EmailIcon}
-                      onChange={(e) => setEmailId(e.target.value)}
+                      onChange={e => setEmailId(e.target.value)}
                       value={emailId}
                     />
                   </Grid>
@@ -207,9 +268,12 @@ const Layout = () => {
                 className={classes.hospitalButton}
                 onClick={addHospital}
                 fullWidth
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? 'Submitting...' : 'Submit'}
+                disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <CircularProgress size="1.5rem" color="Primary" />
+                ) : (
+                  "Submit"
+                )}
               </Button>
             </form>
           </Grid>

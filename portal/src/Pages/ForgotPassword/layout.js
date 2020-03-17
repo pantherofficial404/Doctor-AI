@@ -16,7 +16,7 @@ import { handleError } from "Store/helper";
 import { useSelector } from "react-redux";
 import { passwordForgot } from "Store/selectors";
 import { useHistory } from "react-router-dom";
-import Snackbar from "Components/Snakbar";
+import { Snackbar } from "Components";
 import ForgotpasswordIcon from "./Assets/forgot.svg";
 import { NetworkServices } from "Services";
 

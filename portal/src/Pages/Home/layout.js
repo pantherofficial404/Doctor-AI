@@ -98,7 +98,7 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div style={{ padding: 20, marginTop: "3rem" }}>
-          <div style={{ display: "flex" }}>
+          {/* <div style={{ display: "flex" }}>
             <InputBase
               placeholder="Search your desease"
               fullWidth
@@ -110,11 +110,11 @@ export default function MiniDrawer() {
               aria-label="search">
               <SearchIcon color="primary" />
             </IconButton>
-          </div>
+          </div> */}
+          {/* <div> */}
+          {/* {Boolean(state.isLoaded) && ( */}
+          <Map />
         </div>
-        {/* <div> */}
-        {/* {Boolean(state.isLoaded) && ( */}
-        <Map />
         {/* )} */}
         {/* {Boolean(mapPermission !== "granted" && state.isLoaded) && (
             <div>

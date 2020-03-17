@@ -1,7 +1,7 @@
 // import { createAction } from "redux-actions";
 import { store } from "./index";
 import { handleError } from "./helper";
-import { NetworkServices, AuthServices } from "Services";
+import { NetworkServices } from "Services";
 
 import {
   hospitalListingAction,
@@ -11,8 +11,7 @@ import {
   categoryListingAction,
   currentOrderAction,
   userOrderAction,
-  sendMailAction,
-  forgotPasswordAction
+  sendMailAction
 } from "./reducer";
 import Config from "Config";
 
@@ -27,10 +26,10 @@ export const fetchHospitalListing = async () => {
 
     store.dispatch(hospitalListingAction.success(response.data));
   } catch (err) {
-    // handleError(err.response);
+    handleError(err);
     store.dispatch(
       hospitalListingAction.failed({
-        internalMessage: "Email do not match",
+        internalMessage: err.message,
         displayMessage: "Error in fetchHospitalListing"
       })
     );
@@ -209,24 +208,3 @@ export const sendMail = async data => {
     );
   }
 };
-
-// export const forgotPassword = async data => {
-//   try {
-//     store.dispatch(forgotPasswordAction.init());
-//     const response = await NetworkServices.post(
-//       `${Config.SERVER_URL}/forgotPassword`,
-//       {
-//         ...data
-//       }
-//     );
-//     store.dispatch(forgotPasswordAction.success(response.data));
-//   } catch (err) {
-//     handleError(err);
-//     store.dispatch(
-//       forgotPasswordAction.failed({
-//         internalMessage: err.message,
-//         displayMessage: "Error To send A reset Link"
-//       })
-//     );
-//   }
-// };

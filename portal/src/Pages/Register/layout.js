@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./style";
-import { Header } from "Components";
+import { Header, Snackbar } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
-import validate from "validate.js";
 
 import {
   InputAdornment,
@@ -12,94 +11,68 @@ import {
   Link,
   Typography
 } from "@material-ui/core";
-// import EmailIcon from "@material-ui/icons/Email";
-import Snackbar from "Components/Snakbar";
+
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 
 //For Data Retriving from the redux
-import { useSelector } from "react-redux";
-import { SingUp } from "Store/action";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
-
-const schema = {
-  username: {
-    presence: { allowEmpty: false, message: "is required" },
-    email: true,
-    length: {
-      maximum: 64
-    }
-  },
-  password: {
-    presence: { allowEmpty: false, message: "is required" },
-    length: {
-      maximum: 128
-    }
-  }
-};
 
 const Layout = props => {
   const classes = useStyles();
   const history = useHistory();
-
-  const [formState, setFormState] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
+  const [email, Setemail] = useState();
+  const [password, Setpassword] = useState();
   const [state, setState] = useState({
     isOpen: false,
     variant: "error",
     message: ""
   });
 
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
-  }, [formState.values]);
+  const handleSubmit = async e => {
+    e.preventDefault();
 
-  const handleChange = event => {
-    event.persist();
+    if (!email && !password) {
+      return setState({
+        isOpen: true,
+        message: "All field is Required"
+      });
+    }
+    if (!email) {
+      return setState({
+        isOpen: true,
+        message: "Your Email is Required"
+      });
+    }
+    if (!password) {
+      return setState({
+        isOpen: true,
+        message: "Your Password is Required"
+      });
+    }
+    const EmailPatten = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    setFormState(formState => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        [event.target.name]: event.target.value
-      },
-      touched: {
-        ...formState.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
-  const handleSubmit = async () => {
-    const { username, password } = formState.values;
+    if (!EmailPatten.test(email)) {
+      return setState({
+        isOpen: true,
+        message: "Please Enter Valid Email"
+      });
+    }
+    //Api Calling
     try {
-      await AuthServices.signup(username, password);
-      history.push("/hospital");
+      await AuthServices.signup(email, password).then(
+        history.push("/hospital")
+      );
     } catch (err) {
       setState({
         isOpen: true,
-        message: err.response.data.data.message
+        message: err.response.data.data.message || "User is Already Register"
       });
     } finally {
-      setFormState({
-        values: {},
-        touched: {},
-        errors: {}
-      });
+      Setemail("");
+      Setpassword("");
     }
   };
-
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
 
   return (
     <div>
@@ -122,22 +95,16 @@ const Layout = props => {
                     </Typography>
                     <TextField
                       autoFocus
-                      error={hasError("username")}
-                      helperText={
-                        hasError("username")
-                          ? formState.errors.username[0]
-                          : null
-                      }
                       className={classes.TextField}
                       id="input-with-icon-AcccountCircle"
                       fullWidth
                       name="username"
-                      onChange={handleChange}
                       size="medium"
                       placeholder="Username Or Email"
                       type="email"
                       required
-                      value={formState.values.username || ""}
+                      value={email}
+                      onChange={e => Setemail(e.target.value)}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -147,21 +114,15 @@ const Layout = props => {
                       }}
                     />
                     <TextField
-                      error={hasError("password")}
                       className={classes.TextField}
-                      id="input-with-icon-Lock"
+                      id="input-with-icon-Lohck"
                       placeholder="Password"
                       name="password"
                       fullWidth
-                      helperText={
-                        hasError("password")
-                          ? formState.errors.password[0]
-                          : null
-                      }
                       type="password"
-                      onChange={handleChange}
+                      onChange={e => Setpassword(e.target.value)}
+                      value={password}
                       type="password"
-                      value={formState.values.password || ""}
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
@@ -179,8 +140,7 @@ const Layout = props => {
                         variant="contained"
                         onClick={handleSubmit}
                         color="primary"
-                        className={classes.SignUpButton}
-                        disabled={!formState.isValid}>
+                        className={classes.SignUpButton}>
                         Register
                       </Button>
                     </div>

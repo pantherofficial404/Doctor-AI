@@ -26,6 +26,9 @@ import CategoryListing from "Pages/CategoryListing";
 import ExpressFirebase from "express-firebase";
 import { AuthServices } from "Services";
 import Resetpassword from "Pages/ResetPassword";
+import HospitalAdminListing from "Pages/HospitalAdminListing";
+import UpdateHospitalDetails from "Pages/UpdateHospital";
+
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
 // const PrivateRoute = ({ component, ...rest }) => {
@@ -42,21 +45,30 @@ ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 //   // )
 // }
 
-const check = () => <h1>You are not Have a Right To Check this</h1>;
-
 class Root extends React.Component {
   render() {
     return (
       <Router>
         <Switch>
           <Route exact path="/login" component={Login} />
-          <Route exact path="/" component={HospitalListing} />
+
+          {AuthServices.isAuthenticated() && (
+            <Route exact path="/" component={Home} />
+          )}
+
           <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-
-          <Route exact path="/hospital" component={HospitalListing} />
+          {/* hospital Update Router */}
+          <Route
+            exact
+            path="/updatehospital/:hospitalId"
+            component={UpdateHospitalDetails}
+          />
+          {AuthServices.isAuthenticated() && AuthServices.isAdmin() ? (
+            <Route exact path="/hospital" component={HospitalAdminListing} />
+          ) : (
+            <Route exact path="/hospital" component={HospitalListing} />
+          )}
           <Route exact path="/forgotpassword" component={Forgotpassword} />
-
           {AuthServices.isAuthenticated() && (
             <Route
               exact
@@ -64,22 +76,16 @@ class Root extends React.Component {
               component={Resetpassword}
             />
           )}
-
-          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
-            <Route exact path="/add/hospital" component={HospitalAdd} />
-          )}
+          {/* {AuthServices.isAuthenticated() } */}
+          <Route exact path="/add/hospital" component={HospitalAdd} />
           {/* adding cab */}
-
           {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
             <Route exact path="/cab" component={Cab} />
           )}
-
           {/* category */}
-
           {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
             <Route exact path="/category" component={CategoryAddPage} />
           )}
-
           <Route
             exact
             path="/hospital/:hospitalId"

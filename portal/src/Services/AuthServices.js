@@ -83,7 +83,6 @@ class AuthService {
       this._auth = undefined;
       return false;
     }
-
     return true;
   }
 
