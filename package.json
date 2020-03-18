@@ -25,5 +25,8 @@
     "url": "https://github.com/pantherofficial404/Doctor-AI/issues"
   },
   "homepage": "https://github.com/pantherofficial404/Doctor-AI#readme",
-  "dependencies": {}
+  "dependencies": {
+    "chart.js": "^2.9.3",
+    "react-chartjs-2": "^2.9.0"
+  }
 }

@@ -57,6 +57,7 @@ const Layout = props => {
   const handleclick = () => {
     let msg = state.Message.slice();
     msg.push(state.input);
+
     setState({
       Message: msg,
       input: ""

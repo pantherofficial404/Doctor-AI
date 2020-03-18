@@ -28,6 +28,7 @@ import { AuthServices } from "Services";
 import Resetpassword from "Pages/ResetPassword";
 import HospitalAdminListing from "Pages/HospitalAdminListing";
 import UpdateHospitalDetails from "Pages/UpdateHospital";
+import Charts from "Pages/Charts";
 
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
@@ -56,6 +57,10 @@ class Root extends React.Component {
             <Route exact path="/" component={Home} />
           )}
 
+          {AuthServices.isAuthenticated() && (
+            <Route exact path="/Charts" component={Charts} />
+          )}
+
           <Route exact path="/register" component={Register} />
           {/* hospital Update Router */}
           <Route
@@ -69,13 +74,13 @@ class Root extends React.Component {
             <Route exact path="/hospital" component={HospitalListing} />
           )}
           <Route exact path="/forgotpassword" component={Forgotpassword} />
-          {AuthServices.isAuthenticated() && (
-            <Route
-              exact
-              path="/reset/:resetPasswordToken"
-              component={Resetpassword}
-            />
-          )}
+
+          <Route
+            exact
+            path="/reset/:resetPasswordToken"
+            component={Resetpassword}
+          />
+
           {/* {AuthServices.isAuthenticated() } */}
           <Route exact path="/add/hospital" component={HospitalAdd} />
           {/* adding cab */}
