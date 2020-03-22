@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./style";
-import Header from "Components/Header";
 import {
   Container,
   Typography,
@@ -24,6 +23,7 @@ import { useHistory } from "react-router-dom";
 import { handleError } from "Store/helper";
 import { addDoctor, fetchCategory } from "Store/action";
 import ExpressFirebase from 'express-firebase';
+import { openGlobalMessageBox } from "Helper";
 
 const Layout = () => {
   const selectedHospital = useSelector(selectHospitalDetail);
@@ -70,6 +70,11 @@ const Layout = () => {
     // Api Calling Will Be Here
     await addDoctor({doctorName,description,degree,category,latitude:selectedHospital.data.location.coordinates[1],longitude:selectedHospital.data.location.coordinates[0],hospitalId:selectedHospital.data._id,thumbnailImage:imageUrl});
 
+    openGlobalMessageBox({
+      title:'Doctor AI',
+      message:'Doctor added successfully',
+      type:'success',
+    });
     // Navigate to Back Screen After Adding
     history.goBack();
 
@@ -85,7 +90,6 @@ const Layout = () => {
   const classes = useStyles();
   return (
     <div className={classes.docDetails}>
-      <Header title="Add New Doctor" />
       <div className={classes.docDetailsContent}>
         <Container className={classes.container} maxWidth="md">
           <Grid>

@@ -6,7 +6,6 @@ const useStyles = makeStyles(theme => ({
   },
   Container: {
     margin: "0 auto",
-    boxShadow: "-5px 15px 16.83px 17px rgba(0, 0, 0, 0.05)",
     borderRadius: theme.spacing() * 2,
     marginTop: theme.spacing() * 7,
     [theme.breakpoints.only("xs")]: {

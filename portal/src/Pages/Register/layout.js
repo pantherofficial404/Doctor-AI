@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useStyles from "./style";
-import { Header, Snackbar } from "Components";
+import { Header, InputComponent } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
 
 import {
@@ -17,72 +17,75 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 //For Data Retriving from the redux
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
+import { openGlobalMessageBox } from "Helper";
 
 const Layout = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [email, Setemail] = useState();
-  const [password, Setpassword] = useState();
-  const [state, setState] = useState({
-    isOpen: false,
-    variant: "error",
-    message: ""
-  });
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
+    setSubmitting(true);
 
     if (!email && !password) {
-      return setState({
-        isOpen: true,
-        message: "All field is Required"
+      return openGlobalMessageBox({
+        title: "Doctor AI",
+        message: "All Field is required",
+        type: "error"
       });
     }
     if (!email) {
-      return setState({
-        isOpen: true,
-        message: "Your Email is Required"
+      return openGlobalMessageBox({
+        title: "Doctor AI",
+        message: "Email is required",
+        type: "error"
       });
     }
     if (!password) {
-      return setState({
-        isOpen: true,
-        message: "Your Password is Required"
+      return openGlobalMessageBox({
+        title: "Doctor AI",
+        message: "Password is required",
+        type: "error"
       });
     }
     const EmailPatten = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!EmailPatten.test(email)) {
-      return setState({
-        isOpen: true,
-        message: "Please Enter Valid Email"
+      return openGlobalMessageBox({
+        title: "Doctor AI",
+        message: "Please enter valid email",
+        type: "error"
       });
     }
     //Api Calling
     try {
-      await AuthServices.signup(email, password).then(
-        history.push("/hospital")
-      );
+      await AuthServices.signup(email, password);
+      openGlobalMessageBox({
+        title: "Doctor AI",
+        message:
+          "Welcome to Doctor AI. Explore the new world of health department with power of AI",
+        type: "success"
+      });
+      history.push("/");
     } catch (err) {
-      setState({
-        isOpen: true,
-        message: err.response.data.data.message || "User is Already Register"
+      openGlobalMessageBox({
+        title: "Doctor AI",
+        message: err.response.data.data.message || "User is Already Register",
+        type: "error"
       });
     } finally {
-      Setemail("");
-      Setpassword("");
+      setEmail("");
+      setPassword("");
+      setSubmitting(false);
     }
   };
 
   return (
     <div>
       <Header title="Register" />
-      <Snackbar
-        errorMessage={state.message}
-        isOpen={state.isOpen}
-        variant={state.variant}
-        handleClose={() => setState({ isOpen: false })}
-      />
       <div>
         <Container className={classes.Container} maxWidth="md">
           <div className={classes.SingUp}>
@@ -93,61 +96,35 @@ const Layout = () => {
                     <Typography variant="h3" className={classes.FormTitle}>
                       Register
                     </Typography>
-                    <TextField
-                      autoFocus
-                      className={classes.TextField}
-                      id="input-with-icon-AcccountCircle"
-                      fullWidth
-                      name="username"
-                      size="medium"
-                      placeholder="Username Or Email"
+                    <InputComponent
+                      placeholder="Email id"
                       type="email"
-                      required
-                      value={email}
-                      onChange={e => Setemail(e.target.value)}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <PersonAddIcon style={{ color: "#222222" }} />
-                          </InputAdornment>
-                        )
-                      }}
+                      Icon={PersonAddIcon}
+                      onChange={e => setEmail(e.target.value)}
                     />
-                    <TextField
-                      className={classes.TextField}
-                      id="input-with-icon-Lohck"
-                      placeholder="Password"
-                      name="password"
-                      fullWidth
+                    <InputComponent
+                      placeholder="password"
                       type="password"
-                      onChange={e => Setpassword(e.target.value)}
-                      value={password}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <LockIcon
-                              style={{
-                                color: "#222222"
-                              }}
-                            />
-                          </InputAdornment>
-                        )
-                      }}
+                      Icon={LockIcon}
+                      onChange={e => setPassword(e.target.value)}
                     />
                     <div className={classes.Button}>
                       <Button
                         variant="contained"
                         onClick={handleSubmit}
                         color="primary"
-                        className={classes.SignUpButton}>
+                        className={classes.SignUpButton}
+                        disabled={isSubmitting}
+                      >
                         Register
                       </Button>
                     </div>
                     <div className={classes.links}>
                       <Link
                         className={classes.link}
-                        onClick={() => history.push("/login")}>
-                        Already Have An Account..
+                        onClick={() => history.push("/login")}
+                      >
+                        Already Have An Account? Login
                       </Link>
                     </div>
                   </div>

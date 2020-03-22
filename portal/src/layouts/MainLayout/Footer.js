@@ -11,8 +11,8 @@ const Footer = (props) => {
           <div className="col-md-6 text-md-right">
             {Config.VERSION}
             <div className="text-md-right footer-links d-none d-md-block">
-              <Link href="/">About</Link>
-              <Link href="/">ContLinkct Us</Link>
+              <Link to="/">About</Link>
+              <Link to="/">Contact Us</Link>
             </div>
           </div>
         </div>

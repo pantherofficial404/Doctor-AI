@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import useStyles from "./style";
-import { Header, Snackbar } from "Components";
+import { Header, InputComponent } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
 
 import {
   Typography,
-  TextField,
-  InputAdornment,
   Container,
   Button,
   Link
@@ -14,6 +12,7 @@ import {
 import PersonIcon from "@material-ui/icons/Person";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
+import { openGlobalMessageBox } from "Helper";
 
 const Layout = () => {
   const classes = useStyles();
@@ -21,48 +20,52 @@ const Layout = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const [state, setState] = useState({
-    isOpen: false,
-    variant: "error",
-    message: ""
-  });
-
   const handleLogin = async e => {
     e.preventDefault();
     if (!email && !password) {
-      return setState({
-        isOpen: true,
-        message: "All field is Required"
+      return openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'All fields is required',
+        type:'error',
       });
     }
     if (!email) {
-      return setState({
-        isOpen: true,
-        message: "Your Email is Required"
+      return openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Email is required',
+        type:'error'
       });
     }
     if (!password) {
-      return setState({
-        isOpen: true,
-        message: "Your Password is Required"
+      return openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Password is required',
+        type:'error',
       });
     }
     const EmailPatten = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!EmailPatten.test(email)) {
-      return setState({
-        isOpen: true,
-        message: "Please Enter Valid Email"
-      });
+      return openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Please enter valid email',
+        type:'error',
+      })
     }
     try {
       await AuthServices.login(email, password).then(() =>
-        history.push("/hospital")
+        history.push("/")
       );
+      openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Welcome to Doctor AI. Explore the new world of health department with power of AI',
+        type:'success',
+      });
     } catch (err) {
-      setState({
-        isOpen: true,
-        message: "Enable to Found User in Database"
+      openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'No user found.. try to register user',
+        type:'error',
       });
     } finally {
       setEmail("");
@@ -73,12 +76,6 @@ const Layout = () => {
   return (
     <div className={classes.loginpage}>
       <Header title="Login" />
-      <Snackbar
-        errorMessage={state.message}
-        isOpen={state.isOpen}
-        variant={state.variant}
-        handleClose={() => setState({ isOpen: false })}
-      />
       <div>
         <Container className={classes.Container} maxWidth="md">
           <div className={classes.SingIn}>
@@ -89,53 +86,28 @@ const Layout = () => {
                     <Typography variant="h3" className={classes.FormTitle}>
                       Login
                     </Typography>
-                    <TextField
-                      autoFocus
-                      className={classes.TextField}
-                      id="input-with-icon-AcccountCircle"
-                      fullWidth
-                      name="username"
-                      size="medium"
+                    <InputComponent
+                      placeholder="Email"
                       onChange={e => setEmail(e.target.value)}
-                      value={email}
-                      placeholder="Username Or Email"
-                      type="email"
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <PersonIcon style={{ color: "#222222" }} />
-                          </InputAdornment>
-                        )
-                      }}
-                    />
-                    <TextField
+                      Icon={PersonIcon}
+                      size="medium"
                       className={classes.TextField}
-                      id="input-with-icon-Lock"
+                    />
+                    <InputComponent
                       placeholder="Password"
-                      name="password"
-                      fullWidth
-                      type="password"
                       onChange={e => setPassword(e.target.value)}
-                      value={password}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <LockIcon
-                              style={{
-                                color: "#222222"
-                              }}
-                            />
-                          </InputAdornment>
-                        )
-                      }}
+                      Icon={LockIcon}
+                      size="medium"
+                      className={classes.TextField}
+                      type="password"
                     />
                     <div className={classes.Button}>
                       <Button
                         variant="contained"
                         color="primary"
                         onClick={handleLogin}
-                        className={classes.SigninButton}>
+                        className={classes.SigninButton}
+                      >
                         Login
                       </Button>
                     </div>
@@ -143,13 +115,15 @@ const Layout = () => {
                       <Link
                         className={classes.link}
                         style={{ marginBottom: 3 }}
-                        onClick={() => history.push("/forgotpassword")}>
-                        Forget Password !!
+                        onClick={() => history.push("/forgotpassword")}
+                      >
+                        Forgot Password !!
                       </Link>
                       <Link
                         className={classes.link}
-                        onClick={() => history.push("/register")}>
-                        > New Here ?? Register Here
+                        onClick={() => history.push("/register")}
+                      >
+                        New Here ?? Register Here
                       </Link>
                     </div>
                   </div>

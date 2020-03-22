@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import useStyles from "./style";
-import { Header } from "Components";
 import { Typography, Container, Button, Grid } from "@material-ui/core";
 import { MapService } from "Services";
-import Snackbar from "Components/Snakbar";
 import CircularProgress from "@material-ui/core/CircularProgress";
 //icon
 import EmailIcon from "@material-ui/icons/Email";
@@ -20,6 +18,7 @@ import { handleError } from "Store/helper";
 import { addHospitalAction } from "Store/action";
 import { useHistory } from "react-router-dom";
 import ExpressFirebase from "express-firebase";
+import { openGlobalMessageBox } from "Helper";
 
 const Layout = () => {
   const [coordinates, setCoordinates] = useState();
@@ -33,11 +32,6 @@ const Layout = () => {
   const [isSubmitting, setSubmitting] = useState(false);
   const history = useHistory();
   const [file, setFile] = useState(null);
-  const [state, setState] = useState({
-    isOpen: false,
-    variant: "error",
-    message: ""
-  });
 
   const classes = useStyles();
 
@@ -72,37 +66,37 @@ const Layout = () => {
         !mobileNo ||
         !emailId
       ) {
-        setState({
-          message: "All Field is Required",
-          isOpen: true,
-          variant: "error"
+        openGlobalMessageBox({
+          title:'Hospital',
+          message:'All Fields is required',
+          type:'error',
         });
         setSubmitting(false);
         return setValidForm(false);
       }
       if (mobileNo.length !== 10) {
-        setState({
-          message: "Please Check Your Mobile No!",
-          isOpen: true,
-          variant: "error"
+        openGlobalMessageBox({
+          title:'Hospital',
+          message:'Please check your mobile no.',
+          type:'error',
         });
         setSubmitting(false);
         return setValidForm(false);
       }
       if (!file) {
-        setState({
-          message: "You are not select Image",
-          isOpen: true,
-          variant: "error"
+        openGlobalMessageBox({
+          title:'Hospital',
+          message:'You have not selected image.',
+          type:'error',
         });
         setSubmitting(false);
         return setValidForm(false);
       }
       if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(emailId)) {
-        setState({
-          message: "You have entered an invalid email address!",
-          isOpen: true,
-          variant: "error"
+        openGlobalMessageBox({
+          title:'Hospital',
+          message:'You have entered invalid email address',
+          type:'error',
         });
         setSubmitting(false);
         return setValidForm(false);
@@ -126,7 +120,12 @@ const Layout = () => {
         longitude: coordinates.lng,
         hospitalImage: imageUrl
       });
-      history.push("/");
+      openGlobalMessageBox({
+        title:'Hospital',
+        message:'Hospital added successfully',
+        type:'success',
+      });
+      history.push("/hospital");
     } catch (err) {
       // Handling Error
       handleError(err);
@@ -138,13 +137,6 @@ const Layout = () => {
 
   return (
     <div className={classes.hospitalDetails}>
-      <Header title="Add New Hospital" />
-      <Snackbar
-        errorMessage={state.message}
-        isOpen={state.isOpen}
-        handleClose={() => setState({ isOpen: false })}
-        variant={state.variant}
-      />
       <div className={classes.hospitalsDetailsContent}>
         <Container className={classes.Container} maxWidth="md">
           <Grid>

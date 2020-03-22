@@ -1,58 +1,43 @@
-import React, { Component } from "react";
+import React from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { Chat } from "Components";
+import { useHistory } from "react-router-dom";
+import { AuthServices } from "Services";
 
-class MainLayout extends Component {
-  state = {
-    drawerOpen: false
+const MainLayout = (props) => {
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const history = useHistory();
+
+  const handleDrawerMenuClick = () => {
+    setDrawerOpen(!drawerOpen)
   };
 
-  handleDrawerMenuClick = () => {
-    this.setState({
-      drawerOpen: !this.state.drawerOpen
-    });
-  };
+  const handleLogout = (e)=>{
+    if(e){
+      e.preventDefault();
+    }
+    AuthServices.logout();
+    history.replace('/');
+  }
 
-  handleCloseDrawer = () => {
-    this.setState({
-      drawerOpen: false
-    });
-  };
-
-  renderSidebar() {
-    return (
+  return (
+    <div className="wrapper">
       <Sidebar
-        open={this.state.drawerOpen}
-        onCloseDrawer={this.handleDrawerMenuClick}
+        open={drawerOpen}
+        onCloseDrawer={handleDrawerMenuClick}
       />
-    );
-  }
-
-  renderHeader() {
-    return <Header onDrawerMenuClick={this.handleDrawerMenuClick} />;
-  }
-
-  renderFooter() {
-    return <Footer />;
-  }
-
-  render() {
-    return (
-      <div className="wrapper">
-        {this.renderSidebar()}
-        <div className="content-page">
-          <div className="content">
-            {this.renderHeader()}
-            {this.props.children}
-          </div>
-          {this.renderFooter()}
+      <div className="content-page">
+        <div className="content">
+          <Header onDrawerMenuClick={handleDrawerMenuClick} handleLogout={handleLogout}/>
+          {props.children}
         </div>
-        <Chat />
+        <Footer />
       </div>
-    );
-  }
-}
+      <Chat />
+    </div>
+  );
+};
 
 export default MainLayout;

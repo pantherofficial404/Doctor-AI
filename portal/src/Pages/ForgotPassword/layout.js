@@ -4,23 +4,22 @@ import Header from "Components/Header";
 import {
   Container,
   Typography,
-  Button,
-  TextField,
-  InputAdornment} from "@material-ui/core";
+  Button
+} from "@material-ui/core";
 import Config from "Config";
 import EmailIcon from "@material-ui/icons/Email";
 import { handleError } from "Store/helper";
 import { useHistory } from "react-router-dom";
-import { Snackbar } from "Components";
+import { Snackbar, InputComponent } from "Components";
 import ForgotpasswordIcon from "./Assets/forgot.svg";
 import { NetworkServices } from "Services";
+import { openGlobalMessageBox } from "Helper";
 
 const Layout = () => {
   const classes = useStyles();
   const history = useHistory();
   const [success, setSuccess] = useState(false);
   const [username, setUsername] = useState();
-  const [click, isClick] = useState(false);
   const [state, setState] = useState({
     isOpen: false,
     variant: "error",
@@ -30,26 +29,23 @@ const Layout = () => {
   const handleSubmit = async e => {
     e.preventDefault();
     if (!username) {
-      return setState({
-        isOpen: true,
-        variant: "error",
-        message: "Please Enter Email"
+      return openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Please enter valid email',
+        type:'error',
       });
     }
-    isClick(true);
     try {
       await NetworkServices.post(`${Config.SERVER_URL}/forgotPassword`, {
         username
-      }).then(() => {
-        setSuccess(true);
+      });
+      openGlobalMessageBox({
+        title:'Doctor AI',
+        message:'Forgot Password token sent to your registered email id',
+        type:'success',
       });
     } catch (error) {
-      isClick(false);
-      handleError(error);
-      setState({
-        isOpen: true,
-        message: "User not Found In Database"
-      });
+      handleError();
     } finally {
       setUsername("");
     }
@@ -65,7 +61,8 @@ const Layout = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column"
-          }}>
+          }}
+        >
           <h5 style={{ fontSize: "1.5rem", fontFamily: "Poppins" }}>
             An Email with Reset intruction Send In Your email Address,Kindly
             Check Your Email..
@@ -73,7 +70,8 @@ const Layout = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => history.push("/login")}>
+            onClick={() => history.push("/login")}
+          >
             GO BACK TO LOGIN
           </Button>
         </div>
@@ -100,36 +98,26 @@ const Layout = () => {
                   variant="h6"
                   align="center"
                   className={classes.title}
-                  style={{ marginBottom: "2rem" }}>
+                  style={{ marginBottom: "2rem" }}
+                >
                   Verifying Email Please Enter Your Email
                 </Typography>
-                <TextField
-                  autoFocus
-                  className={classes.TextField}
-                  id="input-with-icon-AcccountCircle"
-                  fullWidth
-                  name="username"
+                <InputComponent
+                  placeholder="Email id"
                   onChange={e => setUsername(e.target.value)}
+                  fullWidth
                   size="medium"
-                  value={username}
-                  placeholder="Username Or Email"
                   type="email"
-                  required
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <EmailIcon style={{ color: "#222222" }} />
-                      </InputAdornment>
-                    )
-                  }}
+                  Icon={EmailIcon}
                 />
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
                   style={{ marginTop: 20 }}
-                  disabled={click}
-                  fullWidth>
+                  disabled={!username}
+                  fullWidth
+                >
                   Send Email
                 </Button>
               </form>
@@ -141,4 +129,3 @@ const Layout = () => {
   );
 };
 export default Layout;
-

@@ -73,7 +73,7 @@ const Layout = () => {
 
   const handlePatientBooking = async () => {
     try {
-      const patientEmailId = JSON.parse(window.localStorage.getItem("panther"));
+      const patientEmailId = JSON.parse(localStorage.getItem("panther"));
       let patientEmail = patientEmailId;
       let hospitalEmail = hospital.emailId;
       await sendMail({ patientEmail, hospitalEmail });
@@ -126,10 +126,9 @@ const Layout = () => {
 
       <Container maxWidth="lg" className={classes.container}>
         <div className={classes.hospitalInfo}>
-          <Grid>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} lg={4}>
-                <Card>
+                <Card style={{boxShadow:'none'}}>
                   <CardContent>
                     <div className={classes.hospitalsection}>
                       <img
@@ -150,8 +149,8 @@ const Layout = () => {
                           }}
                           variant="body2">
                           <Call color="primary" />
-                          {hospital.mobileNo.map(number => (
-                            <span>{number}</span>
+                          {hospital.mobileNo.map((number,key) => (
+                            <span key={key}>{number}</span>
                           ))}
                         </Typography>
                         <Typography
@@ -189,7 +188,7 @@ const Layout = () => {
                 </Card>
               </Grid>
               <Grid item xs={12} sm={12} lg={8}>
-                <Card>
+                <Card style={{boxShadow:'none'}}>
                   <CardContent>
                     <Typography variant="h5">Description</Typography>
                     <Typography
@@ -233,7 +232,7 @@ const Layout = () => {
                           AuthServices.isAdmin() && (
                             <Button
                               variant="contained"
-                              color="secondary"
+                              color="primary"
                               size="small"
                               onClick={() =>
                                 history.push(
@@ -273,7 +272,6 @@ const Layout = () => {
                 </Card>
               </Grid>
             </Grid>
-          </Grid>
         </div>
 
         {/* For Dialog Box */}
@@ -302,7 +300,7 @@ const Layout = () => {
                 onChange={e => setPatientName(e.target.value)}
                 value={patientName}
               />
-              <Grid spacing={2}>
+              <Grid spacing={2} container>
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={6}>
                     <InputComponent
@@ -329,8 +327,8 @@ const Layout = () => {
                         value={category}
                         onChange={e => setCategory(e.target.value)}>
                         <MenuItem value={1}>Select</MenuItem>
-                        {(categoryListing.data || []).map(element => (
-                          <MenuItem value={element._id}>
+                        {(categoryListing.data || []).map((element,key) => (
+                          <MenuItem value={element._id} key={key}>
                             {element.title}
                           </MenuItem>
                         ))}

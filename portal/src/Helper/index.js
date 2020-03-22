@@ -6,10 +6,17 @@ export const getFormattedString = element => {
   return isNullOrUndefined(element) ? "N/A" : element;
 };
 
-export const openGlobalMessageBox = (args) => {
+export const openGlobalMessageBox = args => {
   store.dispatch(messageBoxAction({ ...args, open: true }));
 };
 
 export const closeGlobalMessageBox = () => {
   store.dispatch(messageBoxAction({ open: false }));
+};
+
+export const getAvatarName = name => {
+  if(!name){
+    return 'D';
+  }
+  return String(name)[0].toUpperCase();
 };
