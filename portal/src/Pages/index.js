@@ -16,7 +16,7 @@ import HospitalAdd from "Pages/HospitalAdd";
 import DoctorAdd from "./DoctorAdd";
 import NotFoundView from "./NotFoundView";
 import HospitalDetail from "Pages/HospitalsDetail";
-import PatientDetail from "Pages/PatientDetails";
+import Profile from "Pages/Profile";
 import Order from "Pages/Order";
 import OtpVerification from "Pages/OTP VERIFICATION";
 import CategoryAddPage from "Pages/Category";
@@ -71,7 +71,7 @@ class Root extends React.Component {
           <PrivateRoute exact path="/hospital/:hospitalId" component={HospitalDetail} />
           <PrivateRoute exact path="/add/doctor/:hospitalId" component={DoctorAdd} admin/>
           <PrivateRoute exact path="/category" component={CategoryAddPage} admin/>
-          <PrivateRoute exact path="/patient" component={PatientDetail} />
+          <PrivateRoute exact path="/profile" component={Profile} />
           <PrivateRoute exact path="/order" component={Order} />
           <PrivateRoute exact path="/otp" component={OtpVerification} />
           <PrivateRoute exact path="/category/list" component={CategoryListing} />

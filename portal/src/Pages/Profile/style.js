@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
 
     container: {
         display: "flex",
-        minHeight: "90vh",
+        minHeight: "80vh",
         justifyContent: "center",
         alignItems: "Center",
         overflow: "hidden",
@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
     root: {
         padding: theme.spacing() * 3,
         maxWidth: 350,
-        boxShadow: "-5px 15px 16.83px 17px rgba(0, 0, 0, 0.05)",
-        borderRadius: theme.spacing() * 2,
+        boxShadow: "none",
+        borderRadius: theme.spacing() * 1,
     },
     avatar: {
         margin: "0 auto",

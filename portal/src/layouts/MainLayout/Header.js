@@ -19,7 +19,7 @@ class Header extends React.Component {
                   role="button"
                   aria-haspopup="false"
                   aria-expanded="false"
-                  to="/patient"
+                  to="/profile"
                 >
                   <span className="account-user-avatar">
                     <div
