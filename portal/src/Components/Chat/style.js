@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     maxWidth: "800px",
     margin: "20px 5px",
     maxHeight:"400px",
+    height:"400px",
   },
   msgChat: {
     flex: 1,
