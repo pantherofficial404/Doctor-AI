@@ -65,5 +65,6 @@ router.post("/mail", MailController.SendMail);
 router.get('/users',UserController.getUsers);
 router.delete('/users/:id',UserController.deleteUserById);
 router.post('/users/changePassword',UserController.changeUserPassword);
+router.post('/users/changeAdminStatus',UserController.changeAdminStatus);
 
 module.exports = router;
