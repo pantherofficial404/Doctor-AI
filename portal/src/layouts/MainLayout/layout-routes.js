@@ -21,6 +21,11 @@ export const adminRoutes = [
         Icon:AttendanceIcon,
         path:'/category/list'
     },
+    {
+        title:'Users',
+        Icon:AttendanceIcon,
+        path:'/users',
+    },
 ];
 
 export const userRoutes = [

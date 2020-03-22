@@ -26,6 +26,7 @@ import { AuthServices } from "Services";
 import Resetpassword from "Pages/ResetPassword";
 import UpdateHospitalDetails from "Pages/UpdateHospital";
 import Charts from "Pages/Charts";
+import Users from 'Pages/User';
 
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
@@ -74,6 +75,8 @@ class Root extends React.Component {
           <PrivateRoute exact path="/order" component={Order} />
           <PrivateRoute exact path="/otp" component={OtpVerification} />
           <PrivateRoute exact path="/category/list" component={CategoryListing} />
+
+          <PrivateRoute exact path="/users" component={Users} admin/>
 
           <Route component={NotFoundView} />
         </Switch>

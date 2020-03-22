@@ -25,6 +25,7 @@ export const sendMailAction = getDataAction("MAIL");
 export const loadUserAction = getDataAction("USER_REGISTRATION");
 export const loginAction = getDataAction("USER_LOGIN");
 export const messageBoxAction = createAction("MESSAGE_BOX");
+export const usersAction = getDataAction("USERS");
 
 const addDataAction = (action, key) => {
   return reducerFactory => {
@@ -124,12 +125,18 @@ const initialState = {
     error: null,
     data: null
   },
-  messageBox:{
-    open:false,
-    title:'',
-    message:'',
-    type:'success',
+  users: {
+    initialized: false,
+    loading: false,
+    error: null,
+    data: null
   },
+  messageBox: {
+    open: false,
+    title: "",
+    message: "",
+    type: "success"
+  }
 };
 const reducer = new ReducerFactory(initialState)
   .addCustom(addDataAction(hospitalListingAction, "hospitals"))
@@ -140,6 +147,7 @@ const reducer = new ReducerFactory(initialState)
   .addCustom(addDataAction(currentOrderAction, "currentOrder"))
   .addCustom(addDataAction(userOrderAction, "userOrder"))
   .addCustom(addDataAction(sendMailAction, "mail"))
+  .addCustom(addDataAction(usersAction, "users"))
   .add(messageBoxAction, (state, action) => {
     return {
       ...state,

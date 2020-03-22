@@ -11,7 +11,8 @@ import {
   categoryListingAction,
   currentOrderAction,
   userOrderAction,
-  sendMailAction
+  sendMailAction,
+  usersAction
 } from "./reducer";
 import Config from "Config";
 
@@ -202,6 +203,22 @@ export const sendMail = async data => {
     handleError(err);
     store.dispatch(
       sendMailAction.failed({
+        internalMessage: err.message,
+        displayMessage: err.response.data.message
+      })
+    );
+  }
+};
+
+export const fetchUsers = async () => {
+  try {
+    store.dispatch(usersAction.init());
+    const response = await NetworkServices.get(`${Config.SERVER_URL}/users`);
+    store.dispatch(usersAction.success(response.data));
+  } catch (err) {
+    handleError(err);
+    store.dispatch(
+      usersAction.failed({
         internalMessage: err.message,
         displayMessage: err.response.data.message
       })

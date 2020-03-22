@@ -32,3 +32,6 @@ export const userLoad = state => {
 export const selectMessageBox = (state)=>{
   return selectState(state).messageBox;
 }
+export const selectUsers = (state)=>{
+  return selectState(state).users;
+}
