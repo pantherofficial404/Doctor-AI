@@ -23,7 +23,11 @@ const userSchema = new Schema(
     },
     resetPasswordExpires: {
       type: mongoose.Schema.Types.Date
-    }
+    },
+    hospitalId:{
+      type:mongoose.Schema.Types.String,
+      required:false,
+    },
   },
   SchemaOptions
 );
