@@ -6,32 +6,32 @@ import { Chat } from "Components";
 import { useHistory } from "react-router-dom";
 import { AuthServices } from "Services";
 
-const MainLayout = (props) => {
+const MainLayout = props => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const history = useHistory();
 
   const handleDrawerMenuClick = () => {
-    setDrawerOpen(!drawerOpen)
+    setDrawerOpen(!drawerOpen);
   };
 
-  const handleLogout = (e)=>{
-    if(e){
+  const handleLogout = e => {
+    if (e) {
       e.preventDefault();
     }
     AuthServices.logout();
-    history.replace('/');
-  }
+    history.replace("/");
+  };
 
   return (
     <div className="wrapper">
-      <Sidebar
-        open={drawerOpen}
-        onCloseDrawer={handleDrawerMenuClick}
-      />
+      <Sidebar open={drawerOpen} onCloseDrawer={handleDrawerMenuClick} />
       <div className="content-page">
         <div className="content">
-          <Header onDrawerMenuClick={handleDrawerMenuClick} handleLogout={handleLogout}/>
-          {props.children}
+          <Header
+            onDrawerMenuClick={handleDrawerMenuClick}
+            handleLogout={handleLogout}
+          />
+          <div style={{ padding: "30px 10px"}}>{props.children}</div>
         </div>
         <Footer />
       </div>

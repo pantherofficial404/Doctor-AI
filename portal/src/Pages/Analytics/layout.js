@@ -6,24 +6,25 @@ import {
   Card,
   Grid,
   Container,
-  Tooltip,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Paper
+  Paper,
+  Typography
 } from "@material-ui/core";
-import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import FaceIcon from "@material-ui/icons/Face";
-import LineChart from "Components/Charts/LineChart";
-import BarChart from "Components/Charts/Barchart";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+
+import CardComponent from "./components/card.component";
+import BarChartComponent from "./components/barchart.component";
+import LineChartComponent from "./components/linechart.component";
 //THIS IS THE LINECHART DATA
 
 const data = [
@@ -125,7 +126,8 @@ const Layout = () => {
         <Button
           variant="contained"
           className={classes.DatePickerButton}
-          onClick={() => setShow(!show)}>
+          onClick={() => setShow(!show)}
+        >
           Select Date
         </Button>
       </div>
@@ -140,101 +142,79 @@ const Layout = () => {
         )}
       </div>
       <div className={classes.summary}>
-        <Container maxWidth="lg">
+        <div className={classes.cardContainer}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={4} lg={4}>
-              <Card className={classes.Card}>
-                <div className={classes.tooltipclasses}>
-                  <Tooltip title="Number of User is Connected with us">
-                    <InfoOutlinedIcon style={{ fontSize: "1.2em" }} />
-                  </Tooltip>
-                  <div style={{ textAlign: "center", padding: 0 }}>
-                    <span className={classes.icondiv}>
-                      <PeopleAltIcon className={classes.icon} />
-                    </span>
-                    <div className={classes.numbersection}>
-                      <h2 className={classes.numberOfentity}>25</h2>
-                      <p className={classes.tagOfCard}>Connected User </p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              <CardComponent
+                icon={PeopleAltIcon}
+                count={25}
+                title="Connected User"
+                tooltipText="Number of user connected with us"
+              />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
-              <Card className={classes.Card}>
-                <div className={classes.tooltipclasses}>
-                  <Tooltip title="Number of Hospital  is Connected with us">
-                    <InfoOutlinedIcon style={{ fontSize: "1.2em" }} />
-                  </Tooltip>
-                  <div style={{ textAlign: "center", padding: 0 }}>
-                    <span className={classes.icondiv}>
-                      <LocalHospitalIcon className={classes.icon} />
-                    </span>
-                    <div className={classes.numbersection}>
-                      <h2 className={classes.numberOfentity}>120</h2>
-                      <p className={classes.tagOfCard}>Connected Hospitals </p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              <CardComponent
+                icon={LocalHospitalIcon}
+                count={120}
+                title="Connected Hospitals"
+                tooltipText="Number of hospital connected with us"
+              />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
-              <Card className={classes.Card}>
-                <div className={classes.tooltipclasses}>
-                  <Tooltip title="Number of Doctor is Connected with us">
-                    <InfoOutlinedIcon style={{ fontSize: "1.2em" }} />
-                  </Tooltip>
-                  <div style={{ textAlign: "center", padding: 0 }}>
-                    <span className={classes.icondiv}>
-                      <FaceIcon className={classes.icon} />
-                    </span>
-                    <div className={classes.numbersection}>
-                      <h2 className={classes.numberOfentity}>14</h2>
-                      <p className={classes.tagOfCard}>Connected Doctor</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+              <CardComponent
+                icon={FaceIcon}
+                count={14}
+                title="Connected Doctor"
+                tooltipText="Number of doctor connected with us"
+              />
             </Grid>
           </Grid>
+          </div>
 
-          <div className={classes.LineChart}>
-            <Card className={classes.Card}>
-              <LineChart
-                title="Usage:"
+          <div className={classes.cardContainer}>
+            <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                style={{ margin: 20 }}
+              >
+                Patients over time
+              </Typography>
+              <LineChartComponent
                 data={data}
-                width={1150}
-                height={300}
-                dataKey="date"
-                dataKeyY="patient"
+                xAxis="date"
+                yAxis={["patient"]}
+                colors={["#747BF3"]}
               />
             </Card>
           </div>
-
-          <div className={classes.BarChart}>
-            <Card className={classes.Card}>
-              <BarChart
-                title="Patinet Added"
+          <div className={classes.cardContainer}>
+            <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                style={{ margin: 20 }}
+              >
+                Patients over time by gender
+              </Typography>
+              <BarChartComponent
                 data={barchartData}
-                dataKeyX="name"
-                width={1150}
-                height={400}
-                dataKeyM="male"
-                dataKeyF="female"
-                fillM="#747BF3"
-                fillF="#82CA9D"
+                xAxis="name"
+                yAxis={["male", "female"]}
+                colors={["#747BF3", "#82CA9D"]}
               />
             </Card>
           </div>
 
           {/* table */}
-          <div className={classes.tableSection}>
-            <Card className={classes.Card}>
-              <div className={classes.cardTitle}>
-                <h6 style={{ fontSize: "1rem", fontFamily: "Poppins" }}>
-                  OverView
-                </h6>
-              </div>
+            <Card className={classes.cardContainer}>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                style={{ margin: 20 }}
+              >
+                Insights
+              </Typography>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                   <TableHead>
@@ -249,7 +229,7 @@ const Layout = () => {
                   <TableBody>
                     {rows.map(row => (
                       <TableRow key={row.name}>
-                        <TableCell component="th" scope="row">
+                        <TableCell component="th">
                           {row.name}
                         </TableCell>
                         <TableCell align="right">{row.calories}</TableCell>
@@ -262,8 +242,6 @@ const Layout = () => {
                 </Table>
               </TableContainer>
             </Card>
-          </div>
-        </Container>
       </div>
     </div>
   );
