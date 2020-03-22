@@ -111,7 +111,7 @@ const signup = async (req, res, next) => {
     username
   };
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
-  await new User({
+  const user = await new User({
     username,
     password: encryptedPassword
   }).save();
@@ -121,7 +121,8 @@ const signup = async (req, res, next) => {
     data: {
       expiredOn,
       token,
-      username
+      username,
+      _id:user._id,
     },
     success: true
   });
