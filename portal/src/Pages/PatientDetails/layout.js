@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useStyle from "./style";
 import {
   Card,
@@ -6,16 +6,13 @@ import {
   CardContent,
   Avatar,
   Typography,
-  InputAdornment,
-  TextField,
   Button
 } from "@material-ui/core";
-import Header from "Components/Header";
 import LockIcon from "@material-ui/icons/Lock";
+import { InputComponent } from "Components";
 
 const Layout = () => {
   const classes = useStyle();
-  const [password, setPassword] = useState("");
 
   return (
     <div className={classes.patientpage}>
@@ -27,54 +24,19 @@ const Layout = () => {
               <Typography
                 variant="h5"
                 align="center"
-                style={{ marginBottom: "1rem" }}>
+                style={{ marginBottom: "1rem" }}
+              >
                 Jone Doe
               </Typography>
-              <TextField
-                className={classes.TextField}
-                id="input-with-icon-Lock"
-                placeholder="Old Password"
-                fullWidth
-                type="password"
-                onChange={e => setPassword(e.target.value)}
-                // onChange={e => setPassword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon
-                        style={{
-                          color: "#7563FF"
-                        }}
-                      />
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <TextField
-                className={classes.TextField}
-                id="input-with-icon-Lock"
-                placeholder="New Password"
-                fullWidth
-                type="password"
-                onChange={e => setPassword(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockIcon
-                        style={{
-                          color: "#7563FF"
-                        }}
-                      />
-                    </InputAdornment>
-                  )
-                }}
-              />
+              <InputComponent placeholder="Old Password" Icon={LockIcon}/>
+              <InputComponent placeholder="New Password" Icon={LockIcon}/>
               <div style={{ textAlign: "center" }}>
                 <Button
                   variant="contained"
                   color="primary"
                   fullWidth
-                  style={{ marginTop: "2rem" }}>
+                  style={{ marginTop: "2rem" }}
+                >
                   Update
                 </Button>
               </div>

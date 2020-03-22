@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import useStyles from "./style";
-import Header from "Components/Header";
 import {
   Container,
   CardContent,
@@ -10,7 +9,6 @@ import {
   Grid,
   Dialog,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   FormControl,
@@ -49,7 +47,7 @@ const Layout = () => {
   const [age, setAge] = useState();
   const [contactNumber, setContactNumber] = useState();
   const [description, setDescritpition] = useState();
-  const [isFormValid, setFormValid] = useState(true);
+  const [, setFormValid] = useState(true);
 
   const [category, setCategory] = useState(1);
 
@@ -119,7 +117,6 @@ const Layout = () => {
 
   return (
     <div className={classes.Hospitaldetails}>
-      <Header title="Hospital Detail" />
       <Snackbar
         errorMessage={state.message}
         isOpen={state.isOpen}

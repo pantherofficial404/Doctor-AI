@@ -11,14 +11,13 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "space-between",
-    width: "90%",
     maxWidth: "800px",
-    margin: "20px 5px"
+    margin: "20px 5px",
+    maxHeight:"400px",
   },
   msgChat: {
     flex: 1,
-    overflowY: "auto",
-
+    overflow: "auto",
     padding: "10px"
   },
   msg: {
@@ -35,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   absolute: {
     position: "absolute",
-    bottom: theme.spacing(2),
+    bottom: theme.spacing(12),
     right: theme.spacing(3)
   },
   msgInfo: {

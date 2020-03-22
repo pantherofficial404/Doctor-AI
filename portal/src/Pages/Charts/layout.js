@@ -1,47 +1,7 @@
 import React from "react";
 import useStyles from "./style";
 import { Grid, Card, CardContent, Container } from "@material-ui/core";
-import { Line, Bar } from "react-chartjs-2";
-import PeopleIcon from "@material-ui/icons/People";
-import LocalHospitalOutlinedIcon from "@material-ui/icons/LocalHospitalOutlined";
-
-const data = {
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ],
-  datasets: [
-    {
-      label: "Number of User Save Life",
-      data: [65, 59, 80, 81, 56, 55, 40, 25, 40, 25, 60, 65],
-      backgroundColor: [
-        "rgba(255, 99, 132, 0.6)",
-        "rgba(54, 162, 235, 0.6)",
-        "rgba(255, 206, 86, 0.6)",
-        "rgba(75, 192, 192, 0.6)",
-        "rgba(153, 102, 255, 0.6)",
-        "rgba(255, 159, 64, 0.6)",
-        "rgba(255, 99, 132, 0.6)",
-        "rgba(255, 99, 132, 0.6)",
-        "rgba(54, 162, 235, 0.6)",
-        "rgba(255, 206, 86, 0.6)",
-        "rgba(75, 192, 192, 0.6)",
-        "rgba(153, 102, 255, 0.6)"
-      ]
-    }
-  ]
-};
-
+// import { Bar } from "react-chartjs-2";
 const Layout = () => {
   const classes = useStyles();
   return (
@@ -112,7 +72,7 @@ const Layout = () => {
               <CardContent>
                 <h2>Usage:</h2>
                 <div>
-                  <Bar data={data} height="80px" />
+                  {/* <Bar data={data} height="80px" /> */}
                 </div>
               </CardContent>
             </CardContent>

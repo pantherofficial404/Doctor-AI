@@ -1,7 +1,5 @@
 import classNames from 'classnames';
-import $ from 'jquery';
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import styles from './ScrollView.module.scss';
 
@@ -18,7 +16,6 @@ class ScrollView extends React.Component{
     //   });
     // }
   }
-
   render() {
     const { horizontal, children, useSlipScroll, className } = this.props;
 

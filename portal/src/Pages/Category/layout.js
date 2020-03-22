@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import {Typography, Container, Card, CardContent, Avatar, Button, CardActionArea, CardActions, Grid,Cir, CircularProgress} from '@material-ui/core';
+import React, { useState } from 'react';
+import {Typography, Container, Button, Grid,CircularProgress} from '@material-ui/core';
 import Category from '@material-ui/icons/Category';
 import Description from '@material-ui/icons/Description';
 
-import {Header, InputComponent} from 'Components';
+import {InputComponent} from 'Components';
 import useStyle from './style';
 import { handleError } from 'Store/helper';
 import { addCategory } from 'Store/action';
@@ -11,11 +11,11 @@ import { useSelector } from 'react-redux';
 import {selectCurrentCategory} from 'Store/selectors';
 import { useHistory } from 'react-router-dom';
 
-const CategoryAddPage = (props) => {
+const CategoryAddPage = () => {
   const classes = useStyle();
   const [categoryName,setCategoryName] = useState();
   const [description,setDescription] = useState();
-  const [formValid,setFormValid] = useState(true);
+  const [,setFormValid] = useState(true);
   const currentCategory = useSelector(selectCurrentCategory);
   const history = useHistory();
 
@@ -65,7 +65,6 @@ const CategoryAddPage = (props) => {
                   <InputComponent 
                     placeholder="Category description"
                     Icon={Description}
-                    Icon={Category}
                     value={description}
                     onChange={(e)=>setDescription(e.target.value)}
                   />

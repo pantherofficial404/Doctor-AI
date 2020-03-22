@@ -60,6 +60,7 @@ const Layout = () => {
 
   const addHospital = async () => {
     try {
+      console.log(isValidForm);
       setSubmitting(true);
       // Validating Form
       if (
@@ -97,7 +98,7 @@ const Layout = () => {
         setSubmitting(false);
         return setValidForm(false);
       }
-      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)) {
+      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(emailId)) {
         setState({
           message: "You have entered an invalid email address!",
           isOpen: true,

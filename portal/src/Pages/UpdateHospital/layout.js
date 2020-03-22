@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./style";
-import { Header, Snackbar } from "Components";
+import { Snackbar } from "Components";
 import { Typography, Container, Button, Grid } from "@material-ui/core";
 import { MapService, NetworkServices } from "Services";
 import { fetchHospitalDetail } from "Store/action";
@@ -77,12 +77,13 @@ const Layout = () => {
     try {
       setSubmitting(true);
       const HospitalId = match.params.hospitalId;
-      const hospitalName = document.querySelector("#hospitalName").value;
       const address = document.querySelector("#address").value;
       const description = document.querySelector("#description").value;
       const websiteUrl = document.querySelector("#websiteUrl").value;
       const mobileNo = document.querySelector("#mobileNo").value;
       const emailId = document.querySelector("#emailId").value;
+
+      console.log(isValidForm);
 
       if (
         !address ||
@@ -110,7 +111,7 @@ const Layout = () => {
         return setValidForm(false);
       }
 
-      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)) {
+      if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/.test(emailId)) {
         setState({
           message: "You have entered an invalid email address!",
           isOpen: true,
@@ -155,18 +156,21 @@ const Layout = () => {
   return (
     <div>
       {hospitalDetail.loading ? (
-        <CircularProgress
-          color="primary"
+        <div
           style={{
-            position: "absolute",
-            left: "45%",
-            top: "40%"
+            display: "flex",
+            height: "80vh",
+            justifyContent:'center',
+            alignItems:'center',
           }}
-          size="5rem"
-        />
+        >
+          <CircularProgress
+            color="primary"
+            size="3rem"
+          />
+        </div>
       ) : (
         <div className={classes.hospitalDetails}>
-          <Header title="Update Hospital" />
           <Snackbar
             errorMessage={state.message}
             isOpen={state.isOpen}
@@ -248,12 +252,14 @@ const Layout = () => {
                               flex: 1,
                               paddingBottom: 8,
                               borderBottom: "1px solid rgba(0,0,0,0.5)"
-                            }}>
+                            }}
+                          >
                             <AddAPhotoIcon color="primary" />
                             <Typography
                               variant="body2"
                               color="textSecondary"
-                              style={{ padding: "0 10px" }}>
+                              style={{ padding: "0 10px" }}
+                            >
                               {(file || {}).name || "Choose Hospital Image"}
                             </Typography>
                           </div>
@@ -309,7 +315,8 @@ const Layout = () => {
                     className={classes.hospitalButton}
                     onClick={updateHospital}
                     fullWidth
-                    disabled={isSubmitting}>
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? (
                       <CircularProgress size="1.5rem" />
                     ) : (

@@ -35,6 +35,9 @@ const config = {
       messagingSenderId: "402163669291",
       appId: "1:402163669291:web:f5154820d54d79a9b88d6e"
     };
+  },
+  get FOOTER_COPYRIGHT(){
+    return '2020 © Doctor AI'
   }
 };
 

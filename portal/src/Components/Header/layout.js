@@ -1,15 +1,13 @@
-import React, { Component, useState } from "react";
-import { Typography, AppBar, Toolbar, withStyles, List, ListItem, ListItemIcon, ListItemText, Drawer, IconButton } from "@material-ui/core";
+import React, { useState } from "react";
+import { Typography, AppBar, Toolbar, List, ListItem, ListItemIcon, ListItemText, Drawer, IconButton } from "@material-ui/core";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from '@material-ui/icons/Menu';
 import BackButton from '@material-ui/icons/ArrowBackIos';
-import { useHistory } from "react-router-dom";
 
 const Layout = (props)=> {
     const[drawerOpen,setDrawerOpen] = useState(false);
-    const history = useHistory();
-    const { classes, title ,drawer, backButton } = props;
+    const { title ,drawer, backButton } = props;
 
     const toggleDrawer = ()=>{
       setDrawerOpen(!drawerOpen);

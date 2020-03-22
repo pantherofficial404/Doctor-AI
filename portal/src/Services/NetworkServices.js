@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { ApplicationError, LogServices, AuthServices } from "Services";
 
 const logger = LogServices.getInstance("Service:Network");

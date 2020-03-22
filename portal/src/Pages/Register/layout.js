@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useStyles from "./style";
 import { Header, Snackbar } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
@@ -18,7 +18,7 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { AuthServices } from "Services";
 import { useHistory } from "react-router-dom";
 
-const Layout = props => {
+const Layout = () => {
   const classes = useStyles();
   const history = useHistory();
   const [email, Setemail] = useState();
@@ -50,7 +50,7 @@ const Layout = props => {
         message: "Your Password is Required"
       });
     }
-    const EmailPatten = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const EmailPatten = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!EmailPatten.test(email)) {
       return setState({
@@ -122,7 +122,6 @@ const Layout = props => {
                       type="password"
                       onChange={e => Setpassword(e.target.value)}
                       value={password}
-                      type="password"
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">

@@ -5,15 +5,18 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Typography
+  Typography,
+  IconButton
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { getFormattedString } from "Helper";
 import useStyles from "./style";
 
 const Listing = props => {
   const classes = useStyles();
 
-  const { data, keys, limit } = props;
+  const { data, keys, limit, config } = props;
 
   if (limit && (data.data || []).length >= limit) {
     data.data = (data.data || []).slice(0, limit);
@@ -35,20 +38,46 @@ const Listing = props => {
             {Object.values(keys || {}).map((element, key) => (
               <TableCell key={key}>{getFormattedString(element)}</TableCell>
             ))}
+            {Boolean((config || {}).edit) && <TableCell>Edit</TableCell>}
+            {Boolean((config || {}).delete) && <TableCell>Delete</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {(data.data || []).map((element, index) => (
             <TableRow
               className={classes.listContainer}
-              onClick={() =>
+              onDoubleClick={() =>
                 props.onClick ? props.onClick(element) : () => {}
-              }>
+              }
+              key={index}
+            >
               {Object.keys(keys || {}).map((d, key) => (
                 <TableCell key={key}>
                   {getFormattedString(element[d])}
                 </TableCell>
               ))}
+              {Boolean((config || {}).edit) && (
+                <TableCell
+                  onClick={() =>
+                    props.onEdit ? props.onEdit(element) : () => {}
+                  }
+                >
+                  <IconButton >
+                    <EditIcon color="primary" />
+                  </IconButton>
+                </TableCell>
+              )}
+              {Boolean((config || {}).delete) && (
+                <TableCell
+                  onClick={() =>
+                    props.onDelete ? props.onDelete(element) : () => {}
+                  }
+                >
+                  <IconButton>
+                    <DeleteIcon color="secondary"/>
+                  </IconButton>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>
@@ -57,7 +86,8 @@ const Listing = props => {
         <Typography
           style={{ textAlign: "center" }}
           color="textSecondary"
-          variant="body1">
+          variant="body1"
+        >
           No Data found
         </Typography>
       )}

@@ -147,10 +147,10 @@ class Header extends React.Component {
                     <span>Lock Screen</span>
                   </a> */}
 
-                  <a href="#" className="dropdown-item notify-item" onClick={this.handleLogout}>
+                  <Link href="/" className="dropdown-item notify-item" onClick={this.handleLogout}>
                     <i className="mdi mdi-logout mr-1"></i>
                     <span>Logout</span>
-                  </a>
+                  </Link>
 
                 </div>
               </li>

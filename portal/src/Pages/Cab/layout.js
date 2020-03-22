@@ -5,15 +5,11 @@ import {
   Container,
   Typography,
   Grid,
-  TextField,
   Button
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import CreateIcon from "@material-ui/icons/Create";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import StarIcon from "@material-ui/icons/Star";
-import BookIcon from "@material-ui/icons/Book";
 import Cab from '@material-ui/icons/LocalTaxi';
 import { InputComponent } from "Components";
 import { handleError } from "Store/helper";
@@ -29,7 +25,7 @@ const Layout = () => {
   const [cabName,setCabName] = useState();
   const [cabNumber,setCabNumber] = useState();
   const [isSubmitting,setSubmitting] = useState(false);
-  const [isValidForm,setValidForm] = useState(false);
+  const [] = useState(false);
   const [file,setFile] = useState(null);
 
   const handleAddCab = async()=>{

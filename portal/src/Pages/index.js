@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,12 +13,10 @@ import Register from "Pages/Register";
 import Forgotpassword from "Pages/ForgotPassword/index.js";
 import HospitalListing from "Pages/HospitalListing";
 import HospitalAdd from "Pages/HospitalAdd";
-import Cab from "Pages/Cab";
 import DoctorAdd from "./DoctorAdd";
 import NotFoundView from "./NotFoundView";
 import HospitalDetail from "Pages/HospitalsDetail";
 import PatientDetail from "Pages/PatientDetails";
-import Notification from "Pages/Notification";
 import Order from "Pages/Order";
 import OtpVerification from "Pages/OTP VERIFICATION";
 import CategoryAddPage from "Pages/Category";
@@ -26,25 +24,32 @@ import CategoryListing from "Pages/CategoryListing";
 import ExpressFirebase from "express-firebase";
 import { AuthServices } from "Services";
 import Resetpassword from "Pages/ResetPassword";
-import HospitalAdminListing from "Pages/HospitalAdminListing";
 import UpdateHospitalDetails from "Pages/UpdateHospital";
 import Charts from "Pages/Charts";
 
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
-// const PrivateRoute = ({ component, ...rest }) => {
-//   // const render = (props: any) => {
-//   //   if (!AuthServices.isAuthenticated()) {
-//   //     return (
-//   //       <Redirect path="/login" />
-//   //     )
-//   //   }
-//   //   return <Component {...props} />;
-//   // };
-//   // return (
-//   <Route {...rest} render={render} />
-//   // )
-// }
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const render = (props) => {
+    if (!AuthServices.isAuthenticated()) {
+      return (
+        <Redirect to="/login"/>
+      )
+    }
+    if(rest.admin && !AuthServices.isAdmin()){
+      // Logout User
+      AuthServices.logout();
+      return (
+        <Redirect to="/login" />
+      )
+    }
+    return <Component {...props} />;
+  };
+
+  return (
+    <Route {...rest} render={render} />
+  );
+};
 
 class Root extends React.Component {
   render() {
@@ -52,56 +57,24 @@ class Root extends React.Component {
       <Router>
         <Switch>
           <Route exact path="/login" component={Login} />
-
-          {AuthServices.isAuthenticated() && (
-            <Route exact path="/" component={Home} />
-          )}
-
-          {AuthServices.isAuthenticated() && (
-            <Route exact path="/analytics" component={Charts} />
-          )}
-
           <Route exact path="/register" component={Register} />
-          {/* hospital Update Router */}
-          <Route
-            exact
-            path="/updatehospital/:hospitalId"
-            component={UpdateHospitalDetails}
-          />
-          {AuthServices.isAuthenticated() && AuthServices.isAdmin() ? (
-            <Route exact path="/hospital" component={HospitalAdminListing} />
-          ) : (
-            <Route exact path="/hospital" component={HospitalListing} />
-          )}
           <Route exact path="/forgotpassword" component={Forgotpassword} />
+          <Route exact path="/reset/:resetPasswordToken" component={Resetpassword} />
 
-          <Route
-            exact
-            path="/reset/:resetPasswordToken"
-            component={Resetpassword}
-          />
+          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/analytics" component={Charts} admin/>
 
-          {/* {AuthServices.isAuthenticated() } */}
-          <Route exact path="/add/hospital" component={HospitalAdd} />
-          {/* adding cab */}
-          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
-            <Route exact path="/cab" component={Cab} />
-          )}
-          {/* category */}
-          {AuthServices.isAuthenticated() && AuthServices.isAdmin() && (
-            <Route exact path="/category" component={CategoryAddPage} />
-          )}
-          <Route
-            exact
-            path="/hospital/:hospitalId"
-            component={HospitalDetail}
-          />
-          <Route exact path="/add/doctor/:hospitalId" component={DoctorAdd} />
-          <Route exact path="/patient" component={PatientDetail} />
-          <Route exact path="/notification" component={Notification} />
-          <Route exact path="/order" component={Order} />
-          <Route exact path="/otp" component={OtpVerification} />
-          <Route exact path="/category/list" component={CategoryListing} />
+          <PrivateRoute exact path="/updatehospital/:hospitalId" component={UpdateHospitalDetails} admin />
+          <PrivateRoute exact path="/hospital" component={HospitalListing} />
+          <PrivateRoute exact path="/add/hospital" component={HospitalAdd} admin/>
+          <PrivateRoute exact path="/hospital/:hospitalId" component={HospitalDetail} />
+          <PrivateRoute exact path="/add/doctor/:hospitalId" component={DoctorAdd} admin/>
+          <PrivateRoute exact path="/category" component={CategoryAddPage} admin/>
+          <PrivateRoute exact path="/patient" component={PatientDetail} />
+          <PrivateRoute exact path="/order" component={Order} />
+          <PrivateRoute exact path="/otp" component={OtpVerification} />
+          <PrivateRoute exact path="/category/list" component={CategoryListing} />
+
           <Route component={NotFoundView} />
         </Switch>
       </Router>

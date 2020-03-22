@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Avatar, Fab, Tooltip } from "@material-ui/core";
+import { Fab } from "@material-ui/core";
 import ChatIcon from "@material-ui/icons/Chat";
 import useStyles from "./style";
 import { fetchHospitalListing } from "Store/action";
-import { selectHospital } from "Store/selectors";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -17,25 +14,16 @@ import Input from "@material-ui/core/Input";
 
 import MicIcon from "@material-ui/icons/Mic";
 import SendIcon from "@material-ui/icons/Send";
-import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
 
-const Layout = props => {
+const Layout = () => {
   const classes = useStyles();
-  const hospitalListing = useSelector(selectHospital);
-  const history = useHistory();
   const [state, setState] = useState({
     Message: ["Hi", "My name is Kishan", "nice to meet you"]
-  });
-  const [input, setInput] = useState({
-    inputMessage: ""
   });
   useEffect(() => {
     fetchHospitalListing();
   }, []);
 
-  const navigateHospitalDetail = element => {
-    history.push(`/hospital/${element._id}`);
-  };
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -69,16 +57,19 @@ const Layout = props => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title">
+        aria-labelledby="form-dialog-title"
+      >
         <DialogTitle
           id="form-dialog-title"
-          style={{ borderBottom: "1px solid #ddd", color: "#999999" }}>
-          Chat With DoctorAi
+          style={{ borderBottom: "1px solid #ddd", color: "#999999" }}
+        >
+          Chat With Doctor AI
         </DialogTitle>
         <IconButton
           aria-label="close"
           className={classes.closeButton}
-          onClick={handleClose}>
+          onClick={handleClose}
+        >
           <CloseIcon />
         </IconButton>
         <DialogContent className={classes.chatBoard}>
@@ -87,7 +78,8 @@ const Layout = props => {
               <div className={classes.msgImg}></div>
               <div
                 className={classes.msgbubble}
-                style={{ borderBottomLeftRadius: 0 }}>
+                style={{ borderBottomLeftRadius: 0 }}
+              >
                 <div className={classes.msgInfo}>
                   <div className={classes.msgSenderName}>Doctor</div>
                   <div className={classes.msgTime}>12:45</div>
@@ -103,58 +95,55 @@ const Layout = props => {
               <div key={key}>
                 <div
                   className={classes.msg}
-                  style={{ flexDirection: "row-reverse" }}>
+                  style={{ flexDirection: "row-reverse" }}
+                >
                   <div
                     className={classes.msgImgRight}
-                    style={{ margin: "0 0 0 10px" }}></div>
+                    style={{ margin: "0 0 0 10px" }}
+                  ></div>
                   <div
                     className={classes.msgbubble}
                     style={{
                       color: "#fff",
                       background: "#7563FF",
                       borderBottomLeftRadius: 0
-                    }}>
+                    }}
+                  >
                     <div className={classes.msgInfo}>
                       <div className={classes.msgSenderName}>kishan</div>
                       <div className={classes.msgTime}>12.00</div>
                     </div>
                     <div className={classes.msgText}>
-                      {/* this is patient side */}
                       {item}
                     </div>
                   </div>
                 </div>
               </div>
-            ))}
-
-            {/* end */}
+            ))} 
           </section>
         </DialogContent>
         <DialogActions className={classes.inputBox}>
-          <Avatar style={{ background: "#ffffff" }}>
-            <InsertEmoticonIcon style={{ color: "#333" }} />
-          </Avatar>
           <Input
             fullWidth
             placeholder="Type a massage"
             value={state.input}
             onChange={handleChange}
           />
-          <Avatar
-            onClick={() => alert("say somthing")}
-            style={{ background: "#0EC74B" }}>
-            <MicIcon style={{ color: "#ffffff" }} />
-          </Avatar>
-          <Avatar style={{ background: "#0EC74B" }} onClick={handleclick}>
-            <SendIcon style={{ color: "#ffffff" }} />
-          </Avatar>
+          <IconButton>
+            <MicIcon color="primary" />
+          </IconButton>
+          <IconButton onClick={handleclick}>
+            <SendIcon color="primary" />
+          </IconButton>
         </DialogActions>
       </Dialog>
-      <Tooltip onClick={handleClickOpen} title="Add" aria-label="add">
-        <Fab color="primary" className={classes.absolute}>
-          <ChatIcon />
-        </Fab>
-      </Tooltip>
+      <Fab
+        color="primary"
+        className={classes.absolute}
+        onClick={handleClickOpen}
+      >
+        <ChatIcon />
+      </Fab>
     </div>
   );
 };

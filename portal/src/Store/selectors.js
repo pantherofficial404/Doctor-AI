@@ -26,7 +26,9 @@ export const selectOrderByType = state => {
 export const mail = state => {
   return selectState(state).mail;
 };
-
 export const userLoad = state => {
   return selectState(state).loadUser;
 };
+export const selectMessageBox = (state)=>{
+  return selectState(state).messageBox;
+}

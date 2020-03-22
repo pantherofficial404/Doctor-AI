@@ -107,6 +107,16 @@ class AuthService {
     }
     return true;
   }
+
+  isNormalUser(){
+    if(!this.isAuthenticated()){
+      return false;
+    }
+    if(this._auth.isAdmin || this._auth.isHospitalAdmin){
+      return false;
+    }
+    return true;
+  }
 }
 
 export default new AuthService();

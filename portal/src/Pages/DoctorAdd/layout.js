@@ -5,10 +5,7 @@ import {
   Container,
   Typography,
   Grid,
-  TextField,
   Button,
-  FormControlLabel,
-  Checkbox,
   FormControl,
   InputLabel,
   Select,
@@ -16,11 +13,8 @@ import {
   CircularProgress
 } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import DegreeIcon from "@material-ui/icons/Bookmark";
-import CategoryIcon from "@material-ui/icons/Category";
-import StarIcon from "@material-ui/icons/Star";
 import DescriptionIcon from "@material-ui/icons/Description";
 import HospitalIcon from '@material-ui/icons/LocalHospital';
 import { InputComponent } from "Components";
@@ -40,7 +34,6 @@ const Layout = () => {
   const [description,setDescription] = useState();
   const [degree,setDegree] = useState();
   const [category,setCategory] = useState();
-  const [isValidForm,setValidForm] = useState(false);
   const [isSubmitting,setSubmitting ]= useState(false);
   const [file,setFile] = useState(null);
 
@@ -48,7 +41,7 @@ const Layout = () => {
     if(!selectedHospital.data){
       return history.goBack();
     }
-  },[selectedHospital]);
+  },[selectedHospital,history]);
 
   useEffect(()=>{
     fetchCategory();
@@ -143,7 +136,6 @@ const Layout = () => {
                       <InputLabel>Select Category</InputLabel>
                   <Select
                     id="demo-simple-select"
-                    onChange={()=>{}}
                     fullWidth
                     value={category}
                     onChange={(e)=>setCategory(e.target.value)}

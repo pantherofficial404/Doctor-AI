@@ -1,6 +1,5 @@
 import React from 'react';
 import { TextField, InputAdornment } from '@material-ui/core';
-import clsx from 'clsx';
 
 const InputComponent = ({ Icon,style, ...rest }) => {
   const InputProps = Boolean(Icon) ? {

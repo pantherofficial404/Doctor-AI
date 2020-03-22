@@ -1,43 +1,41 @@
-import React, { Component } from 'react';
-import Footer from './Footer';
-import Header from './Header';
-import Sidebar from './Sidebar';
-
-// import SidebarContent from './SidebarContent';
+import React, { Component } from "react";
+import Footer from "./Footer";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import { Chat } from "Components";
 
 class MainLayout extends Component {
   state = {
-    drawerOpen: false,
+    drawerOpen: false
   };
-  
+
   handleDrawerMenuClick = () => {
     this.setState({
-      drawerOpen: !this.state.drawerOpen,
+      drawerOpen: !this.state.drawerOpen
     });
-  }
+  };
 
   handleCloseDrawer = () => {
     this.setState({
-      drawerOpen: false,
+      drawerOpen: false
     });
-  }
+  };
 
   renderSidebar() {
     return (
-      <Sidebar open={this.state.drawerOpen} onCloseDrawer={this.handleDrawerMenuClick} />
+      <Sidebar
+        open={this.state.drawerOpen}
+        onCloseDrawer={this.handleDrawerMenuClick}
+      />
     );
   }
 
   renderHeader() {
-    return (
-      <Header onDrawerMenuClick={this.handleDrawerMenuClick} />
-    );
+    return <Header onDrawerMenuClick={this.handleDrawerMenuClick} />;
   }
 
   renderFooter() {
-    return (
-      <Footer />
-    );
+    return <Footer />;
   }
 
   render() {
@@ -51,6 +49,7 @@ class MainLayout extends Component {
           </div>
           {this.renderFooter()}
         </div>
+        <Chat />
       </div>
     );
   }

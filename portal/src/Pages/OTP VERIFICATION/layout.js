@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useStyles from "./style";
 import Header from "Components/Header";
-import { Container, Typography, Grid, Button } from "@material-ui/core";
+import { Container, Typography, Button } from "@material-ui/core";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 
 import { InputComponent } from "Components";
@@ -12,7 +12,7 @@ import { useHistory } from "react-router-dom";
 const Layout = () => {
   const classes = useStyles();
   const history = useHistory();
-  const [cabOtp, setcabOtp] = useState();
+  const [cabOtp] = useState();
   const [isSubmitting, setSubmitting] = useState(false);
 
   const handleAddCab = async () => {

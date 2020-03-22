@@ -1,7 +1,6 @@
 import React, {  } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Map from "./component/Map";
-import Charts from "Pages/Charts";
 
 import useStyles from "./style";
 

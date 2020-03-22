@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useStyles from "./style";
 import Header from "Components/Header";
 import {
   Container,
   Typography,
-  Grid,
   Button,
   TextField,
-  InputAdornment,
-  LinkButtons
-} from "@material-ui/core";
+  InputAdornment} from "@material-ui/core";
 import Config from "Config";
 import EmailIcon from "@material-ui/icons/Email";
 import { handleError } from "Store/helper";
-import { useSelector } from "react-redux";
-import { passwordForgot } from "Store/selectors";
 import { useHistory } from "react-router-dom";
 import { Snackbar } from "Components";
 import ForgotpasswordIcon from "./Assets/forgot.svg";
@@ -146,6 +141,4 @@ const Layout = () => {
   );
 };
 export default Layout;
-function newFunction() {
-  return "Send";
-}
+
