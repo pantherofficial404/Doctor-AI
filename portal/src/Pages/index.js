@@ -58,7 +58,7 @@ class Root extends React.Component {
           )}
 
           {AuthServices.isAuthenticated() && (
-            <Route exact path="/Charts" component={Charts} />
+            <Route exact path="/analytics" component={Charts} />
           )}
 
           <Route exact path="/register" component={Register} />

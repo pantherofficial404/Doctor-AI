@@ -19,7 +19,6 @@ const Layout = () => {
 
   return (
     <div className={classes.patientpage}>
-      <Header title="Patient" />
       <Container className={classes.container} maxWidth="lg">
         <Card className={classes.root}>
           <CardContent>
