@@ -5,7 +5,6 @@ import { Container, Typography, Button } from "@material-ui/core";
 import Config from "Config";
 import EmailIcon from "@material-ui/icons/Email";
 import { handleError } from "Store/helper";
-import { useHistory } from "react-router-dom";
 import { InputComponent } from "Components";
 import ForgotpasswordIcon from "./Assets/forgot.svg";
 import { NetworkServices } from "Services";

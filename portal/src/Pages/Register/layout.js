@@ -4,8 +4,6 @@ import { Header, InputComponent } from "Components";
 import LockIcon from "@material-ui/icons/Lock";
 
 import {
-  InputAdornment,
-  TextField,
   Button,
   Container,
   Link,
