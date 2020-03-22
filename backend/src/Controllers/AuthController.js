@@ -90,7 +90,7 @@ const signup = async (req, res, next) => {
     return;
   }
 
-  const user = await User.findOne({ username });
+  let user = await User.findOne({ username });
   if (user) {
     res.status(401);
     res.json({
@@ -111,7 +111,7 @@ const signup = async (req, res, next) => {
     username
   };
   const token = jwt.sign(JSON.stringify(authInfo), config.get("jwt").secret);
-  const user = await new User({
+  user = await new User({
     username,
     password: encryptedPassword
   }).save();
