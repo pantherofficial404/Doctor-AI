@@ -9,7 +9,8 @@ const {
   DoctorController,
   CategoryController,
   MailController,
-  ForgotPasswordController
+  ForgotPasswordController,
+  UserController,
 } = require("Controllers");
 
 const { authMiddleware } = require("Middleware");
@@ -59,5 +60,8 @@ router.post("/cab", CabController.addCab);
 
 //Mail controller
 router.post("/mail", MailController.SendMail);
+
+// UserController
+router.get('/users',UserController.getUsers);
 
 module.exports = router;

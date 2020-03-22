@@ -7,6 +7,7 @@ const DoctorController = require("Controllers/DoctorController");
 const CategoryController = require("Controllers/CategoryController");
 const MailController = require("Controllers/MailController");
 const ForgotPasswordController = require("Controllers/ForgotPasswordController");
+const UserController = require('Controllers/UserController');
 
 module.exports = {
   AuthController,
@@ -17,5 +18,6 @@ module.exports = {
   DoctorController,
   CategoryController,
   MailController,
-  ForgotPasswordController
+  ForgotPasswordController,
+  UserController,
 };
