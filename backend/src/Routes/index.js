@@ -63,5 +63,6 @@ router.post("/mail", MailController.SendMail);
 
 // UserController
 router.get('/users',UserController.getUsers);
+router.delete('/users/:id',UserController.deleteUserById);
 
 module.exports = router;

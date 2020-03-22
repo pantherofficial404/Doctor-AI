@@ -18,6 +18,26 @@ const getUsers = async (req, res, next) => {
     }
 }
 
+const deleteUserById = async (req,res,next)=>{
+    try{
+        const userId = req.params.id;
+        console.log(userId);
+        await User.findOneAndDelete({_id:userId});
+        res.json({
+            success:true,
+            data:'User deleted successfully'
+        });
+    } catch(err){
+        handleError(err);
+        res.status(404);
+        return res.json({
+            success:false,
+            error:err,
+        })
+    }
+}
+
 module.exports = {
     getUsers,
+    deleteUserById,
 };
