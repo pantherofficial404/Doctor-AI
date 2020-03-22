@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ApplicationError, LogServices, AuthServices } from "Services";
+import { openGlobalMessageBox } from "Helper";
 
 const logger = LogServices.getInstance("Service:Network");
 
@@ -12,10 +13,20 @@ const MESSAGES = {
 class NetworkService {
   handleError(error) {
     if (error instanceof ApplicationError) {
+      openGlobalMessageBox({
+        title: "Doctor AI",
+        message: error.message,
+        type: "error"
+      });
       throw error;
     }
 
     if (error.message === "Network Error") {
+      openGlobalMessageBox({
+        title: "Doctor AI",
+        message: MESSAGES.NOT_REACHABLE,
+        type: "error"
+      });
       throw new ApplicationError(MESSAGES.NOT_REACHABLE);
     }
 
