@@ -15,8 +15,16 @@ export const closeGlobalMessageBox = () => {
 };
 
 export const getAvatarName = name => {
-  if(!name){
-    return 'D';
+  if (!name) {
+    return "D";
   }
   return String(name)[0].toUpperCase();
+};
+
+export const getSafeInsance = (path = [], fallback = {}) => {
+  return object => {
+    return path.reduce((prev, curr) => {
+      return isNullOrUndefined(prev[curr]) ? fallback : prev[curr];
+    }, object);
+  };
 };

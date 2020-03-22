@@ -11,6 +11,7 @@ const {
   MailController,
   ForgotPasswordController,
   UserController,
+  AnalyticsController,
 } = require("Controllers");
 
 const { authMiddleware } = require("Middleware");
@@ -66,5 +67,8 @@ router.get('/users',UserController.getUsers);
 router.delete('/users/:id',UserController.deleteUserById);
 router.post('/users/changePassword',UserController.changeUserPassword);
 router.post('/users/changeAdminStatus',UserController.changeAdminStatus);
+
+// AnalyticsController
+router.get('/analytics',AnalyticsController.getAnalytics);
 
 module.exports = router;

@@ -8,6 +8,7 @@ const CategoryController = require("Controllers/CategoryController");
 const MailController = require("Controllers/MailController");
 const ForgotPasswordController = require("Controllers/ForgotPasswordController");
 const UserController = require('Controllers/UserController');
+const AnalyticsController = require('Controllers/AnalyticsController');
 
 module.exports = {
   AuthController,
@@ -20,4 +21,5 @@ module.exports = {
   MailController,
   ForgotPasswordController,
   UserController,
+  AnalyticsController,
 };

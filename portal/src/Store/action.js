@@ -2,6 +2,7 @@
 import { store } from "./index";
 import { handleError } from "./helper";
 import { NetworkServices } from "Services";
+import * as moment from 'moment-timezone';
 
 import {
   hospitalListingAction,
@@ -12,7 +13,8 @@ import {
   currentOrderAction,
   userOrderAction,
   sendMailAction,
-  usersAction
+  usersAction,
+  analyticsAction
 } from "./reducer";
 import Config from "Config";
 
@@ -219,6 +221,24 @@ export const fetchUsers = async () => {
     handleError(err);
     store.dispatch(
       usersAction.failed({
+        internalMessage: err.message,
+        displayMessage: err.response.data.message
+      })
+    );
+  }
+};
+
+export const fetchAnalytics = async (startDate,endDate) => {
+  try {
+    store.dispatch(analyticsAction.init());
+    const response = await NetworkServices.get(
+      `${Config.SERVER_URL}/analytics?startTime=${moment(startDate).format('YYYY-MM-DD')}&endTime=${moment(endDate).format('YYYY-MM-DD')}`
+    );
+    store.dispatch(analyticsAction.success(response.data));
+  } catch (err) {
+    handleError(err);
+    store.dispatch(
+      analyticsAction.failed({
         internalMessage: err.message,
         displayMessage: err.response.data.message
       })

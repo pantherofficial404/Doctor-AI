@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import useStyles from "./style";
 import {
@@ -17,46 +17,23 @@ import {
 } from "@material-ui/core";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
+import ArrowDowmIcon from "@material-ui/icons/KeyboardArrowDownOutlined";
 import FaceIcon from "@material-ui/icons/Face";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import * as moment from "moment-timezone";
 
 import CardComponent from "./components/card.component";
 import BarChartComponent from "./components/barchart.component";
 import LineChartComponent from "./components/linechart.component";
-//THIS IS THE LINECHART DATA
-
-const data = [
-  {
-    date: "16 Mar 2020",
-    patient: 50
-  },
-  {
-    date: "17 Mar 2020",
-    patient: 45
-  },
-  {
-    date: "18 Mar 2020",
-    patient: 24
-  },
-  {
-    date: "19 Mar 2020",
-    patient: 65
-  },
-  {
-    date: "20 Mar 2020",
-    patient: 50
-  },
-  {
-    date: "21 Mar 2020",
-    patient: 24
-  },
-  {
-    date: "16 Mar 2020",
-    patient: 25
-  }
-];
+import { useSelector } from "react-redux";
+import { selectAnalytics } from "Store/selectors";
+import { fetchAnalytics } from "Store/action";
+import store from "Store";
+import { analyticsAction } from "Store/reducer";
+import { getSafeInsightsInfo, getSafeInsightsCharts } from "mock";
+import { getFormattedString } from "Helper";
 
 //THIS IS BARCHRTDATA
 const barchartData = [
@@ -101,24 +78,35 @@ function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData("16 Mar 2020", 17, 6.0, 24, 4.0),
-  createData("17 Mar 2020", 19, 9.0, 37, 4.3),
-  createData("18 Mar 2020", 20, 16.0, 24, 6.0),
-  createData("19 Mar 2020", 30, 3.7, 67, 4.3),
-  createData("20 Mar 2020", 35, 16.0, 49, 3.9)
-];
-
 const Layout = () => {
   const classes = useStyles();
-  const [state, setState] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection"
-    }
-  ]);
+  const [dates, setDates] = useState({
+    startDate: moment()
+      .subtract(7, "days")
+      .toDate(),
+    endDate: moment().toDate(),
+    key: "selection"
+  });
   const [show, setShow] = useState(false);
+  const analytics = useSelector(selectAnalytics);
+
+  useEffect(() => {
+    if (!analytics.initialized) {
+      fetchAnalytics(moment(dates.startDate).toDate(),moment(dates.endDate).toDate());
+    }
+  }, [analytics]);
+
+  const handleDateChange = item => {
+    if (item.selection) {
+      if (
+        item.selection.startDate.getTime() !== item.selection.endDate.getTime()
+      ) {
+        setShow(false);
+        store.dispatch(analyticsAction.reset());
+      }
+      setDates(item.selection);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -127,18 +115,22 @@ const Layout = () => {
           variant="contained"
           className={classes.DatePickerButton}
           onClick={() => setShow(!show)}
+          color="primary"
+          endIcon={<ArrowDowmIcon />}
         >
-          Select Date
+          {moment(dates.startDate).format("DD MMM YYYY")} -{" "}
+          {moment(dates.endDate).format("DD MMM YYYY")}
         </Button>
-      </div>
-      <div className={classes.dateTimePiker}>
         {show && (
-          <DateRange
-            editableDateInputs={true}
-            onChange={item => setState([item.selection])}
-            moveRangeOnFirstSelection={false}
-            ranges={state}
-          />
+          <div className={classes.dateRangePicker}>
+            <DateRange
+              editableDateInputs={true}
+              onChange={handleDateChange}
+              moveRangeOnFirstSelection={false}
+              ranges={[dates]}
+              maxDate={new Date()}
+            />
+          </div>
         )}
       </div>
       <div className={classes.summary}>
@@ -147,101 +139,103 @@ const Layout = () => {
             <Grid item xs={12} sm={12} md={4} lg={4}>
               <CardComponent
                 icon={PeopleAltIcon}
-                count={25}
+                count={getSafeInsightsInfo(analytics).user_count}
                 title="Connected User"
                 tooltipText="Number of user connected with us"
+                loading={analytics.loading}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
               <CardComponent
                 icon={LocalHospitalIcon}
-                count={120}
+                count={getSafeInsightsInfo(analytics).hospital_count}
                 title="Connected Hospitals"
                 tooltipText="Number of hospital connected with us"
+                loading={analytics.loading}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={4} lg={4}>
               <CardComponent
                 icon={FaceIcon}
-                count={14}
+                count={getSafeInsightsInfo(analytics).doctor_count}
                 title="Connected Doctor"
                 tooltipText="Number of doctor connected with us"
+                loading={analytics.loading}
               />
             </Grid>
           </Grid>
-          </div>
+        </div>
 
-          <div className={classes.cardContainer}>
-            <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
-              <Typography
-                variant="h6"
-                color="textSecondary"
-                style={{ margin: 20 }}
-              >
-                Patients over time
-              </Typography>
-              <LineChartComponent
-                data={data}
-                xAxis="date"
-                yAxis={["patient"]}
-                colors={["#747BF3"]}
-              />
-            </Card>
-          </div>
-          <div className={classes.cardContainer}>
-            <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
-              <Typography
-                variant="h6"
-                color="textSecondary"
-                style={{ margin: 20 }}
-              >
-                Patients over time by gender
-              </Typography>
-              <BarChartComponent
-                data={barchartData}
-                xAxis="name"
-                yAxis={["male", "female"]}
-                colors={["#747BF3", "#82CA9D"]}
-              />
-            </Card>
-          </div>
+        <div className={classes.cardContainer}>
+          <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
+            <Typography
+              variant="h6"
+              color="textSecondary"
+              style={{ margin: 20 }}
+            >
+              Patients over time
+            </Typography>
+            <LineChartComponent
+              data={getSafeInsightsCharts(analytics).patientsOverTime || []}
+              xAxis="date"
+              yAxis={["patient"]}
+              colors={["#747BF3"]}
+              loading={analytics.loading}
+            />
+          </Card>
+        </div>
+        <div className={classes.cardContainer}>
+          <Card style={{ padding: 10, boxShadow: "none", borderRadius: 5 }}>
+            <Typography
+              variant="h6"
+              color="textSecondary"
+              style={{ margin: 20 }}
+            >
+              Patients over time by gender
+            </Typography>
+            <BarChartComponent
+              data={barchartData}
+              xAxis="name"
+              yAxis={["male", "female"]}
+              colors={["#747BF3", "#82CA9D"]}
+              loading={analytics.loading}
+            />
+          </Card>
+        </div>
 
-          {/* table */}
-            <Card className={classes.cardContainer}>
-              <Typography
-                variant="h6"
-                color="textSecondary"
-                style={{ margin: 20 }}
-              >
-                Insights
-              </Typography>
-              <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Day</TableCell>
-                      <TableCell align="right">User</TableCell>
-                      <TableCell align="right">Hospitals</TableCell>
-                      <TableCell align="right">Doctors</TableCell>
-                      <TableCell align="right">Patient</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map(row => (
-                      <TableRow key={row.name}>
-                        <TableCell component="th">
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Card>
+        {/* table */}
+        <Card className={classes.cardContainer} style={{ marginBottom: 60 }}>
+          <Typography variant="h6" color="textSecondary" style={{ margin: 20 }}>
+            Insights
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Day</TableCell>
+                  <TableCell align="right">User</TableCell>
+                  <TableCell align="right">Hospitals</TableCell>
+                  <TableCell align="right">Doctors</TableCell>
+                  <TableCell align="right">Patient</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {analytics.loading && (
+                  <Typography>Loading..</Typography>
+                )}
+                {!analytics.loading && analytics.data && analytics.data.insights.map((element,key)=>(
+                  <TableRow key={key}>
+                    <TableCell component="th">{moment(element.date).format('DD MMM YYYY')}</TableCell>
+                    <TableCell align="right">{getFormattedString(element.userCount)}</TableCell>
+                    <TableCell align="right">{getFormattedString(element.hospitalCount)}</TableCell>
+                    <TableCell align="right">{getFormattedString(element.doctorCount)}</TableCell>
+                    <TableCell align="right">{getFormattedString(element.patientCount)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
       </div>
     </div>
   );

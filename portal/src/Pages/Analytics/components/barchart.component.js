@@ -9,6 +9,7 @@ import {
   Bar,
   Tooltip
 } from "recharts";
+import { Typography } from "@material-ui/core";
 
 const LineChartComponent = props => {
   let height = props.height || 400;
@@ -16,6 +17,12 @@ const LineChartComponent = props => {
   let xAxis = props.xAxis || "name";
   let yAxis = props.yAxis || [];
   let colors = props.colors || [];
+
+  if(props.loading){
+    return (
+      <Typography>Loading...</Typography>
+    )
+  }
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} stackOffset="sign">

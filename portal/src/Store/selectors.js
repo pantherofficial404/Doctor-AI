@@ -29,9 +29,12 @@ export const mail = state => {
 export const userLoad = state => {
   return selectState(state).loadUser;
 };
-export const selectMessageBox = (state)=>{
+export const selectMessageBox = state => {
   return selectState(state).messageBox;
-}
-export const selectUsers = (state)=>{
+};
+export const selectUsers = state => {
   return selectState(state).users;
-}
+};
+export const selectAnalytics = state => {
+  return selectState(state).analytics;
+};
