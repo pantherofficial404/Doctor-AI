@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Grid,
-  Container,
   Table,
   TableBody,
   TableCell,
@@ -13,7 +12,8 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography
+  Typography,
+  CircularProgress
 } from "@material-ui/core";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
@@ -74,10 +74,6 @@ const barchartData = [
   }
 ];
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
 const Layout = () => {
   const classes = useStyles();
   const [dates, setDates] = useState({
@@ -92,7 +88,10 @@ const Layout = () => {
 
   useEffect(() => {
     if (!analytics.initialized) {
-      fetchAnalytics(moment(dates.startDate).toDate(),moment(dates.endDate).toDate());
+      fetchAnalytics(
+        moment(dates.startDate).toDate(),
+        moment(dates.endDate).toDate()
+      );
     }
   }, [analytics]);
 
@@ -108,6 +107,23 @@ const Layout = () => {
     }
   };
 
+  if (analytics.loading) {
+    return (
+      <div style={{}}>
+        <CircularProgress
+          size={50}
+          style={{
+            display: "flex",
+            margin: "0 auto",
+            // justifyContent: "center",
+            alignItems: "center",
+            minHeight: "70vh"
+          }}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.datePicker}>
@@ -116,8 +132,7 @@ const Layout = () => {
           className={classes.DatePickerButton}
           onClick={() => setShow(!show)}
           color="primary"
-          endIcon={<ArrowDowmIcon />}
-        >
+          endIcon={<ArrowDowmIcon />}>
           {moment(dates.startDate).format("DD MMM YYYY")} -{" "}
           {moment(dates.endDate).format("DD MMM YYYY")}
         </Button>
@@ -171,8 +186,7 @@ const Layout = () => {
             <Typography
               variant="h6"
               color="textSecondary"
-              style={{ margin: 20 }}
-            >
+              style={{ margin: 20 }}>
               Patients over time
             </Typography>
             <LineChartComponent
@@ -189,8 +203,7 @@ const Layout = () => {
             <Typography
               variant="h6"
               color="textSecondary"
-              style={{ margin: 20 }}
-            >
+              style={{ margin: 20 }}>
               Patients over time by gender
             </Typography>
             <BarChartComponent
@@ -220,18 +233,28 @@ const Layout = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {analytics.loading && (
-                  <Typography>Loading..</Typography>
-                )}
-                {!analytics.loading && analytics.data && analytics.data.insights.map((element,key)=>(
-                  <TableRow key={key}>
-                    <TableCell component="th">{moment(element.date).format('DD MMM YYYY')}</TableCell>
-                    <TableCell align="right">{getFormattedString(element.userCount)}</TableCell>
-                    <TableCell align="right">{getFormattedString(element.hospitalCount)}</TableCell>
-                    <TableCell align="right">{getFormattedString(element.doctorCount)}</TableCell>
-                    <TableCell align="right">{getFormattedString(element.patientCount)}</TableCell>
-                  </TableRow>
-                ))}
+                {analytics.loading && <Typography>Loading...</Typography>}
+                {!analytics.loading &&
+                  analytics.data &&
+                  analytics.data.insights.map((element, key) => (
+                    <TableRow key={key}>
+                      <TableCell component="th">
+                        {moment(element.date).format("DD MMM YYYY")}
+                      </TableCell>
+                      <TableCell align="right">
+                        {getFormattedString(element.userCount)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {getFormattedString(element.hospitalCount)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {getFormattedString(element.doctorCount)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {getFormattedString(element.patientCount)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>

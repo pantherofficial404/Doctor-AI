@@ -9,12 +9,12 @@ const addPatient = async (req, res, next) => {
       contactNumber,
       diseaseDescription,
       hospitalId,
-      userId
+      userId,
+      zender
     } = req.body;
 
     // Validating User
     const user = await User.findById(userId);
-    console.log(user);
 
     if (!user) {
       res.status(404);
@@ -26,7 +26,6 @@ const addPatient = async (req, res, next) => {
 
     // Validating Hospital Id
     const hospital = await Hospital.findById(hospitalId);
-    console.log(hospital);
 
     if (!hospital) {
       res.status(404);
@@ -45,12 +44,11 @@ const addPatient = async (req, res, next) => {
       diseaseDescription,
       hospitalId,
       userId,
-      verificaionCode: Math.round(Math.random() * 1000000) // Unique 6 Digit Code
+      verificaionCode: Math.round(Math.random() * 1000000), // Unique 6 Digit Code,
+      zender
     });
 
     await patient.save();
-
-    console.log(patient);
 
     // Returning Response To Frontend
     res.status(200);

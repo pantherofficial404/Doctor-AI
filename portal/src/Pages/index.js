@@ -27,6 +27,7 @@ import Resetpassword from "Pages/ResetPassword";
 import UpdateHospitalDetails from "Pages/UpdateHospital";
 import Analytics from "Pages/Analytics";
 import Users from "Pages/User";
+import MainHomePage from "Pages/MainHomePage";
 
 ExpressFirebase.connect(Config.FIREBASE_CONFIG);
 
@@ -54,13 +55,16 @@ class Root extends React.Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/forgotpassword" component={Forgotpassword} />
+          {/* <Route exact path="/mainhome" component={MainHomePage} /> */}
+
           <Route
             exact
             path="/reset/:resetPasswordToken"
             component={Resetpassword}
           />
 
-          <PrivateRoute exact path="/" component={Home} />
+          <PrivateRoute exact path="/" component={MainHomePage} />
+          <PrivateRoute exact path="/home" component={Home} />
           <PrivateRoute exact path="/analytics" component={Analytics} admin />
 
           <PrivateRoute

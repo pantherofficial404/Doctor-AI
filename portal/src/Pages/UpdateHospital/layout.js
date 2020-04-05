@@ -160,14 +160,10 @@ const Layout = () => {
           style={{
             display: "flex",
             height: "80vh",
-            justifyContent:'center',
-            alignItems:'center',
-          }}
-        >
-          <CircularProgress
-            color="primary"
-            size="3rem"
-          />
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+          <CircularProgress color="primary" size="3rem" />
         </div>
       ) : (
         <div className={classes.hospitalDetails}>
@@ -252,14 +248,12 @@ const Layout = () => {
                               flex: 1,
                               paddingBottom: 8,
                               borderBottom: "1px solid rgba(0,0,0,0.5)"
-                            }}
-                          >
+                            }}>
                             <AddAPhotoIcon color="primary" />
                             <Typography
                               variant="body2"
                               color="textSecondary"
-                              style={{ padding: "0 10px" }}
-                            >
+                              style={{ padding: "0 10px" }}>
                               {(file || {}).name || "Choose Hospital Image"}
                             </Typography>
                           </div>
@@ -315,8 +309,7 @@ const Layout = () => {
                     className={classes.hospitalButton}
                     onClick={updateHospital}
                     fullWidth
-                    disabled={isSubmitting}
-                  >
+                    disabled={isSubmitting}>
                     {isSubmitting ? (
                       <CircularProgress size="1.5rem" />
                     ) : (

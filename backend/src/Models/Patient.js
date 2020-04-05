@@ -35,6 +35,9 @@ const PatientSchema = new mongoose.Schema(
     verificaionCode: {
       type: mongoose.Schema.Types.Number,
       required: false
+    },
+    zender: {
+      type: mongoose.Schema.Types.String
     }
   },
   schemaOptions

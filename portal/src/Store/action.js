@@ -2,7 +2,7 @@
 import { store } from "./index";
 import { handleError } from "./helper";
 import { NetworkServices } from "Services";
-import * as moment from 'moment-timezone';
+import * as moment from "moment-timezone";
 
 import {
   hospitalListingAction,
@@ -228,11 +228,13 @@ export const fetchUsers = async () => {
   }
 };
 
-export const fetchAnalytics = async (startDate,endDate) => {
+export const fetchAnalytics = async (startDate, endDate) => {
   try {
     store.dispatch(analyticsAction.init());
     const response = await NetworkServices.get(
-      `${Config.SERVER_URL}/analytics?startTime=${moment(startDate).format('YYYY-MM-DD')}&endTime=${moment(endDate).format('YYYY-MM-DD')}`
+      `${Config.SERVER_URL}/analytics?startTime=${moment(startDate).format(
+        "YYYY-MM-DD"
+      )}&endTime=${moment(endDate).format("YYYY-MM-DD")}`
     );
     store.dispatch(analyticsAction.success(response.data));
   } catch (err) {

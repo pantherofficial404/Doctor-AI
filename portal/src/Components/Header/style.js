@@ -1,7 +1,7 @@
-const style = theme => ({
+const style = (theme) => ({
   navigationBar: {
     // backgroundColor: "theme.palette.primary.main",
-    backgroundColor: "#7563FF"
-  }
+    backgroundColor: "#7563FF",
+  },
 });
 export default style;

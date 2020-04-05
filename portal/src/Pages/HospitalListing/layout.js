@@ -6,10 +6,11 @@ import { fetchHospitalListing } from "Store/action";
 import { selectHospital } from "Store/selectors";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-
 import { AuthServices, NetworkServices } from "Services";
 import config from "Config";
 import { openGlobalMessageBox } from "Helper";
+
+import { CircularProgress } from '@material-ui/core'
 
 const Layout = () => {
   const classes = useStyles();
@@ -39,6 +40,23 @@ const Layout = () => {
     });
     history.push('/');
   };
+
+  if (hospitalListing.loading) {
+    return (
+      <div >
+        <CircularProgress
+          size={50}
+          style={{
+            display: "flex",
+            margin: "0 auto",
+            // justifyContent: "center",
+            alignItems: "center",
+            minHeight: "70vh"
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

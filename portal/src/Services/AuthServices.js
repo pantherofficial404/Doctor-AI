@@ -108,11 +108,11 @@ class AuthService {
     return true;
   }
 
-  isNormalUser(){
-    if(!this.isAuthenticated()){
+  isNormalUser() {
+    if (!this.isAuthenticated()) {
       return false;
     }
-    if(this._auth.isAdmin || this._auth.isHospitalAdmin){
+    if (this._auth.isAdmin || this._auth.isHospitalAdmin) {
       return false;
     }
     return true;

@@ -11,10 +11,13 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexFlow: "column wrap",
     justifyContent: "space-between",
-    maxWidth: "800px",
     margin: "20px 5px",
-    maxHeight:"400px",
-    height:"400px",
+    maxHeight: "400px",
+    height: "400px",
+    width: "500px",
+    [theme.breakpoints.only("sm")]: {
+      width: "100%"
+    }
   },
   msgChat: {
     flex: 1,

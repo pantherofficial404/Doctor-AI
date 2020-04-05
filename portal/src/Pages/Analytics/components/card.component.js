@@ -21,12 +21,10 @@ const CardComponent = props => {
         flexDirection: "column",
         padding: "25px 15px",
         borderRadius: 5
-      }}
-    >
+      }}>
       <Tooltip
         title={props.tooltipText}
-        style={{ position: "absolute", top: 10, right: 10 }}
-      >
+        style={{ position: "absolute", top: 10, right: 10 }}>
         <InfoOutlinedIcon />
       </Tooltip>
       {Boolean(props.icon) && <props.icon color="primary" fontSize="large" />}

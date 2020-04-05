@@ -35,8 +35,8 @@ const MessageBox = props => {
       show={Boolean(globalMessageBox.open)}
       onHide={closeGlobalMessageBox}
       centered
-      className="zoom"
-    >
+      style={{ zIndex: 99999 }}
+      className="zoom">
       <Modal.Header className={headerClass} closeButton>
         <Modal.Title className="mt-0 mb-0">
           {Boolean(globalMessageBox) && globalMessageBox.title}
@@ -47,7 +47,9 @@ const MessageBox = props => {
           (!globalMessageBox.isHTML ? (
             globalMessageBox.message
           ) : (
-            <div dangerouslySetInnerHTML={{ __html: globalMessageBox.message }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: globalMessageBox.message }}
+            />
           ))}
       </Modal.Body>
       <Modal.Footer>

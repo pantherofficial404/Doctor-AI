@@ -7,6 +7,7 @@ import { AuthServices } from "Services";
 class Header extends React.Component {
   render() {
     const { onDrawerMenuClick } = this.props;
+
     return (
       <React.Fragment>
         <div id="vertical-topbar-placeholder">
@@ -19,19 +20,19 @@ class Header extends React.Component {
                   role="button"
                   aria-haspopup="false"
                   aria-expanded="false"
-                  to="/profile"
-                >
+                  to="/profile">
                   <span className="account-user-avatar">
                     <div
                       style={{ width: 32, height: 32 }}
-                      className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-                    >
-                      <span>{getAvatarName((AuthServices._auth||{}).username)}</span>
+                      className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center">
+                      <span>
+                        {getAvatarName((AuthServices._auth || {}).username)}
+                      </span>
                     </div>
                   </span>
                   <span>
                     <span className="account-user-name">
-                      {(AuthServices._auth||{}).username}
+                      {(AuthServices._auth || {}).username}
                     </span>
                     <span className="account-position">Doctor AI</span>
                   </span>
@@ -39,15 +40,16 @@ class Header extends React.Component {
               </li>
 
               <li className="notification-list topbar-dropdown d-lg-block">
-                <button className="nav-link dropdown-toggle arrow-none btn btn-link right-bar-toggle" onClick={this.props.handleLogout}>
+                <button
+                  className="nav-link dropdown-toggle arrow-none btn btn-link right-bar-toggle"
+                  onClick={this.props.handleLogout}>
                   <i className="dripicons-gear noti-icon"></i>
                 </button>
               </li>
             </ul>
             <button
               className="button-menu-mobile open-left disable-btn"
-              onClick={onDrawerMenuClick}
-            >
+              onClick={onDrawerMenuClick}>
               <i className="mdi mdi-menu"></i>
             </button>
             <div className="app-search">

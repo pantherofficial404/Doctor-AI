@@ -7,12 +7,16 @@ const getAnalytics = async (req, res, next) => {
     let startTime = req.query.startTime;
     let endTime = req.query.endTime;
 
-    console.log(startTime,endTime);
+    console.log(startTime, endTime);
 
-    startTime = moment(startTime).startOf('day').toDate();
-    endTime = moment(endTime).endOf('day').toDate();
+    startTime = moment(startTime)
+      .startOf("day")
+      .toDate();
+    endTime = moment(endTime)
+      .endOf("day")
+      .toDate();
 
-    console.log(endTime,startTime);
+    console.log(endTime, startTime);
 
     const getGroupData = table => {
       return table.aggregate([
@@ -69,10 +73,18 @@ const getAnalytics = async (req, res, next) => {
     const dateRange = getDateRange(startTime, endTime);
 
     const insights = dateRange.map(date => {
-      const patient = patientsOverTime.find(x => x._id === moment(date).format('YYYY-MM-DD'));
-      const user = userOverTime.find(x => x._id === moment(date).format('YYYY-MM-DD'));
-      const hospital = hospitalOverTime.find(x => x._id === moment(date).format('YYYY-MM-DD'));
-      const doctor = doctorsOverTime.find(x => x._id === moment(date).format('YYYY-MM-DD'));
+      const patient = patientsOverTime.find(
+        x => x._id === moment(date).format("YYYY-MM-DD")
+      );
+      const user = userOverTime.find(
+        x => x._id === moment(date).format("YYYY-MM-DD")
+      );
+      const hospital = hospitalOverTime.find(
+        x => x._id === moment(date).format("YYYY-MM-DD")
+      );
+      const doctor = doctorsOverTime.find(
+        x => x._id === moment(date).format("YYYY-MM-DD")
+      );
       return {
         date,
         patientCount: (patient || {}).count,
@@ -121,7 +133,7 @@ const getAnalytics = async (req, res, next) => {
           patientsOverTime,
           patientByGender: []
         },
-        insights,
+        insights
       }
     });
   } catch (err) {

@@ -1,5 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
-
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -21,8 +20,8 @@ const useStyles = makeStyles(theme => ({
     width: theme.spacing() * 40,
     [theme.breakpoints.only("xs")]: {
       height: theme.spacing() * 30,
-      width: theme.spacing() * 30,
+      width: theme.spacing() * 30
     }
   }
-}))
+}));
 export default useStyles;

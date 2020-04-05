@@ -11,7 +11,7 @@ const {
   MailController,
   ForgotPasswordController,
   UserController,
-  AnalyticsController,
+  AnalyticsController
 } = require("Controllers");
 
 const { authMiddleware } = require("Middleware");
@@ -34,6 +34,7 @@ router.get("/hospital/nearyby", HospitalController.getNearyByHospitals);
 router.get("/hospital/:hospitalId", HospitalController.getHospitalById);
 router.post("/hospital", HospitalController.addHospital);
 router.put("/updatehospital/:hospitalId", HospitalController.updateHospital);
+router.get("/limitedhospitals", HospitalController.getLimitedHospitals);
 
 // Patient Controller
 router.get("/patient", PatientController.getUserPatient);
@@ -63,12 +64,12 @@ router.post("/cab", CabController.addCab);
 router.post("/mail", MailController.SendMail);
 
 // UserController
-router.get('/users',UserController.getUsers);
-router.delete('/users/:id',UserController.deleteUserById);
-router.post('/users/changePassword',UserController.changeUserPassword);
-router.post('/users/changeAdminStatus',UserController.changeAdminStatus);
+router.get("/users", UserController.getUsers);
+router.delete("/users/:id", UserController.deleteUserById);
+router.post("/users/changePassword", UserController.changeUserPassword);
+router.post("/users/changeAdminStatus", UserController.changeAdminStatus);
 
 // AnalyticsController
-router.get('/analytics',AnalyticsController.getAnalytics);
+router.get("/analytics", AnalyticsController.getAnalytics);
 
 module.exports = router;

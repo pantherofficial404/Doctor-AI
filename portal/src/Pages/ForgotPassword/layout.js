@@ -13,7 +13,7 @@ import { openGlobalMessageBox } from "Helper";
 const Layout = () => {
   const classes = useStyles();
   const [username, setUsername] = useState();
-  const [submitting,setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -61,8 +61,7 @@ const Layout = () => {
                 variant="h6"
                 align="center"
                 className={classes.title}
-                style={{ marginBottom: "2rem" }}
-              >
+                style={{ marginBottom: "2rem" }}>
                 Verifying Email Please Enter Your Email
               </Typography>
               <InputComponent
@@ -79,9 +78,8 @@ const Layout = () => {
                 color="primary"
                 onClick={handleSubmit}
                 style={{ marginTop: 20 }}
-                disabled={!username||submitting}
-                fullWidth
-              >
+                disabled={!username || submitting}
+                fullWidth>
                 Send Email
               </Button>
             </form>

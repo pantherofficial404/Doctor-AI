@@ -11,6 +11,17 @@ const getHospitalListing = async (req, res, next) => {
   });
 };
 
+const getLimitedHospitals = async (req, res, next) => {
+  const hospitals = await Hospital.find()
+    .limit(5)
+    .sort({ hospitalName: 1 });
+
+  res.json({
+    data: hospitals,
+    success: true
+  });
+};
+
 const getHospitalById = async (req, res, next) => {
   const { hospitalId } = req.params;
   try {
@@ -213,5 +224,6 @@ module.exports = {
   getNearyByHospitals,
   addHospital,
   deleteHospitalById,
-  updateHospital
+  updateHospital,
+  getLimitedHospitals
 };
